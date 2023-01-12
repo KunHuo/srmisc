@@ -16,7 +16,6 @@ Imports:
     flextable,
     officer,
     R.utils,
-    srrma,
     tibble
 Suggests: 
     knitr,
