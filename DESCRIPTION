@@ -15,8 +15,10 @@ URL: https://github.com/kunhuo/srmisc
 Imports: 
     flextable,
     ggplot2,
+    ggsci,
     officer,
     R.utils,
+    scales,
     showtext,
     tibble
 Suggests: 
