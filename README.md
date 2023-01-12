@@ -27,7 +27,7 @@ summary(cars)
 
 You can also embed plots, for example:
 
-![](man/figurespressure-1.png)<!-- -->
+![](man/figures/README_pressure-1.png)<!-- -->
 
 Note that the `echo = FALSE` parameter was added to the code chunk to
 prevent printing of the R code that generated the plot.
