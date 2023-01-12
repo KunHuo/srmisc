@@ -21,3 +21,6 @@ terminates without return value.
 \description{
 Check whether the variable is included in the data frame.
 }
+\examples{
+check_name(mtcars, varnames = c("am", "vs"))
+}

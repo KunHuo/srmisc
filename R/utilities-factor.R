@@ -25,9 +25,10 @@
 #' @param num
 #' logical. If set to TRUE the result will be numeric
 #'
+#' @seealso [factor], [levels]
+#'
 #' @return
 #' the factor having the new levels applied.
-#' @seealso [factor], [levels]
 #' @export
 #'
 #' @examples
@@ -100,8 +101,6 @@ fct_recode <- function (x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE
 }
 
 
-
-
 #' Reverse order of factor levels
 #'
 #' @param data a data frame.
@@ -111,8 +110,7 @@ fct_recode <- function (x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE
 #'
 #' @export
 fct_reverse <- function(data, varname){
-  data[[varname]] <- factor(data[[varname]],
-                            levels = rev(levels(data[[varname]])))
+  data[[varname]] <- factor(data[[varname]], levels = rev(levels(data[[varname]])))
   data
 }
 
@@ -155,7 +153,7 @@ fct_count <- function(data, varname){
 
 #' Automatic conversion to factor
 #'
-#' @param data a data frame
+#' @param data a data frame.
 #' @param include include variable names.
 #' @param exclude exclude variable names.
 #' @param min usually taking a min number of distinct values. Default 2.

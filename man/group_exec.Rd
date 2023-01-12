@@ -31,7 +31,7 @@ the function must be return a data frame.}
 \item{warning}{logical; whether to show error messages.}
 }
 \value{
-a data frame if out.list is FALSE, otherwise return a list.
+A data frame if out.list is FALSE, otherwise return a list.
 }
 \description{
 Apply a function to a data frame split by groups

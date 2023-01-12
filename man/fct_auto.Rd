@@ -15,7 +15,7 @@ fct_auto(
 )
 }
 \arguments{
-\item{data}{a data frame}
+\item{data}{a data frame.}
 
 \item{include}{include variable names.}
 

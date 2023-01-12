@@ -20,7 +20,7 @@ check_index <- function(data, index){
 #' @export
 #'
 #' @examples
-#' check_name(mtcars, varnames = c("am", "vs))
+#' check_name(mtcars, varnames = c("am", "vs"))
 check_name <- function(data, varnames, stop = TRUE){
   tmp <- varnames %in% names(data)
 

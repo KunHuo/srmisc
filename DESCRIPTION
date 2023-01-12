@@ -14,8 +14,10 @@ RoxygenNote: 7.2.3
 URL: https://github.com/kunhuo/srmisc
 Imports: 
     flextable,
+    ggplot2,
     officer,
     R.utils,
+    showtext,
     tibble
 Suggests: 
     knitr,
