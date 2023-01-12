@@ -9,7 +9,7 @@ reshape_long(
   cols = names(data),
   names.to = ".name",
   values.to = ".value",
-  add.id.col = FALSE,
+  include.id = TRUE,
   id.name = ".id",
   ...
 )
@@ -25,16 +25,16 @@ create from the information stored in the column names of data specified by cols
 \item{values.to}{a string specifying the name of the column to create from
 the data stored in cell values.}
 
-\item{add.id.col}{a logical, indicate whether add a id column, which dentify
+\item{include.id}{a logical, indicate whether add a id column, which dentify
 multiple records from the same group/individual.}
 
 \item{id.name}{names of one or more variables in long format that identify
 multiple records from the same group/individual.}
 
-\item{...}{additional arguments passed on to methods.}
+\item{...}{unused.}
 }
 \value{
-a data frame.
+A data frame.
 }
 \description{
 Reshape data from wide to long
@@ -43,8 +43,8 @@ Reshape data from wide to long
 # Basic example
 reshape_long(mtcars)
 
-# Add id column.
-reshape_long(mtcars, add.id.col = TRUE)
+# Do not add id column
+reshape_long(mtcars, include.id = FALSE)
 
 # Reshape the specified variable.
 reshape_long(mtcars, cols = c("mpg", "cyl", "disp"))

@@ -20,7 +20,7 @@
 #' @param ... further arguments, no used here.
 #'
 #' @return
-#' a matrix with the dummy codes. The number of rows correspond to the number of
+#' A matrix with the dummy codes. The number of rows correspond to the number of
 #' elements in x and the number of columns to the number of its levels - 1,
 #' respectively to the number of levels given as argument -1. When method = "full"
 #' is chosen the number of columns will correspond to the number of levels.
@@ -125,11 +125,11 @@ dummy.default <- function (x,
 
 #' @rdname dummy
 #' @param varnames
-#' Specify the name of the variable that needs to be processed
+#' specify the name of the variable that needs to be processed
 #' with dummy variables, if not specified, all factor variables and character
 #' variables will be processed. Only used when the x is a data frame.
 #' @param keep
-#' Whether to keep the original column, the default is FALSE. Only used when the
+#' whether to keep the original column, the default is FALSE. Only used when the
 #' x is a data frame.
 #' @param sep a character string to separate the terms.
 #'

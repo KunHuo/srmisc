@@ -7,19 +7,32 @@
 relocate(data, variables, before = NULL, after = NULL)
 }
 \arguments{
-\item{data}{A data frame, data frame extension (e.g. a tibble), or a lazy data frame.}
+\item{data}{a data frame, data frame extension (e.g. a tibble), or a lazy data frame.}
 
-\item{variables}{Columns to move. It can be a variable name or an index in the data frame.}
+\item{variables}{columns to move. It can be a variable name or an index in the data frame.}
 
-\item{before}{Destination of columns selected by variables. Supplying neither
+\item{before}{destination of columns selected by variables. Supplying neither
 will move columns to the left-hand side.}
 
-\item{after}{Destination of columns selected by variables. Supplying neither
+\item{after}{destination of columns selected by variables. Supplying neither
 will move columns to the right-hand side.}
 }
 \value{
-a data frame.
+A data frame.
 }
 \description{
 Change column order
+}
+\examples{
+head(mtcars)
+
+relocate(mtcars, variables = "am", before = "cyl")
+
+relocate(mtcars, variables = "am", before = 2)
+
+relocate(mtcars, variables = "am", after = "mpg")
+
+relocate(mtcars, variables = "am", after = 1)
+
+relocate(mtcars, variables = c("am", "vs"), before = 1)
 }

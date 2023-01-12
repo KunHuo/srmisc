@@ -26,7 +26,9 @@
 #' @return
 #' An object containing the values in x with the elements of values appended
 #' after the specified element of x.
+#'
 #' @seealso [rbind], [cbind], [append]
+#'
 #' @export
 #'
 #' @examples

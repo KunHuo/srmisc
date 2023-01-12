@@ -7,20 +7,23 @@
 seq2(from, to)
 }
 \arguments{
-\item{from}{The starting point of the sequence.}
+\item{from}{the starting point of the sequence.}
 
-\item{to}{The end point.}
+\item{to}{the end point.}
 }
 \value{
 An integer vector containing a strictly increasing sequence.
 }
 \description{
 These helpers take two endpoints and return the sequence of all integers within
-that interval. Unlike base::seq(), they return an empty vector if the starting
+that interval. Unlike \code{\link[base:seq]{base::seq()}}, they return an empty vector if the starting
 point is a larger integer than the end point.
 }
 \examples{
 seq2(2, 10)
 seq2(10, 2)
 seq(10, 2)
+}
+\seealso{
+\link{seq}
 }

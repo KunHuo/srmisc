@@ -14,7 +14,7 @@ merge_left(x, y, by)
 \item{by}{specifications of the columns used for merging.}
 }
 \value{
-a data frame.
+A data frame.
 }
 \description{
 Merge two data frames by left

@@ -37,22 +37,27 @@ discrete(
 )
 }
 \arguments{
-\item{x}{a numeric vector or a data frame which is to be converted to a factor by cutting.}
+\item{x}{a numeric vector or a data frame which is to be converted to a
+factor by cutting.}
 
 \item{breaks}{a numeric vector of  cut points.}
 
 \item{labels}{labels for the levels of the resulting category.}
 
-\item{sample}{a logical, indicating whether to display the sample size on the label.}
+\item{sample}{a logical, indicating whether to display the sample size on
+the label.}
 
-\item{lower}{a logical, indicating if the intervals should be closed on the left.}
+\item{lower}{a logical, indicating if the intervals should be closed on the
+left.}
 
-\item{varname}{a variable name, specify the variable to be converted, it is executed only when x is a data frame.}
+\item{varname}{a variable name, specify the variable to be converted, it is
+executed only when x is a data frame.}
 
-\item{new.col.name}{the name for a new column, If it is NULL, the specified variable will be overwritten.}
+\item{new.col.name}{the name for a new column, If it is NULL, the specified
+variable will be overwritten.}
 }
 \value{
-A factor is returned.
+A factor or data frame is returned.
 }
 \description{
 Discrete numeric to factor

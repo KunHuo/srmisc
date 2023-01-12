@@ -1,13 +1,21 @@
-#' Execute a function
+#' Execute a function call
 #'
 #' @param what either a function or a non-empty character string naming the
 #' function to be called.
 #' @param ... arguments for what.
 #' @param envir an environment within which to evaluate the call. This will be
-#' most useful if what is a character string and the arguments are symbols or quoted expressions.
+#' most useful if what is a character string and the arguments are symbols or
+#' quoted expressions.
+#'
+#' @seealso [do.call()]
 #'
 #' @return The result of the (evaluated) function call.
 #' @export
+#'
+#' @examples
+#' do_call(mean, x = c(2, 3, 4, NA, 6), na.rm = TRUE)
+#'
+#' do_call(mean, list(x = c(2, 3, 4, NA, 6), na.rm = TRUE))
 do_call <- function(what, ..., envir = parent.frame()){
   args <- list(...)
   args <- list_flatten(args)
@@ -26,7 +34,7 @@ do_call <- function(what, ..., envir = parent.frame()){
 #' @param out.list logical; if FALSE, return a data frame, otherwise return a list.
 #' @param warning logical; whether to show error messages.
 #'
-#' @return a data frame if out.list is FALSE, otherwise return a list.
+#' @return A data frame if out.list is FALSE, otherwise return a list.
 #' @export
 #'
 #' @examples

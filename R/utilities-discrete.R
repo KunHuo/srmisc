@@ -1,13 +1,19 @@
 #' Discrete numeric to factor
 #'
-#' @param x a numeric vector or a data frame which is to be converted to a factor by cutting.
+#' @param x a numeric vector or a data frame which is to be converted to a
+#' factor by cutting.
 #' @param breaks a numeric vector of  cut points.
 #' @param labels labels for the levels of the resulting category.
-#' @param sample a logical, indicating whether to display the sample size on the label.
-#' @param lower a logical, indicating if the intervals should be closed on the left.
-#' @param varname a variable name, specify the variable to be converted, it is executed only when x is a data frame.
-#' @param new.col.name the name for a new column, If it is NULL, the specified variable will be overwritten.
-#' @return A factor is returned.
+#' @param sample a logical, indicating whether to display the sample size on
+#' the label.
+#' @param lower a logical, indicating if the intervals should be closed on the
+#' left.
+#' @param varname a variable name, specify the variable to be converted, it is
+#' executed only when x is a data frame.
+#' @param new.col.name the name for a new column, If it is NULL, the specified
+#' variable will be overwritten.
+#'
+#' @return A factor or data frame is returned.
 #' @export
 #'
 #' @examples
@@ -25,7 +31,6 @@
 discrete <- function(x, breaks, labels = NULL, sample = FALSE, lower = TRUE, varname = NULL, new.col.name = NULL){
   UseMethod("discrete")
 }
-
 
 
 #' @rdname discrete
@@ -56,7 +61,6 @@ discrete.data.frame <- function(x, breaks, labels = NULL, sample = FALSE, lower 
   }
   x
 }
-
 
 
 discrete2group <- function(x, breaks, labels = NULL, lower = TRUE, sample = FALSE){

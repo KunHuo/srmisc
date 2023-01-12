@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities-exec.R
 \name{do_call}
 \alias{do_call}
-\title{Execute a function}
+\title{Execute a function call}
 \usage{
 do_call(what, ..., envir = parent.frame())
 }
@@ -13,11 +13,20 @@ function to be called.}
 \item{...}{arguments for what.}
 
 \item{envir}{an environment within which to evaluate the call. This will be
-most useful if what is a character string and the arguments are symbols or quoted expressions.}
+most useful if what is a character string and the arguments are symbols or
+quoted expressions.}
 }
 \value{
 The result of the (evaluated) function call.
 }
 \description{
-Execute a function
+Execute a function call
+}
+\examples{
+do_call(mean, x = c(2, 3, 4, NA, 6), na.rm = TRUE)
+
+do_call(mean, list(x = c(2, 3, 4, NA, 6), na.rm = TRUE))
+}
+\seealso{
+\code{\link[=do.call]{do.call()}}
 }

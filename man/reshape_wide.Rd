@@ -4,22 +4,36 @@
 \alias{reshape_wide}
 \title{Reshape data from long to wide}
 \usage{
-reshape_wide(data, names.from, values.from, ...)
+reshape_wide(data, id, names.from, values.from, include.id = TRUE, ...)
 }
 \arguments{
+\item{data}{a data frame to reshape.}
+
+\item{id}{names of one or more variables in long format that identify multiple
+records from the same group/individual.}
+
 \item{names.from}{an arguments describing which column (or columns) to get
 the name of the output column.}
 
 \item{values.from}{an arguments describing which column (or columns) to
 get the cell values from.}
 
-\item{...}{additional arguments passed on to methods.}
+\item{include.id}{a logical, indicate whether add a id column, which dentify
+multiple records from the same group/individual.}
+
+\item{...}{unused.}
 }
 \value{
-a data frame.
+A data frame.
 }
 \description{
 Reshape data from long to wide
+}
+\examples{
+ldata <- reshape_long(iris, cols = 1:4)
+ldata
+
+reshape_wide(ldata, id = ".id", names.from = ".name", values.from = ".value")
 }
 \seealso{
 \code{\link[=reshape_long]{reshape_long()}} to reshape data from wide to long.

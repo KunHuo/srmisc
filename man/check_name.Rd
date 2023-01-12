@@ -2,17 +2,21 @@
 % Please edit documentation in R/utilities-check.R
 \name{check_name}
 \alias{check_name}
-\title{Check name}
+\title{Check if variable is contained in data frame}
 \usage{
-check_name(data, varnames)
+check_name(data, varnames, stop = TRUE)
 }
 \arguments{
 \item{data}{a data frame.}
 
 \item{varnames}{variable names.}
+
+\item{stop}{a logical indicating whether or not to stop if the variable is
+not included in the data frame.}
 }
 \value{
-NULL.
+Logical vectors if stop == FALSE. Otherwise, the program execution
+terminates without return value.
 }
 \description{
 Check whether the variable is included in the data frame.

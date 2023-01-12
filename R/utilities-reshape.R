@@ -1,14 +1,27 @@
 #' Change column order
 #'
-#' @param data A data frame, data frame extension (e.g. a tibble), or a lazy data frame.
-#' @param variables Columns to move. It can be a variable name or an index in the data frame.
-#' @param before Destination of columns selected by variables. Supplying neither
+#' @param data a data frame, data frame extension (e.g. a tibble), or a lazy data frame.
+#' @param variables columns to move. It can be a variable name or an index in the data frame.
+#' @param before destination of columns selected by variables. Supplying neither
 #' will move columns to the left-hand side.
-#' @param after Destination of columns selected by variables. Supplying neither
+#' @param after destination of columns selected by variables. Supplying neither
 #' will move columns to the right-hand side.
 #'
-#' @return a data frame.
+#' @return A data frame.
 #' @export
+#'
+#' @examples
+#' head(mtcars)
+#'
+#' relocate(mtcars, variables = "am", before = "cyl")
+#'
+#' relocate(mtcars, variables = "am", before = 2)
+#'
+#' relocate(mtcars, variables = "am", after = "mpg")
+#'
+#' relocate(mtcars, variables = "am", after = 1)
+#'
+#' relocate(mtcars, variables = c("am", "vs"), before = 1)
 relocate <- function(data, variables, before = NULL, after = NULL) {
   if (is.numeric(variables)) {
     check_index(data, variables)
@@ -63,11 +76,13 @@ relocate <- function(data, variables, before = NULL, after = NULL) {
 #'
 #'
 #' These helpers take two endpoints and return the sequence of all integers within
-#' that interval. Unlike base::seq(), they return an empty vector if the starting
+#' that interval. Unlike [base::seq()], they return an empty vector if the starting
 #' point is a larger integer than the end point.
 #'
-#' @param from The starting point of the sequence.
-#' @param to The end point.
+#' @param from the starting point of the sequence.
+#' @param to the end point.
+#'
+#' @seealso [seq]
 #'
 #' @return An integer vector containing a strictly increasing sequence.
 #' @export
@@ -98,7 +113,7 @@ seq2 <- function(from, to) {
 #' @param y a data frame.
 #' @param by specifications of the columns used for merging.
 #'
-#' @return a data frame.
+#' @return A data frame.
 #' @export
 merge_left <- function(x, y, by){
   x$.id <- 1:nrow(x)
@@ -243,23 +258,23 @@ separate2cols <- function(data, varname = NULL, into = NULL, sep = ".", fixed = 
 #' create from the information stored in the column names of data specified by cols.
 #' @param values.to a string specifying the name of the column to create from
 #' the data stored in cell values.
-#' @param add.id.col a logical, indicate whether add a id column, which dentify
+#' @param include.id a logical, indicate whether add a id column, which dentify
 #' multiple records from the same group/individual.
 #' @param id.name names of one or more variables in long format that identify
 #' multiple records from the same group/individual.
-#' @param ... additional arguments passed on to methods.
+#' @param ... unused.
 #'
 #' @seealso [reshape_wide()] to reshape data from long to wide.
 #'
-#' @return a data frame.
+#' @return A data frame.
 #' @export
 #'
 #' @examples
 #' # Basic example
 #' reshape_long(mtcars)
 #'
-#' # Add id column.
-#' reshape_long(mtcars, add.id.col = TRUE)
+#' # Do not add id column
+#' reshape_long(mtcars, include.id = FALSE)
 #'
 #' # Reshape the specified variable.
 #' reshape_long(mtcars, cols = c("mpg", "cyl", "disp"))
@@ -267,18 +282,11 @@ reshape_long <- function(data,
                          cols = names(data),
                          names.to = ".name",
                          values.to = ".value",
-                         add.id.col = FALSE,
+                         include.id = TRUE,
                          id.name = ".id",
                          ...){
-
-  class(data) <- "data.frame"
-
-  if(is.numeric(cols)){
-    cols <- names(data)[cols]
-  }
-
+  data <- as.data.frame(data)
   cols <- select_variable(data, cols)
-
   res <- stats::reshape(data,
                         direction = "long",
                         idvar = id.name,
@@ -288,30 +296,62 @@ reshape_long <- function(data,
                         v.names = values.to,
                         varying = list(cols))
 
-  if(add.id.col){
+  if(include.id){
     res <- relocate(res, variables = id.name, before = 1)
   }else{
     res <- res[, -which(names(res) == id.name), drop = FALSE]
   }
-  tibble::as_tibble(res)
+  row.names(res) <- NULL
+  res
 }
 
 
 #' Reshape data from long to wide
 #'
-#' @param data
+#' @param data a data frame to reshape.
+#' @param id names of one or more variables in long format that identify multiple
+#' records from the same group/individual.
 #' @param names.from an arguments describing which column (or columns) to get
 #' the name of the output column.
 #' @param values.from an arguments describing which column (or columns) to
 #' get the cell values from.
-#' @param ... additional arguments passed on to methods.
+#' @param include.id a logical, indicate whether add a id column, which dentify
+#' multiple records from the same group/individual.
+#' @param ... unused.
 #'
 #' @seealso [reshape_long()] to reshape data from wide to long.
 #'
-#' @return a data frame.
+#' @return A data frame.
 #' @export
-reshape_wide <- function(data, names.from, values.from, ...){
+#'
+#' @examples
+#' ldata <- reshape_long(iris, cols = 1:4)
+#' ldata
+#'
+#' reshape_wide(ldata, id = ".id", names.from = ".name", values.from = ".value")
+reshape_wide <- function(data, id, names.from, values.from, include.id = TRUE, ...){
+  data <- as.data.frame(data)
 
+  id <- select_variable(data, id)
+  names.from <- select_variable(data, names.from)
+  values.from <- select_variable(data, values.from)
+
+  res <- stats::reshape(data,
+                 direction = "wide",
+                 idvar = id,
+                 timevar = names.from,
+                 v.names = values.from)
+
+  row.names(res) <- NULL
+
+  names(res) <- regex_replace(string = names(res),
+                              pattern = paste0(values.from, "."),
+                              replacement = "",
+                              fixed = TRUE)
+  if(!include.id){
+    res <- res[, -which(names(res) == id), drop = FALSE]
+  }
+  res
 }
 
 
