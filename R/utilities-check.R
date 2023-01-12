@@ -1,3 +1,11 @@
+check_index <- function(data, index){
+  tmp <- index >=1 & index <= ncol(data)
+  if(!all(tmp)){
+    meaasge <- sprintf("Index must be between 1 and %d.", ncol(data))
+    stop(meaasge, call. = FALSE)
+  }
+}
+
 #' Check name
 #'
 #' Check whether the variable is included in the data frame.

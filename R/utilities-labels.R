@@ -154,3 +154,46 @@ find_labels <- function(data, varname, code = NA, defalut = NULL){
 
   data$.label[which(as.character(data$.term )== as.character(x))]
 }
+
+
+step_codes <- function(data, lcodes, as.factor = TRUE, exclude = "") {
+  # Fill variables
+  lcodes[, 1] <- lapply(lcodes[, 1], function(x) {
+    for (i in seq_along(x)) {
+      if (i != 1) {
+        if (is.na(x[i])) {
+          x[i] <- x[i - 1]
+        }
+      }
+    }
+    x
+  })
+
+  varnames <- names(data)
+
+  for (i in seq_along(varnames)) {
+    lcode <- lcodes[lcodes[[1]] == varnames[i],]
+    if (!(varnames[[i]] %in% exclude)) {
+      if (nrow(lcode) != 0L) {
+        if (nrow(lcode) >= 2L) {
+          codes <- lcode[[3]] # code
+          values <- lcode[[4]] # value
+          if (as.factor) {
+            data[[varnames[[i]]]] <- values[match(data[[varnames[i]]], codes)]
+            data[[varnames[[i]]]] <- factor(data[[varnames[[i]]]], levels = values)
+          }else{
+            names(codes) <- values
+            attr(data[[varnames[i]]], "labels") <- codes
+            class(data[[varnames[i]]]) <- c("haven_labelled", "vctrs_vctr", class(data[[varnames[i]]]))
+          }
+        }
+      }
+    }
+
+    # Set labels
+    if (!is.na(lcode[[2]][1])) {
+      attr(data[[varnames[i]]], "label") <- lcode[[2]][1]
+    }
+  }
+  data
+}
