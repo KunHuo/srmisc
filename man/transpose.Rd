@@ -20,13 +20,3 @@ a data frame.
 \description{
 Data frame transpose
 }
-\examples{
-transpose(mtcars, row.names.col = 0)
-
-roc.res <- roc(aSAH,
-              outcome = "outcome",
-              exposure = c("age", "s100b"))
-roc.res
-
-transpose(roc.res)
-}

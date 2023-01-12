@@ -48,23 +48,3 @@ Functions select variables in a data frame.
 \item select_variable: select variables.
 }
 }
-\examples{
-# return variable names
-select_character(lung)
-select_numeric(lung)
-select_factor(lung)
-select_category(lung)
-
-# return col index
-select_numeric(lung, type = "index")
-
-# return data frame
-select_numeric(lung, type = "data")
-
-# select in varnames
-select_numeric(lung, varnames = 1:4)
-select_numeric(lung, varnames = "time:ph.karno")
-select_numeric(lung, varnames = c("time:ph.karno", "wt.loss"))
-
-select_variable(lung, c("time:age", "wt.loss"), 5)
-}

@@ -20,26 +20,6 @@
 #' 'index' for a vector of integer, and 'data' for a data frame.
 #'
 #' @export
-#'
-#' @examples
-#' # return variable names
-#' select_character(lung)
-#' select_numeric(lung)
-#' select_factor(lung)
-#' select_category(lung)
-#'
-#' # return col index
-#' select_numeric(lung, type = "index")
-#'
-#' # return data frame
-#' select_numeric(lung, type = "data")
-#'
-#' # select in varnames
-#' select_numeric(lung, varnames = 1:4)
-#' select_numeric(lung, varnames = "time:ph.karno")
-#' select_numeric(lung, varnames = c("time:ph.karno", "wt.loss"))
-#'
-#' select_variable(lung, c("time:age", "wt.loss"), 5)
 select_numeric <- function(data, varnames = NULL, type = c("name", "data", "index")){
   .select_impl(data = data,
                varnames = varnames,

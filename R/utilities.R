@@ -748,16 +748,6 @@ merge_table <- function(x, y, name.x = NULL, name.y = NULL, name.x.index = 2, na
 #'
 #' @return a data frame.
 #' @export
-#'
-#' @examples
-#' transpose(mtcars, row.names.col = 0)
-#'
-#' roc.res <- roc(aSAH,
-#'               outcome = "outcome",
-#'               exposure = c("age", "s100b"))
-#' roc.res
-#'
-#' transpose(roc.res)
 transpose <- function(x, row.names.col = 1, varname = NULL){
 
   title <- attr(x, "title")

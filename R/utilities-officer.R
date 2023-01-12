@@ -86,7 +86,7 @@ make_headers <- function(data, headerlist = NULL, sep = "__"){
 get_template <- function(template) {
   template <- paste("templates", template, sep = "/")
   # package  <- methods::getPackageName()
-  template <- file.path(system.file(package = "srpubr"), template)
+  template <- file.path(system.file(package = "srmisc"), template)
   regression <- regexpr(paste("(\\.(?i)(docx))$", sep = ""), template)
 
   if (regression < 1) {
