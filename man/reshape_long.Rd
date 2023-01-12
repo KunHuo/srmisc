@@ -49,3 +49,6 @@ reshape_long(mtcars, add.id.col = TRUE)
 # Reshape the specified variable.
 reshape_long(mtcars, cols = c("mpg", "cyl", "disp"))
 }
+\seealso{
+\code{\link[=reshape_wide]{reshape_wide()}} to reshape data from long to wide.
+}

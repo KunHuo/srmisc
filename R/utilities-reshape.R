@@ -249,6 +249,8 @@ separate2cols <- function(data, varname = NULL, into = NULL, sep = ".", fixed = 
 #' multiple records from the same group/individual.
 #' @param ... additional arguments passed on to methods.
 #'
+#' @seealso [reshape_wide()] to reshape data from long to wide.
+#'
 #' @return a data frame.
 #' @export
 #'
@@ -293,3 +295,23 @@ reshape_long <- function(data,
   }
   tibble::as_tibble(res)
 }
+
+
+#' Reshape data from long to wide
+#'
+#' @param data
+#' @param names.from an arguments describing which column (or columns) to get
+#' the name of the output column.
+#' @param values.from an arguments describing which column (or columns) to
+#' get the cell values from.
+#' @param ... additional arguments passed on to methods.
+#'
+#' @seealso [reshape_long()] to reshape data from wide to long.
+#'
+#' @return a data frame.
+#' @export
+reshape_wide <- function(data, names.from, values.from, ...){
+
+}
+
+
