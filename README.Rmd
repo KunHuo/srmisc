@@ -1,43 +1,44 @@
 ---
-title: "Introduction to srmisc"
+title: "srmisc"
+author: Author by Rongrui Huo
 output: github_document
 ---
 
+
 ```{r, message = FALSE, tidy = FALSE, echo = F}
-library(knitr)
 showMessage <- FALSE
 showWarning <- TRUE
-set_alias(w = "fig.width", h = "fig.height", res = "results")
-opts_chunk$set(comment = "##", error= TRUE, warning = showWarning, message = showMessage,
+knitr::set_alias(w = "fig.width", h = "fig.height", res = "results")
+knitr::opts_chunk$set(comment = "##", error= TRUE, warning = showWarning, message = showMessage,
                tidy = FALSE, cache = FALSE, echo = TRUE,
-               fig.width = 7, fig.height = 7,
+               fig.width = 5, fig.height = 4.5,
                fig.path = "README-files/README_")
-## for rgl
-## knit_hooks$set(rgl = hook_rgl, webgl = hook_webgl)
-## for animation
-opts_knit$set(animation.fun = hook_ffmpeg_html)
+
 ## R configuration
 options(width = 116, scipen = 5)
 ```
 
-## GitHub Documents
+# Description
 
-This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+Statistical Report with Some Helper Functions.
 
-## Including Code
+# Installation
 
-You can include R code in the document as follows:
+The development version can be installed using the **devtools** R-Package:
+```{r, eval=FALSE}
+# Install devtools (if you do not have it already)
+install.packages("devtools")
 
-```{r cars}
-summary(cars)
+devtools::install_github("kunhuo/srmisc")
 ```
 
-## Including Plots
+or the **remotes** R-Package:
+```{r, eval=FALSE}
+install.packages("remotes")
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+remotes::install_github("kunhuo/srmisc")
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+# Bug Reports and Feature Requests
+
+If you encounter any bugs or have any specific feature requests, please file an [Issue](https://github.com/KunHuo/srmisc/issues).

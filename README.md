@@ -1,33 +1,32 @@
-Introduction to srmisc
+srmisc
 ================
+Author by Rongrui Huo
 
-## GitHub Documents
+# Description
 
-This is an R Markdown format used for publishing markdown documents to
-GitHub. When you click the **Knit** button all R code chunks are run and
-a markdown file (.md) suitable for publishing to GitHub is generated.
+Statistical Report with Some Helper Functions.
 
-## Including Code
+# Installation
 
-You can include R code in the document as follows:
+The development version can be installed using the **devtools**
+R-Package:
 
 ``` r
-summary(cars)
+# Install devtools (if you do not have it already)
+install.packages("devtools")
+
+devtools::install_github("kunhuo/srmisc")
 ```
 
-    ##      speed           dist       
-    ##  Min.   : 4.0   Min.   :  2.00  
-    ##  1st Qu.:12.0   1st Qu.: 26.00  
-    ##  Median :15.0   Median : 36.00  
-    ##  Mean   :15.4   Mean   : 42.98  
-    ##  3rd Qu.:19.0   3rd Qu.: 56.00  
-    ##  Max.   :25.0   Max.   :120.00
+or the **remotes** R-Package:
 
-## Including Plots
+``` r
+install.packages("remotes")
 
-You can also embed plots, for example:
+remotes::install_github("kunhuo/srmisc")
+```
 
-![](README-files/README_pressure-1.png)<!-- -->
+# Bug Reports and Feature Requests
 
-Note that the `echo = FALSE` parameter was added to the code chunk to
-prevent printing of the R code that generated the plot.
+If you encounter any bugs or have any specific feature requests, please
+file an [Issue](https://github.com/KunHuo/srmisc/issues).
