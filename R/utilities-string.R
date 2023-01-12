@@ -375,3 +375,52 @@ vec_rot <- function (x, k = 1L) {
 `%nin%` <- function (x, table) {
   is.na(match(x, table))
 }
+
+
+#' Format and interpolate a string
+#'
+#' @param ... Unnamed arguments are taken to be expression string(s) to format.
+#' Multiple inputs are concatenated together before formatting.
+#' @param sep Separator used to separate elements.
+#'
+#' @return a character string.
+#' @export
+#'
+#' @examples
+#' name <- "Fred"
+#' age <- 50
+#'
+#' str_v("My name is {name}, ", "and age is {age}.")
+str_v <- function(..., sep = ""){
+
+  text <- c(...)
+
+  out <- sapply(text, function(tex){
+    rr <- " "
+    pos_1 <- which(strsplit(tex, "")[[1]]=="{")
+    pos_2 <- which(strsplit(tex, "")[[1]]=="}")
+    end_pos <- nchar(tex)
+    varname <- substr(tex, pos_1+1, pos_2-1)
+    t <- get(eval(varname))
+    t1 <- substr(tex, 1, pos_1-1)
+    t2 <- substr(tex, pos_2+1, end_pos)
+    t1 <- paste0(t1, t, t2)
+    t1
+  })
+
+  out <- paste0(out, collapse = sep)
+  class(out) <- c("strv", "character")
+  out
+}
+
+
+#' Print a 'strv' object
+#'
+#' @param x a 'strv' object
+#' @param ... unused here.
+#'
+#' @keywords internal
+#' @export
+print.strv <- function(x, ...){
+  cat(x)
+}
