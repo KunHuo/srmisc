@@ -355,3 +355,16 @@ get_label <- function(df, varname) {
 create_space <- function(n){
   strrep(" ", n)
 }
+
+fmt_ci_3 <- function(sep = NULL, digits = 2, bracket = c("(", "[")){
+  bracket <- match.arg(bracket)
+  if(bracket == "("){
+    bracket <- c("(", ")")
+  }else{
+    bracket <- c("[", "]")
+  }
+  if(is.null(sep)){
+    sep <- "\u2013"
+  }
+  sprintf("%%.%df %s%%.%df%s%%.%df%s", digits, bracket[1], digits, sep, digits, bracket[2])
+}
