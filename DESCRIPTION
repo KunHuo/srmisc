@@ -17,3 +17,7 @@ Imports:
     officer,
     R.utils,
     tibble
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
