@@ -146,7 +146,9 @@ dummy.data.frame <- function(x,
                              base = 1,
                              levels = NULL,
                              varnames = NULL,
-                             keep = FALSE, sep = "_", ...) {
+                             keep = FALSE,
+                             sep = "_",
+                             ...) {
 
   method <- match.arg(method)
 

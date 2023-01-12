@@ -10,7 +10,7 @@
 #' @export
 do_call <- function(what, ..., envir = parent.frame()){
   args <- list(...)
-  args <- flatten_list(args)
+  args <- list_flatten(args)
   do.call(what, args = args, quote = FALSE, envir = envir)
 }
 
