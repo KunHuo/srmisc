@@ -106,6 +106,7 @@ gg_theme_sci <- function(font.size = 12,
   class(value) == "waiver"
 }
 
+
 #' Bold axis title for ggplot2
 #'
 #' @param bold a logical indicating whether to bold the title of the axis,
@@ -283,9 +284,22 @@ gg_legend_position <- function(position = NULL) {
 #' @param angle angle.
 #' @param hjust hjust.
 #' @param vjust vjust.
-#' @param ... more.
+#' @param ... unused.
 #'
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @seealso [gg_rotate_y_text()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color))
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_rotate_x_text(45)
 gg_rotate_x_text <- function (angle = 45, hjust = NULL, vjust = NULL, ...) {
   if (missing(hjust) & angle > 5)
     hjust <- 1
@@ -300,9 +314,22 @@ gg_rotate_x_text <- function (angle = 45, hjust = NULL, vjust = NULL, ...) {
 #' @param angle angle.
 #' @param hjust hjust.
 #' @param vjust vjust.
-#' @param ... more.
+#' @param ... unused.
 #'
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @seealso [gg_rotate_x_text()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color))
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_rotate_y_text(45)
 gg_rotate_y_text <- function (angle = 45, hjust = NULL, vjust = NULL, ...) {
   if (missing(hjust) & angle == 90)
     hjust <- 0.5
@@ -314,7 +341,17 @@ gg_rotate_y_text <- function (angle = 45, hjust = NULL, vjust = NULL, ...) {
 
 #' Delete x title of ggplot2
 #'
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @seealso [gg_delete_y_title()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_delete_x_title()
 gg_delete_x_title <- function() {
   ggplot2::theme(
     axis.title.x = ggplot2::element_blank()
@@ -324,7 +361,17 @@ gg_delete_x_title <- function() {
 
 #' Delete y title of ggplot2
 #'
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @seealso [gg_delete_x_title()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_delete_y_title()
 gg_delete_y_title <- function() {
   ggplot2::theme(
     axis.title.y = ggplot2::element_blank()
@@ -334,7 +381,17 @@ gg_delete_y_title <- function() {
 
 #' Delete legend title of ggplot2
 #'
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @seealso [gg_delete_legend()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_delete_legend_title()
 gg_delete_legend_title <- function() {
   ggplot2::theme(
     legend.title = ggplot2::element_blank()
@@ -344,7 +401,17 @@ gg_delete_legend_title <- function() {
 
 #' Delete legend of ggplot2
 #'
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @seealso [gg_delete_legend_title()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_delete_legend()
 gg_delete_legend <- function() {
   ggplot2::theme(
     legend.position = "none"
@@ -354,64 +421,126 @@ gg_delete_legend <- function() {
 
 #' Set tags for ggplt2
 #'
-#' @param label label.
+#' @param tag tag.
 #'
+#' @return An obejct of ggplot2.
 #' @export
-gg_tags <- function(label){
-  ggplot2::labs(title = label)
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_tags("A")
+gg_tags <- function(tag){
+  ggplot2::labs(title = tag)
 }
 
 
-#' Modify axis labels
+#' Modify x-axis labels
 #'
-#' @param label The title of the respective axis.
+#' @param label the title of the respective axis.
 #'
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @seealso [ggplot2::xlab()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_xlab("Price of diamonds")
 gg_xlab <- function(label){
   ggplot2::xlab(label = label)
 }
 
 
-#' Modify axis labels
+#' Modify y-axis labels
 #'
-#' @param label The title of the respective axis.
+#' @param label the title of the respective axis.
 #'
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @seealso [ggplot2::ylab()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_ylab("Density")
 gg_ylab <- function(label){
   ggplot2::ylab(label = label)
 }
 
 
-#' X breaks for continuous
+#' xbreaks for continuous of ggplot2
 #'
-#' @param min min.
-#' @param max max.
-#' @param by by.
-#' @param expand expand.
+#' @param breaks a numeric vector of positions.
+#' @param expand if TRUE, adds a small expansion factor to the limits to ensure
+#' that data and axes don't overlap. If FALSE, the default, limits are taken
+#' exactly from the data or xlim.
 #'
+#' @return An obejct of ggplot2.
 #' @export
-gg_xbreaks_continuous <- function(min, max, by, expand = TRUE){
+#'
+#' @seealso [ggplot2::scale_x_continuous()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_xbreaks_continuous(breaks = seq(0, 20000, 5000), expand = FALSE)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_xbreaks_continuous(breaks = seq(0, 20000, 5000), expand = TRUE)
+gg_xbreaks_continuous <- function(breaks, expand = FALSE){
   if(expand){
-    ggplot2::scale_x_continuous(expand = c(0, 0), breaks = seq(min, max, by), limits = c(min, max))
+    ggplot2::scale_x_continuous(breaks = breaks,
+                                limits = c(min(breaks), max(breaks)))
   }else{
-    ggplot2::scale_x_continuous(breaks = seq(min, max, by), limits = c(min, max))
+    ggplot2::scale_x_continuous(expand = c(0, 0),
+                                breaks = breaks,
+                                limits = c(min(breaks), max(breaks)))
   }
 }
 
 
-#' Y breaks for continuous
+#' ybreaks for continuous of ggplot2
 #'
-#' @param min min.
-#' @param max max.
-#' @param by by.
-#' @param expand expand.
+#' @param breaks a numeric vector of positions.
+#' @param expand if TRUE, adds a small expansion factor to the limits to ensure
+#' that data and axes don't overlap. If FALSE, the default, limits are taken
+#' exactly from the data or ylim.
 #'
+#' @return An obejct of ggplot2.
 #' @export
-gg_ybreaks_continuous <- function(min, max, by, expand = TRUE){
+#'
+#' @seealso [ggplot2::scale_y_continuous()]
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_ybreaks_continuous(breaks = seq(0, 5e-04, 1e-04), expand = FALSE)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_ybreaks_continuous(breaks = seq(0, 5e-04, 1e-04), expand = TRUE)
+gg_ybreaks_continuous <- function(breaks, expand = FALSE){
   if(expand){
-    ggplot2::scale_y_continuous(expand = c(0, 0), breaks = seq(min, max, by), limits = c(min, max))
+    ggplot2::scale_y_continuous(breaks = breaks,
+                                limits = c(min(breaks), max(breaks)))
   }else{
-    ggplot2::scale_y_continuous(breaks = seq(min, max, by), limits = c(min, max))
+    ggplot2::scale_y_continuous(expand = c(0, 0),
+                                breaks = breaks,
+                                limits = c(min(breaks), max(breaks)))
   }
 }
 
@@ -427,6 +556,7 @@ gg_ybreaks_continuous <- function(min, max, by, expand = TRUE){
 #' @param ... Other arguments passed on to the graphics device function,
 #' as specified by device.
 #'
+#' @return No return value.
 #' @export
 gg_save <- function(plot,
                     path,

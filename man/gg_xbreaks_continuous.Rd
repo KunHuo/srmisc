@@ -2,19 +2,34 @@
 % Please edit documentation in R/utilities-ggplot2.R
 \name{gg_xbreaks_continuous}
 \alias{gg_xbreaks_continuous}
-\title{X breaks for continuous}
+\title{xbreaks for continuous of ggplot2}
 \usage{
-gg_xbreaks_continuous(min, max, by, expand = TRUE)
+gg_xbreaks_continuous(breaks, expand = FALSE)
 }
 \arguments{
-\item{min}{min.}
+\item{breaks}{a numeric vector of positions.}
 
-\item{max}{max.}
-
-\item{by}{by.}
-
-\item{expand}{expand.}
+\item{expand}{if TRUE, adds a small expansion factor to the limits to ensure
+that data and axes don't overlap. If FALSE, the default, limits are taken
+exactly from the data or xlim.}
+}
+\value{
+An obejct of ggplot2.
 }
 \description{
-X breaks for continuous
+xbreaks for continuous of ggplot2
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_xbreaks_continuous(breaks = seq(0, 20000, 5000), expand = FALSE)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_xbreaks_continuous(breaks = seq(0, 20000, 5000), expand = TRUE)
+}
+\seealso{
+\code{\link[ggplot2:scale_continuous]{ggplot2::scale_x_continuous()}}
 }

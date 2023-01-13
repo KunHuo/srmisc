@@ -4,11 +4,21 @@
 \alias{gg_tags}
 \title{Set tags for ggplt2}
 \usage{
-gg_tags(label)
+gg_tags(tag)
 }
 \arguments{
-\item{label}{label.}
+\item{tag}{tag.}
+}
+\value{
+An obejct of ggplot2.
 }
 \description{
 Set tags for ggplt2
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_tags("A")
 }

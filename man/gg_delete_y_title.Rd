@@ -6,6 +6,19 @@
 \usage{
 gg_delete_y_title()
 }
+\value{
+An obejct of ggplot2.
+}
 \description{
 Delete y title of ggplot2
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_delete_y_title()
+}
+\seealso{
+\code{\link[=gg_delete_x_title]{gg_delete_x_title()}}
 }

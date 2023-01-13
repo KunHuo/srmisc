@@ -6,6 +6,19 @@
 \usage{
 gg_delete_legend()
 }
+\value{
+An obejct of ggplot2.
+}
 \description{
 Delete legend of ggplot2
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_delete_legend()
+}
+\seealso{
+\code{\link[=gg_delete_legend_title]{gg_delete_legend_title()}}
 }

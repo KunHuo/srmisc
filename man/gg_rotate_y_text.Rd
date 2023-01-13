@@ -13,8 +13,24 @@ gg_rotate_y_text(angle = 45, hjust = NULL, vjust = NULL, ...)
 
 \item{vjust}{vjust.}
 
-\item{...}{more.}
+\item{...}{unused.}
+}
+\value{
+An obejct of ggplot2.
 }
 \description{
 Rotate Y axis text for ggplot2
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color))
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_rotate_y_text(45)
+}
+\seealso{
+\code{\link[=gg_rotate_x_text]{gg_rotate_x_text()}}
 }

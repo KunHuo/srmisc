@@ -30,6 +30,9 @@ gg_save(
 \item{...}{Other arguments passed on to the graphics device function,
 as specified by device.}
 }
+\value{
+No return value.
+}
 \description{
 Save a ggplot (or other grid object) with sensible defaults
 }
