@@ -545,6 +545,100 @@ gg_ybreaks_continuous <- function(breaks, expand = FALSE){
 }
 
 
+#' Set aspect ratio of the panel for ggplot2
+#'
+#' @description
+#' The ratio represents the number of units on the y-axis equivalent to one unit
+#' on the x-axis.
+#'
+#' @param ratio aspect ratio.
+#'
+#' @return An obejct of ggplot2.
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_aspect_ratio(ratio = 1)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_aspect_ratio(ratio = 0.8)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_aspect_ratio(ratio = 1.5)
+gg_aspect_ratio <- function(ratio = NULL){
+  ggplot2::theme(aspect.ratio = ratio)
+}
+
+
+#' Draw a text label or mathematical expression for ggplot2
+#'
+#' @description This function can draw either a character string or mathematical
+#' expression at the given coordinates.
+#'
+#' @param label string or plotmath expression to be drawn.
+#' @param x the x location (origin) of the label.
+#' @param y the y location (origin) of the label.
+#' @param hjust horizontal justification. Default = 0.5 (flush-left at x),
+#' 0.5 = centered on x, 1 = flush-right.
+#' @param vjust Vertical justification. Default = 1 (ascender at y). 0 = baseline
+#' at y, 0.5 = centered on y.
+#' @param fontfamily the font family,default 'serif' (Times New Roman).
+#' @param fontface the font face ("plain", "bold", etc.)
+#' @param color text color.
+#' @param size point size of text.
+#' @param angle angle at which text is drawn.
+#' @param lineheight line height of text.
+#' @param alpha the alpha value of the text.
+#'
+#' @return An object of ggplot2.
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_draw_label(label = "Distribution of price by color",
+#'                 x = 5000,
+#'                 y = 3e-04)
+gg_draw_label <- function (label,
+                           x = 0.5,
+                           y = 0.5,
+                           hjust = 0,
+                           vjust = 1,
+                           fontfamily = "serif",
+                           fontface = "plain",
+                           color = "black",
+                           size = 12,
+                           angle = 0,
+                           lineheight = 0.9,
+                           alpha = 1) {
+  text_par <- grid::gpar(col = color,
+                         fontsize   = size,
+                         fontfamily = fontfamily,
+                         fontface   = fontface,
+                         lineheight = lineheight,
+                         alpha      = alpha)
+  text.grob <- grid::textGrob(label,
+                              x = grid::unit(0.5, "npc"),
+                              y = grid::unit(0.5, "npc"),
+                              hjust = hjust,
+                              vjust = vjust,
+                              rot   = angle,
+                              gp    = text_par)
+  ggplot2::annotation_custom(text.grob,
+                             xmin = x,
+                             xmax = x,
+                             ymin = y,
+                             ymax = y)
+}
+
+
 #' Save a ggplot (or other grid object) with sensible defaults
 #'
 #' @param plot Plot to save, defaults to last plot displayed.
@@ -552,26 +646,37 @@ gg_ybreaks_continuous <- function(breaks, expand = FALSE){
 #' @param width Width, default 8.3.
 #' @param height Height.
 #' @param units Units, default cm.
-#' @param language language.
+#' @param dpi DPI to use for raster graphics.
+#' @param aspect.ratio aspect ratio of the panel.
+#' @param use.showtext when TRUE, the package of showtext is using for supporting
+#' more fonts.
 #' @param ... Other arguments passed on to the graphics device function,
 #' as specified by device.
 #'
 #' @return No return value.
 #' @export
-gg_save <- function(plot,
+gg_save <- function(plot = ggplot2::last_plot(),
                     path,
                     width = 8.3,
                     height = width / 8 * 7,
                     units = "cm",
-                    language = "en",
+                    dpi = 300,
+                    aspect.ratio,
+                    use.showtext = FALSE,
                     ...) {
- if(language == "en"){
+
+  if(!missing(aspect.ratio)){
+    plot <- ggplot2::theme(aspect.ratio = aspect.ratio)
+  }
+
+ if(!use.showtext){
    ggplot2::ggsave(
      filename = path,
      plot = plot,
      width = width,
      height = height,
      units = units,
+     dpi = dpi,
      ...
    )
  }else{
@@ -582,6 +687,7 @@ gg_save <- function(plot,
      width = width,
      height = height,
      units = units,
+     dpi = dpi,
      ...
    )
    showtext::showtext_auto(FALSE)
