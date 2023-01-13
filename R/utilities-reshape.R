@@ -109,12 +109,22 @@ seq2 <- function(from, to) {
 
 #' Merge two data frames by left
 #'
+#' @description
+#' Merge two data frames by left, includes all rows in x.
+#'
 #' @param x a data frame.
 #' @param y a data frame.
 #' @param by specifications of the columns used for merging.
 #'
 #' @return A data frame.
 #' @export
+#'
+#' @examples
+#' A <- data.frame(term = c("t1", "t2", "t3"), x = 1:3)
+#' B <- data.frame(term = c("t1", "t3"), y = 4:5)
+#'
+#' merge_left(A, B, by = "term")
+#' merge_left(B, A, by = "term")
 merge_left <- function(x, y, by){
   x$.id <- 1:nrow(x)
   res <- merge(x, y, sort = FALSE, by = by, all.x = TRUE)
@@ -123,18 +133,32 @@ merge_left <- function(x, y, by){
 }
 
 
-#' Merge two tables  by the first column
+#' Merge two tables by the first column
+#'
+#' @description
+#' Merge two tables by the first column, includes all rows in x.
 #'
 #' @param x a data frame.
 #' @param y a data frame.
 #' @param name.x name of x.
 #' @param name.y name of y.
-#' @param name.x.index Start naming from which column of x.
-#' @param name.y.index Start naming from which column of y.
+#' @param name.x.index start naming from which column of x.
+#' @param name.y.index start naming from which column of y.
 #' @param sep a character string to separate the terms.
 #'
 #' @return a data frame.
 #' @export
+#'
+#' @examples
+#' A <- data.frame(term = c("t1", "t2", "t3"), x = 1:3, z = 8:10)
+#' B <- data.frame(term = c("t1", "t3"), y = 4:5, d = 20:21)
+#'
+#' merge_table(A, B)
+#'
+#' res <- merge_table(A, B, name.x = "A", name.y = "B")
+#' res
+#'
+#' print_booktabs(res)
 merge_table <- function(x, y, name.x = NULL, name.y = NULL, name.x.index = 2, name.y.index = 2, sep = "__"){
   x.class <- class(x)
   x.title <- attr(x, "title")
@@ -172,6 +196,12 @@ merge_table <- function(x, y, name.x = NULL, name.y = NULL, name.x.index = 2, na
 #'
 #' @return a data frame.
 #' @export
+#'
+#' @examples
+#' dat <- data.frame(group = c("A", "B"), x = 1:2, y = 4:5)
+#' dat
+#' transpose(dat)
+#' transpose(dat, varname = "variable")
 transpose <- function(x, row.names.col = 1, varname = NULL){
 
   title <- attr(x, "title")

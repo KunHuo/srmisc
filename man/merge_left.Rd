@@ -17,5 +17,12 @@ merge_left(x, y, by)
 A data frame.
 }
 \description{
-Merge two data frames by left
+Merge two data frames by left, includes all rows in x.
+}
+\examples{
+A <- data.frame(term = c("t1", "t2", "t3"), x = 1:3)
+B <- data.frame(term = c("t1", "t3"), y = 4:5)
+
+merge_left(A, B, by = "term")
+merge_left(B, A, by = "term")
 }

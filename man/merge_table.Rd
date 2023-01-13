@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities-reshape.R
 \name{merge_table}
 \alias{merge_table}
-\title{Merge two tables  by the first column}
+\title{Merge two tables by the first column}
 \usage{
 merge_table(
   x,
@@ -23,9 +23,9 @@ merge_table(
 
 \item{name.y}{name of y.}
 
-\item{name.x.index}{Start naming from which column of x.}
+\item{name.x.index}{start naming from which column of x.}
 
-\item{name.y.index}{Start naming from which column of y.}
+\item{name.y.index}{start naming from which column of y.}
 
 \item{sep}{a character string to separate the terms.}
 }
@@ -33,5 +33,16 @@ merge_table(
 a data frame.
 }
 \description{
-Merge two tables  by the first column
+Merge two tables by the first column, includes all rows in x.
+}
+\examples{
+A <- data.frame(term = c("t1", "t2", "t3"), x = 1:3, z = 8:10)
+B <- data.frame(term = c("t1", "t3"), y = 4:5, d = 20:21)
+
+merge_table(A, B)
+
+res <- merge_table(A, B, name.x = "A", name.y = "B")
+res
+
+print_booktabs(res)
 }

@@ -20,6 +20,15 @@
 #' 'index' for a vector of integer, and 'data' for a data frame.
 #'
 #' @export
+#'
+#' @examples
+#' select_numeric(iris)
+#' select_factor(iris)
+#'
+#' select_variable(iris, 1:4)
+#' select_variable(iris, "Species")
+#' select_variable(iris, "Species", type = "index")
+#' select_variable(iris, "Species", type = "data")
 select_numeric <- function(data, varnames = NULL, type = c("name", "data", "index")){
   .select_impl(data = data,
                varnames = varnames,
@@ -67,7 +76,6 @@ select_logical <- function(data, varnames = NULL, type = c("name", "data", "inde
                out.type = type)
 }
 
-
 #' @rdname select_numeric
 #' @param ... variables to select.
 #' @export
@@ -88,10 +96,10 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
   switch(type,
          data  = data[index],
          name  = {
-                  varname <- names(data)[index]
-                  names(varname) <- varname
-                  varname
-           },
+           varname <- names(data)[index]
+           names(varname) <- varname
+           varname
+         },
          index = index)
 }
 
@@ -124,7 +132,6 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
   names(res) <- names(data)[res]
   res
 }
-
 
 .select_impl <- function(data,
                          varnames = NULL,

@@ -20,3 +20,9 @@ a data frame.
 \description{
 Data frame transpose
 }
+\examples{
+dat <- data.frame(group = c("A", "B"), x = 1:2, y = 4:5)
+dat
+transpose(dat)
+transpose(dat, varname = "variable")
+}
