@@ -18,3 +18,12 @@ a numeric vector after impute with median value.
 \description{
 Impute with median value
 }
+\examples{
+md <- c(4.0, 5.9, 3.2, 6.1, 7.6, NA, 9.1, 7.2, NA, 8.3)
+md
+
+impute_median(md)
+}
+\seealso{
+\code{\link[=impute_mean]{impute_mean()}}, \code{\link[=impute_mode]{impute_mode()}}, \code{\link[=impute]{impute()}}
+}

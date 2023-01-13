@@ -15,3 +15,22 @@ a numeric vector after impute.
 \description{
 Impute with mode value
 }
+\examples{
+# for numeric
+md1 <- c(3, 4, 5, 3, 4, 5, 5, NA, 5, 3, NA)
+md1
+impute_mode(md1)
+
+# for character
+md2 <- c("a", "b", "c", "a", "b", "c", "c", NA, "c", "a", NA)
+md2
+impute_mode(md2)
+
+# for factor
+md3 <- as.factor(md2)
+md3
+impute_mode(md3)
+}
+\seealso{
+\code{\link[=impute_median]{impute_median()}}, \code{\link[=impute_mean]{impute_mean()}}, \code{\link[=impute]{impute()}}
+}
