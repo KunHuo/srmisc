@@ -5,12 +5,14 @@
 \title{Save a ggplot (or other grid object) with sensible defaults}
 \usage{
 gg_save(
-  plot,
+  plot = ggplot2::last_plot(),
   path,
   width = 8.3,
   height = width/8 * 7,
   units = "cm",
-  language = "en",
+  dpi = 300,
+  aspect.ratio,
+  use.showtext = FALSE,
   ...
 )
 }
@@ -25,7 +27,12 @@ gg_save(
 
 \item{units}{Units, default cm.}
 
-\item{language}{language.}
+\item{dpi}{DPI to use for raster graphics.}
+
+\item{aspect.ratio}{aspect ratio of the panel.}
+
+\item{use.showtext}{when TRUE, the package of showtext is using for supporting
+more fonts.}
 
 \item{...}{Other arguments passed on to the graphics device function,
 as specified by device.}
