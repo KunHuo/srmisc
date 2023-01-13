@@ -83,6 +83,5 @@ impute <- function(data, method.numeric = c("median", "mean"), method.category =
     }
     x
   })
-  attr(data, "impute.method") <- "Because missing data were less than 5%, simple imputation procedures were used to impute all missing values. Continuous variables were imputed to their median values and categorical variables were imputed to the highest frequency category."
   data
 }
