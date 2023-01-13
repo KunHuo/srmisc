@@ -27,3 +27,11 @@ a data frame after imputation.
 \description{
 Simple impute missing values
 }
+\examples{
+md <- data.frame(
+  x = c(3, 4, 5, 3, NA, 5, NA, 4, 5, 3, 5),
+  y = c("a", "b", "c", "a", "b", "c", "c", NA, "c", "a", NA),
+  z = factor(c("a", "b", "c", NA, "b", "c", "c", "a", "c", NA, "a")))
+md
+impute(md)
+}
