@@ -1,46 +1,3 @@
-extract_terms <- function(x, which = 1){
-  if(is.character(which)){
-    which(names(x) == which)
-  }
-  variables <- x[[which]]
-  term <- vector(length = length(variables))
-  varname <- vector(length = length(variables))
-  code <- rep(NA, length(variables))
-
-  for(i in seq_along(variables)){
-
-    if(regex_detect(variables[i], pattern = "^\\s")){
-      tmp <- rev(variables[1:i])
-      tmp <- regex_extract(tmp, pattern = "^\\S.*")
-      tmp <- tmp[tmp != ""][1]
-      term[i] <- paste0(tmp, trimws(variables[i]))
-      code[i] <- trimws(variables[i])
-      varname[i] <- tmp
-
-    }else{
-      term[i] <- variables[i]
-      varname[i] <- variables[i]
-    }
-  }
-
-  data.frame(.term = term, .code = code,  .varname = varname)
-}
-
-
-add_terms_column <- function(x, which = 1){
-  terms <- extract_terms(x, which = which)
-  terms <- terms[, 1, drop = FALSE]
-  tibble::add_column(x, terms, .after = 0)
-}
-
-
-add_varnames_column <- function(x, which = 1){
-  terms <- extract_terms(x, which = which)
-  terms <- terms[, 3, drop = FALSE]
-  tibble::add_column(x, terms, .after = 0)
-}
-
-
 #' Add title attribute to a data frame
 #'
 #' @param x a data frame.
@@ -79,6 +36,32 @@ add_note <- function(x, value = NULL, append = TRUE){
     }
   }
   x
+}
+
+#' Get label of variable in a data frame
+#'
+#' @description The function gets the label of the variable in a data frame,
+#'  and returns the variable name if the label has no label.
+#'
+#' @param data a data frame.
+#' @param varname variable name.
+#'
+#' @return a string.
+#' @export
+#'
+#' @examples
+#' get_label(iris, varname = "Species")
+#'
+#' attr(iris$Species, "label") <- "Species category"
+#' get_label(iris, varname = "Species")
+get_label <- function(data, varname) {
+  varname <- select_variable(data, varname)
+  label <- attr(data[[varname]], "label")
+  if (is.null(label)) {
+    varname
+  } else {
+    label
+  }
 }
 
 
@@ -155,6 +138,48 @@ find_labels <- function(data, varname, code = NA, defalut = NULL){
   data$.label[which(as.character(data$.term )== as.character(x))]
 }
 
+extract_terms <- function(x, which = 1){
+  if(is.character(which)){
+    which(names(x) == which)
+  }
+  variables <- x[[which]]
+  term <- vector(length = length(variables))
+  varname <- vector(length = length(variables))
+  code <- rep(NA, length(variables))
+
+  for(i in seq_along(variables)){
+
+    if(regex_detect(variables[i], pattern = "^\\s")){
+      tmp <- rev(variables[1:i])
+      tmp <- regex_extract(tmp, pattern = "^\\S.*")
+      tmp <- tmp[tmp != ""][1]
+      term[i] <- paste0(tmp, trimws(variables[i]))
+      code[i] <- trimws(variables[i])
+      varname[i] <- tmp
+
+    }else{
+      term[i] <- variables[i]
+      varname[i] <- variables[i]
+    }
+  }
+
+  data.frame(.term = term, .code = code,  .varname = varname)
+}
+
+
+add_terms_column <- function(x, which = 1){
+  terms <- extract_terms(x, which = which)
+  terms <- terms[, 1, drop = FALSE]
+  tibble::add_column(x, terms, .after = 0)
+}
+
+
+add_varnames_column <- function(x, which = 1){
+  terms <- extract_terms(x, which = which)
+  terms <- terms[, 3, drop = FALSE]
+  tibble::add_column(x, terms, .after = 0)
+}
+
 
 step_codes <- function(data, lcodes, as.factor = TRUE, exclude = "") {
   # Fill variables
@@ -196,31 +221,4 @@ step_codes <- function(data, lcodes, as.factor = TRUE, exclude = "") {
     }
   }
   data
-}
-
-
-#' Get label of variable in a data frame
-#'
-#' @description The function gets the label of the variable in a data frame,
-#'  and returns the variable name if the label has no label.
-#'
-#' @param data a data frame.
-#' @param varname variable name.
-#'
-#' @return a string.
-#' @export
-#'
-#' @examples
-#' get_label(iris, varname = "Species")
-#'
-#' attr(iris$Species, "label") <- "Species category"
-#' get_label(iris, varname = "Species")
-get_label <- function(data, varname) {
-  varname <- select_variable(data, varname)
-  label <- attr(data[[varname]], "label")
-  if (is.null(label)) {
-    varname
-  } else {
-    label
-  }
 }
