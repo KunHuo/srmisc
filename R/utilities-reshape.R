@@ -234,6 +234,7 @@ transpose <- function(x, row.names.col = 1, varname = NULL){
   x
 }
 
+
 #' Separate a character column into multiple columns
 #'
 #' @param data a data frame.
@@ -279,6 +280,7 @@ separate2cols <- function(data, varname = NULL, into = NULL, sep = ".", fixed = 
     data[, -which(names(data) == varname), drop = FALSE]
   }
 }
+
 
 #' Reshape data from wide to long
 #'
