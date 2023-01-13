@@ -27,7 +27,8 @@ gg_save(
 
 \item{language}{language.}
 
-\item{...}{Other arguments passed on to the graphics device function, as specified by device.}
+\item{...}{Other arguments passed on to the graphics device function,
+as specified by device.}
 }
 \description{
 Save a ggplot (or other grid object) with sensible defaults

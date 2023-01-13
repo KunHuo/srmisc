@@ -2,16 +2,27 @@
 % Please edit documentation in R/utilities-ggplot2.R
 \name{gg_bold_axis_title}
 \alias{gg_bold_axis_title}
-\title{Bold axis title}
+\title{Bold axis title for ggplot2}
 \usage{
 gg_bold_axis_title(bold = TRUE)
 }
 \arguments{
-\item{bold}{bold, default TRUE.}
+\item{bold}{a logical indicating whether to bold the title of the axis,
+default TRUE.}
 }
 \value{
-a ggplot.
+An obejct of ggplot2.
 }
 \description{
-Bold axis title
+Bold axis title for ggplot2
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color))
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_bold_axis_title()
 }

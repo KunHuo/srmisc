@@ -7,10 +7,20 @@
 pal_jama_7(n = 1:7, alpha = 1)
 }
 \arguments{
-\item{n}{Choose the color from the 7 colors.}
+\item{n}{choose the color numbers.}
 
-\item{alpha}{Transparency level, a real number in (0, 1].}
+\item{alpha}{transparency level, a real number in (0, 1].}
+}
+\value{
+A character vectors of hex color.
 }
 \description{
 Color palettes of JAMA journal
+}
+\examples{
+pal_jama_7()
+show_colors(pal_jama_7())
+}
+\seealso{
+\code{\link[ggsci:scale_jama]{ggsci::scale_color_jama()}}, \code{\link[ggsci:scale_jama]{ggsci::scale_fill_jama()}}
 }

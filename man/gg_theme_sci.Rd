@@ -24,7 +24,7 @@ gg_theme_sci(
 \arguments{
 \item{font.size}{font size, default 12,}
 
-\item{font.family}{font family, detault Times New Roman.}
+\item{font.family}{font family, detault 'serif' (Times New Roman).}
 
 \item{axis.line.size}{axis line size, default 0.25.}
 
@@ -32,7 +32,8 @@ gg_theme_sci(
 
 \item{legend.key.size}{legend key size, dsfault 1.}
 
-\item{face.bold}{a logical, whether bold the title of axis, plot, strip, and legend, default FALSE.}
+\item{face.bold}{a logical, whether bold the title of axis, plot, strip, and
+legend, default FALSE.}
 
 \item{panel.grid.major}{panel grid major.}
 
@@ -48,8 +49,21 @@ gg_theme_sci(
 
 \item{plot.margin}{plot margin, top, right, bottom, left.}
 
-\item{...}{further arguments pass to the \link[ggplot2:theme]{ggplot2::theme} function.}
+\item{...}{further arguments pass to the \code{\link[ggplot2:theme]{ggplot2::theme()}} function.}
+}
+\value{
+A theme of ggplot2.
 }
 \description{
 ggplo2 theme for SCI
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color))
+
+ggplot(diamonds) +
+ geom_density(aes(x = price, fill = color)) +
+ gg_theme_sci()
 }

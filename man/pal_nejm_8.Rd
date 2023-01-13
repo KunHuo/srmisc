@@ -7,10 +7,20 @@
 pal_nejm_8(n = 1:8, alpha = 1)
 }
 \arguments{
-\item{n}{Choose the color from the 8 colors.}
+\item{n}{choose the color numbers.}
 
-\item{alpha}{Transparency level, a real number in (0, 1].}
+\item{alpha}{transparency level, a real number in (0, 1].}
+}
+\value{
+A character vectors of hex color.
 }
 \description{
 Color palettes of NEJM journal
+}
+\examples{
+pal_nejm_8()
+show_colors(pal_jco_10())
+}
+\seealso{
+\code{\link[ggsci:scale_nejm]{ggsci::scale_color_nejm()}}, \code{\link[ggsci:scale_nejm]{ggsci::scale_fill_nejm()}}
 }

@@ -2,16 +2,26 @@
 % Please edit documentation in R/utilities-ggplot2.R
 \name{gg_axis_line_size}
 \alias{gg_axis_line_size}
-\title{Axis line size}
+\title{Set axis line size for ggplot2}
 \usage{
 gg_axis_line_size(size = 0.25)
 }
 \arguments{
-\item{size}{size, default 0.25.}
+\item{size}{line size, default 0.25.}
 }
 \value{
-a ggplot.
+An obejct of ggplot2.
 }
 \description{
-Axis line size
+Set axis line size for ggplot2
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color))
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_axis_line_size(2)
 }

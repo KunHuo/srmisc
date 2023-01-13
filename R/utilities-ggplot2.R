@@ -1,35 +1,47 @@
 #' ggplo2 theme for SCI
 #'
 #' @param font.size font size, default 12,
-#' @param font.family font family, detault Times New Roman.
+#' @param font.family font family, detault 'serif' (Times New Roman).
 #' @param axis.line.size axis line size, default 0.25.
 #' @param axis.ticks.length axis ticks length, default 0.12.
 #' @param legend.key.size legend key size, dsfault 1.
-#' @param face.bold a logical, whether bold the title of axis, plot, strip, and legend, default FALSE.
+#' @param face.bold a logical, whether bold the title of axis, plot, strip, and
+#' legend, default FALSE.
 #' @param panel.border a logical, whether plot panel border, default FALSE.
 #' @param aspect.ratio the ratio of the width to the height, default NULL.
-#' @param ... further arguments pass to the [ggplot2::theme] function.
 #' @param panel.grid.major panel grid major.
 #' @param panel.grid.minor panel grid minor.
 #' @param panel.spacing panel spacing.
 #' @param strip.background strip background.
 #' @param plot.margin plot margin, top, right, bottom, left.
+#' @param ... further arguments pass to the [ggplot2::theme()] function.
 #'
+#' @return A theme of ggplot2.
 #' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color))
+#'
+#' ggplot(diamonds) +
+#'  geom_density(aes(x = price, fill = color)) +
+#'  gg_theme_sci()
 gg_theme_sci <- function(font.size = 12,
-                      font.family = "serif",
-                      axis.line.size = 0.25,
-                      axis.ticks.length = 0.12,
-                      legend.key.size = 1.0,
-                      face.bold = FALSE,
-                      panel.grid.major = FALSE,
-                      panel.grid.minor = FALSE,
-                      panel.border = FALSE,
-                      panel.spacing = 0.6,
-                      strip.background = "gray90",
-                      aspect.ratio = NULL,
-                      plot.margin = c(0.4, 0.6, 0.4, 0.4),
-                      ...) {
+                         font.family = "serif",
+                         axis.line.size = 0.25,
+                         axis.ticks.length = 0.12,
+                         legend.key.size = 1.0,
+                         face.bold = FALSE,
+                         panel.grid.major = FALSE,
+                         panel.grid.minor = FALSE,
+                         panel.border = FALSE,
+                         panel.spacing = 0.6,
+                         strip.background = "gray90",
+                         aspect.ratio = NULL,
+                         plot.margin = c(0.4, 0.6, 0.4, 0.4),
+                         ...) {
 
   face <- ifelse(face.bold, "bold", "plain")
 
@@ -94,12 +106,23 @@ gg_theme_sci <- function(font.size = 12,
   class(value) == "waiver"
 }
 
-#' Bold axis title
+#' Bold axis title for ggplot2
 #'
-#' @param bold bold, default TRUE.
+#' @param bold a logical indicating whether to bold the title of the axis,
+#' default TRUE.
 #'
-#' @return a ggplot.
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color))
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_bold_axis_title()
 gg_bold_axis_title <- function(bold = TRUE){
   face <- ifelse(bold, "bold", "plain")
   ggplot2::theme(
@@ -108,12 +131,24 @@ gg_bold_axis_title <- function(bold = TRUE){
 }
 
 
-#' Bold tags
+#' Bold tags for ggplot2
 #'
-#' @param bold bold, default TRUE.
+#' @param bold a logical indicating whether to bold the tags, default TRUE.
 #'
-#' @return a ggplot.
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_tags("A")
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_tags("A") +
+#'   gg_bold_tags()
 gg_bold_tags <- function(bold = TRUE){
   face <- ifelse(bold, "bold", "plain")
   ggplot2::theme(
@@ -122,12 +157,22 @@ gg_bold_tags <- function(bold = TRUE){
 }
 
 
-#' Axis line size
+#' Set axis line size for ggplot2
 #'
-#' @param size size, default 0.25.
+#' @param size line size, default 0.25.
 #'
-#' @return a ggplot.
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color))
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_axis_line_size(2)
 gg_axis_line_size <- function(size = 0.25){
   ggplot2::theme(
     axis.line  = ggplot2::element_line(size = size),
@@ -136,12 +181,22 @@ gg_axis_line_size <- function(size = 0.25){
 }
 
 
-#' Axis ticks length
+#' Set axis ticks length for ggplot2
 #'
-#' @param size size, default 0.15.
+#' @param size axis ticks length, default 0.15.
 #'
-#' @return a ggplot.
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color))
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_axis_ticks_length(2)
 gg_axis_ticks_length <- function(size = 0.15){
   ggplot2::theme(
     axis.ticks.length = ggplot2::unit(size, "cm"),
@@ -149,12 +204,23 @@ gg_axis_ticks_length <- function(size = 0.15){
 }
 
 
-#' Legend title
+#' Set legend title for ggplot2
 #'
-#' @param value title
+#' @param value legend title, NULL indicates deletion.
 #'
-#' @return a ggplot.
+#' @return An obejct of ggplot2.
 #' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_legend_title(NULL)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_legend_title("Colors of diamonds")
 gg_legend_title <- function(value = NULL){
   if(length(value) == 0L){
     ggplot2::theme(
@@ -166,13 +232,33 @@ gg_legend_title <- function(value = NULL){
 }
 
 
-#' Legend position
+#' Set legend position for ggplot2
 #'
-#' @param position position
+#' @param position legend position, NULL for indicates deletion, or a character
+#' of 'top', 'bottom', 'left' and 'right', or numeric vector (between 0 and 1)
+#' of length two (x-axis and y-axis).
 #'
-#' @return a ggplot.
+#' @return An obejct of ggplot2.
 #' @export
-gg_legend_position <- function(position) {
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color))
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_legend_position(NULL)
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_legend_position("top")
+#'
+#' ggplot(diamonds) +
+#'   geom_density(aes(x = price, fill = color)) +
+#'   gg_legend_position(c(0.9, 0.9))
+gg_legend_position <- function(position = NULL) {
   if(length(position) == 0L){
     ggplot2::theme(
       legend.position = "none"
@@ -192,7 +278,7 @@ gg_legend_position <- function(position) {
 }
 
 
-#' Rotate X axis text
+#' Rotate X axis text for ggplot2
 #'
 #' @param angle angle.
 #' @param hjust hjust.
@@ -209,7 +295,7 @@ gg_rotate_x_text <- function (angle = 45, hjust = NULL, vjust = NULL, ...) {
 }
 
 
-#' Rotate Y axis text
+#' Rotate Y axis text for ggplot2
 #'
 #' @param angle angle.
 #' @param hjust hjust.
@@ -223,63 +309,6 @@ gg_rotate_y_text <- function (angle = 45, hjust = NULL, vjust = NULL, ...) {
   else if (missing(hjust) & angle > 5)
     hjust <- 1
   ggplot2::theme(axis.text.y = ggplot2::element_text(angle = angle, hjust = hjust, vjust = vjust, ...))
-}
-
-
-.pretty_xbreaks <- function(plot, x.breaks = NULL, x.breaks.n = 5, zero = FALSE, facet = NULL){
-  if(is.null(x.breaks)){
-    if(!is.null(facet)){
-      plot <- plot + ggplot2::facet_wrap(facet)
-    }
-    gdata <- ggplot2::ggplot_build(plot)$data[[1]]
-    x.breaks <- gdata[["x"]]
-    if(zero){
-      x.breaks <- c(0, x.breaks)
-    }
-    x.breaks <- pretty(x.breaks, x.breaks.n)
-  }
-  x.breaks
-}
-
-
-.pretty_ybreaks <- function(plot, y.breaks = NULL, y.breaks.n = 5, zero = FALSE, facet = NULL){
-  if(is.null(y.breaks)){
-    if(!is.null(facet)){
-      plot <- plot + ggplot2::facet_wrap(facet)
-    }
-    gdata <- ggplot2::ggplot_build(plot)$data[[1]]
-    y.breaks <- gdata[["y"]]
-
-    if(zero){
-      y.breaks <- c(0, y.breaks)
-    }
-
-    y.breaks <- pretty(y.breaks, y.breaks.n)
-  }
-  y.breaks
-}
-
-
-.set_legend_title <- function(plot, title, data, group){
-  if(.is_waiver(title)){
-    label <- attr(data[[group]], "label")
-    if(is.null(label)){
-      plot
-    }else{
-      plot + gg_legend_title(label)
-    }
-  }else{
-    plot + gg_legend_title(title)
-  }
-}
-
-
-.set_legend_position <- function(plot, position){
-  if(.is_waiver(position)){
-    plot + gg_legend_position("right")
-  }else{
-    plot + gg_legend_position(position)
-  }
 }
 
 
@@ -312,6 +341,7 @@ gg_delete_legend_title <- function() {
   )
 }
 
+
 #' Delete legend of ggplot2
 #'
 #' @export
@@ -322,7 +352,7 @@ gg_delete_legend <- function() {
 }
 
 
-#' Figure label
+#' Set tags for ggplt2
 #'
 #' @param label label.
 #'
@@ -340,7 +370,6 @@ gg_tags <- function(label){
 gg_xlab <- function(label){
   ggplot2::xlab(label = label)
 }
-
 
 
 #' Modify axis labels
@@ -395,7 +424,8 @@ gg_ybreaks_continuous <- function(min, max, by, expand = TRUE){
 #' @param height Height.
 #' @param units Units, default cm.
 #' @param language language.
-#' @param ... Other arguments passed on to the graphics device function, as specified by device.
+#' @param ... Other arguments passed on to the graphics device function,
+#' as specified by device.
 #'
 #' @export
 gg_save <- function(plot,

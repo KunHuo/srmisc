@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities-ggplot2.R
 \name{gg_tags}
 \alias{gg_tags}
-\title{Figure label}
+\title{Set tags for ggplt2}
 \usage{
 gg_tags(label)
 }
@@ -10,5 +10,5 @@ gg_tags(label)
 \item{label}{label.}
 }
 \description{
-Figure label
+Set tags for ggplt2
 }

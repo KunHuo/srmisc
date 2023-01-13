@@ -2,16 +2,26 @@
 % Please edit documentation in R/utilities-ggplot2.R
 \name{gg_axis_ticks_length}
 \alias{gg_axis_ticks_length}
-\title{Axis ticks length}
+\title{Set axis ticks length for ggplot2}
 \usage{
 gg_axis_ticks_length(size = 0.15)
 }
 \arguments{
-\item{size}{size, default 0.15.}
+\item{size}{axis ticks length, default 0.15.}
 }
 \value{
-a ggplot.
+An obejct of ggplot2.
 }
 \description{
-Axis ticks length
+Set axis ticks length for ggplot2
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color))
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_axis_ticks_length(2)
 }

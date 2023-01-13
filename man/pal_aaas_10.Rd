@@ -7,10 +7,20 @@
 pal_aaas_10(n = 1:10, alpha = 1)
 }
 \arguments{
-\item{n}{Choose the color from the 10 colors.}
+\item{n}{choose the color numbers.}
 
-\item{alpha}{Transparency level, a real number in (0, 1].}
+\item{alpha}{transparency level, a real number in (0, 1].}
+}
+\value{
+A character vectors of hex color.
 }
 \description{
 Color palettes of AAAS journal
+}
+\examples{
+pal_aaas_10()
+show_colors(pal_aaas_10())
+}
+\seealso{
+\code{\link[ggsci:scale_aaas]{ggsci::scale_color_aaas()}}, \code{\link[ggsci:scale_aaas]{ggsci::scale_fill_aaas()}}
 }

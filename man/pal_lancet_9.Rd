@@ -7,10 +7,20 @@
 pal_lancet_9(n = 1:9, alpha = 1)
 }
 \arguments{
-\item{n}{Choose the color from the 9 colors.}
+\item{n}{choose the color numbers.}
 
-\item{alpha}{Transparency level, a real number in (0, 1].}
+\item{alpha}{transparency level, a real number in (0, 1].}
+}
+\value{
+A character vectors of hex color.
 }
 \description{
 Color palettes of lancet journal
+}
+\examples{
+pal_lancet_9()
+show_colors(pal_lancet_9())
+}
+\seealso{
+\code{\link[ggsci:scale_lancet]{ggsci::scale_color_lancet()}}, \code{\link[ggsci:scale_lancet]{ggsci::scale_fill_lancet()}}
 }

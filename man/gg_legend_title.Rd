@@ -2,16 +2,27 @@
 % Please edit documentation in R/utilities-ggplot2.R
 \name{gg_legend_title}
 \alias{gg_legend_title}
-\title{Legend title}
+\title{Set legend title for ggplot2}
 \usage{
 gg_legend_title(value = NULL)
 }
 \arguments{
-\item{value}{title}
+\item{value}{legend title, NULL indicates deletion.}
 }
 \value{
-a ggplot.
+An obejct of ggplot2.
 }
 \description{
-Legend title
+Set legend title for ggplot2
+}
+\examples{
+library(ggplot2)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_legend_title(NULL)
+
+ggplot(diamonds) +
+  geom_density(aes(x = price, fill = color)) +
+  gg_legend_title("Colors of diamonds")
 }
