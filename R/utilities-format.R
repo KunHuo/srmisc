@@ -1,17 +1,20 @@
 #' Format digits
 #'
+#' @description
+#' Format numeric variables to strings by digits.
+#'
 #' @param x typically numeric.
 #' @param digits
-#' how many significant digits are to be used for numeric
+#' how many significant digits are to be used for numeric.
 #'
 #' @return a character string.
 #' @seealso [format]
 #' @export
 #'
 #' @examples
-#' format_digits(43.25576, digits = 2)
-#' format_digits(43, digits = 5)
-format_digits <- function(x, digits){
+#' fmt_digits(43.25576, digits = 2)
+#' fmt_digits(43, digits = 5)
+fmt_digits <- function(x, digits){
   sapply(x, function(i){
     if(is.na(i)){
       i
@@ -32,9 +35,9 @@ format_digits <- function(x, digits){
 #' @export
 #'
 #' @examples
-#' format_statistic(0.99999, digits = 3)
-#' format_statistic(0.00001, digits = 3)
-format_statistic <- function(x, digits) {
+#' fmt_stat(0.99999, digits = 3)
+#' fmt_stat(0.00001, digits = 3)
+fmt_stat <- function(x, digits) {
   fmt <- paste0("%.", digits, "f")
   pVec <- sapply(x, function(i) {
     if (is.na(i)) {
@@ -61,10 +64,10 @@ format_statistic <- function(x, digits) {
 #' @export
 #'
 #' @examples
-#' format_pvalue(0.32555, digits = 3)
-#' format_pvalue(0.00001, digits = 3)
-#' format_pvalue(c(0.23, 0.2511, 0.0001, 0.01), digits = 3)
-format_pvalue <- function(x, digits) {
+#' fmt_pvalue(0.32555, digits = 3)
+#' fmt_pvalue(0.00001, digits = 3)
+#' fmt_pvalue(c(0.23, 0.2511, 0.0001, 0.01), digits = 3)
+fmt_pvalue <- function(x, digits) {
   fmt  <- paste0("%.", digits, "f")
 
   pVec <- sapply(x, function(i){
@@ -84,15 +87,15 @@ format_pvalue <- function(x, digits) {
 
 #' Format P values with signif start
 #'
-#' @param pvalues P values
+#' @param pvalues P values.
 #' @param digits digits.
 #'
 #' @return character vector.
 #' @export
 #'
 #' @examples
-#' format_signif_start(c(0.0001, 0.012, 0.02, 0.035, 0.24))
-format_signif_start <- function(pvalues, digits = 3){
+#' fmt_signif(c(0.0001, 0.012, 0.02, 0.035, 0.24))
+fmt_signif <- function(pvalues, digits = 3){
   if(is.numeric(pvalues)){
     sign <- ifelse(pvalues <= 0.001, "***",
                    ifelse(pvalues <= 0.01, "**",
@@ -100,7 +103,7 @@ format_signif_start <- function(pvalues, digits = 3){
                                  ifelse(pvalues <= 0.1, ".", ""))))
     sign <- ifelse(is.na(sign), "", format(sign, justify = "left"))
 
-    pvalues <- format_pvalue(pvalues, digits)
+    pvalues <- fmt_pvalue(pvalues, digits)
     pvalues <- ifelse(is.na(pvalues), "", format(pvalues, justify = "right"))
     paste(pvalues, sign, sep = " ")
   }else{
@@ -128,14 +131,13 @@ format_signif_start <- function(pvalues, digits = 3){
 #'
 #' @return a data frame.
 #' @export
-format_regression <- function(data,
-                            varnames = names(data),
-                            fold = FALSE,
-                            space = 4,
-                            sep = " vs. ",
-                            add.first = NULL,
-                            add.last = NULL){
-
+fmt_reg <- function(data,
+                    varnames = names(data),
+                    fold = FALSE,
+                    space = 4,
+                    sep = " vs. ",
+                    add.first = NULL,
+                    add.last = NULL) {
   extract_levels <- function(x){
     if(is.character(x)){
       x <- as.factor(x)
@@ -167,7 +169,7 @@ format_regression <- function(data,
     data.frame(term = term, varname = varname, ref = ref,  variable = variable, stringsAsFactors = FALSE)
   }
 
-  space <- create_space(space)
+  space <- strrep(" ", space)
   sep <- sprintf("%s", sep)
   execute <-  function(varname){
     label <- varname
@@ -215,11 +217,8 @@ format_regression <- function(data,
 }
 
 
-
-format_baseline <- function(data, varnames = names(data), methods = NULL, nonnormal.vars = NULL, method.nonnormal = NULL) {
-
+fmt_desc <- function(data, varnames = names(data), methods = NULL, nonnormal.vars = NULL, method.nonnormal = NULL) {
   CONSTANT.SPACE <- "\u0020\u0020\u0020"
-
   # Foramt numeric
   foramt_numeric <- function(varname, label) {
     if(varname %in% nonnormal.vars){
@@ -341,22 +340,7 @@ desc_method_label <- function(methods){
   }, simplify = TRUE)
 }
 
-
-get_label <- function(df, varname) {
-  label <- attr(df[[varname]], "label")
-  if (is.null(label)) {
-    varname
-  } else {
-    label
-  }
-}
-
-
-create_space <- function(n){
-  strrep(" ", n)
-}
-
-fmt_ci_3 <- function(sep = NULL, digits = 2, bracket = c("(", "[")){
+fmt_ci <- function(sep = NULL, digits = 2, bracket = c("(", "[")){
   bracket <- match.arg(bracket)
   if(bracket == "("){
     bracket <- c("(", ")")

@@ -197,3 +197,30 @@ step_codes <- function(data, lcodes, as.factor = TRUE, exclude = "") {
   }
   data
 }
+
+
+#' Get label of variable in a data frame
+#'
+#' @description The function gets the label of the variable in a data frame,
+#'  and returns the variable name if the label has no label.
+#'
+#' @param data a data frame.
+#' @param varname variable name.
+#'
+#' @return a string.
+#' @export
+#'
+#' @examples
+#' get_label(iris, varname = "Speceis")
+#'
+#' attr(iris$Species, "label") <- "Species category"
+#' get_label(iris, varname = "Speceis")
+get_label <- function(data, varname) {
+  varname <- select_variable(data, varname)
+  label <- attr(data[[varname]], "label")
+  if (is.null(label)) {
+    varname
+  } else {
+    label
+  }
+}
