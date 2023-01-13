@@ -119,7 +119,7 @@ fmt_signif <- function(pvalues, digits = 3){
 }
 
 
-#' Format variable names for output
+#' Format variable names for regression output
 #'
 #' @param data a data frame.
 #' @param varnames variable names.
@@ -131,6 +131,9 @@ fmt_signif <- function(pvalues, digits = 3){
 #'
 #' @return a data frame.
 #' @export
+#'
+#' @examples
+#' fmt_reg(iris, add.first = "(Intercept)")
 fmt_reg <- function(data,
                     varnames = names(data),
                     fold = FALSE,
@@ -340,6 +343,24 @@ desc_method_label <- function(methods){
   }, simplify = TRUE)
 }
 
+
+#' Format for CI
+#'
+#' @param sep separator.
+#' @param digits digits.
+#' @param bracket bracket.
+#'
+#' @return a string.
+#' @export
+#'
+#' @examples
+#' fmt_ci()
+#' fmt_ci(digits = 3)
+#' fmt_ci(sep = " to ")
+#' fmt_ci(bracket = c("["))
+#'
+#' fmt <- fmt_ci()
+#' sprintf(fmt = fmt, 1.2, 0.9, 1.8)
 fmt_ci <- function(sep = NULL, digits = 2, bracket = c("(", "[")){
   bracket <- match.arg(bracket)
   if(bracket == "("){

@@ -19,8 +19,8 @@ The function gets the label of the variable in a data frame,
 and returns the variable name if the label has no label.
 }
 \examples{
-get_label(iris, varname = "Speceis")
+get_label(iris, varname = "Species")
 
 attr(iris$Species, "label") <- "Species category"
-get_label(iris, varname = "Speceis")
+get_label(iris, varname = "Species")
 }

@@ -211,10 +211,10 @@ step_codes <- function(data, lcodes, as.factor = TRUE, exclude = "") {
 #' @export
 #'
 #' @examples
-#' get_label(iris, varname = "Speceis")
+#' get_label(iris, varname = "Species")
 #'
 #' attr(iris$Species, "label") <- "Species category"
-#' get_label(iris, varname = "Speceis")
+#' get_label(iris, varname = "Species")
 get_label <- function(data, varname) {
   varname <- select_variable(data, varname)
   label <- attr(data[[varname]], "label")

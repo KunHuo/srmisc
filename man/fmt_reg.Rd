@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities-format.R
 \name{fmt_reg}
 \alias{fmt_reg}
-\title{Format variable names for output}
+\title{Format variable names for regression output}
 \usage{
 fmt_reg(
   data,
@@ -33,5 +33,8 @@ fmt_reg(
 a data frame.
 }
 \description{
-Format variable names for output
+Format variable names for regression output
+}
+\examples{
+fmt_reg(iris, add.first = "(Intercept)")
 }
