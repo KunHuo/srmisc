@@ -82,10 +82,10 @@ get_label <- function(data, varname) {
 #'                                "sex", "  1", "  2",
 #'                                "race", "  1", "  2", " 3",
 #'                                "size",
-#'                                "metastasis", "  0", "  1",
+#'                                "meta", "  0", "  1",
 #'                                "status", "  0", "  1",
 #'                                "time"),
-#'                   meansd = sprintf("%.2f (%.2f)", rnorm(16) * 10, rnorm(16) * 2 ))
+#'                   meansd = sprintf("%.2f (%.2f)", rnorm(16) * 10, rnorm(16) * 2))
 #' dat
 #'
 #' extract_terms(dat)
@@ -132,10 +132,10 @@ extract_terms <- function(data, which = 1){
 #'                                "sex", "  1", "  2",
 #'                                "race", "  1", "  2", " 3",
 #'                                "size",
-#'                                "metastasis", "  0", "  1",
+#'                                "meta", "  0", "  1",
 #'                                "status", "  0", "  1",
 #'                                "time"),
-#'                   meansd = sprintf("%.2f (%.2f)", rnorm(16) * 10, rnorm(16) * 2 ))
+#'                   meansd = sprintf("%.2f (%.2f)", rnorm(16) * 10, rnorm(16) * 2))
 #' dat
 #'
 #' add_terms_columns(dat)
@@ -157,28 +157,6 @@ add_terms_columns <- function(data,
 }
 
 
-#' Add labels to the first column of a data frame
-#'
-#' @param data a data frame.
-#' @param codes a data frame contain the column of variable, code, and label.
-#' @param col col index.
-#'
-#' @return a data frame.
-#' @export
-add_lables <- function(data, codes, col = 1){
-  tdata <- extract_terms(data, which = col)
-  for(i in 1:nrow(data)){
-    label <- find_labels(codes, varname = tdata$.term[i])
-    if(!is_empty(label)){
-      data[[col]][i] <- regex_replace(string = data[[col]][i],
-                                      pattern = trimws(data[[col]][i]),
-                                      replacement = label)
-    }
-  }
-  data
-}
-
-
 #' Tidy codes
 #'
 #' @param data a data frame contains the 3 columns of variable, code, and label.
@@ -186,6 +164,11 @@ add_lables <- function(data, codes, col = 1){
 #'
 #' @return A data frame contains the columns of .term, .varname, .code, and .label.
 #' @export
+#'
+#' @examples
+#' data(cancer.codes)
+#' cancer.codes
+#' tidy_codes(cancer.codes)
 tidy_codes <- function(data){
   term0 <- data[, 1, drop = TRUE]
   term1 <- term0
@@ -207,6 +190,42 @@ tidy_codes <- function(data){
       if(!is.na(data$.code[i])){
         data$.term[i] <- paste0(data$.term[i], data$.code[i])
       }
+    }
+  }
+  data
+}
+
+
+#' Switch a column to labels
+#'
+#' @param data a data frame.
+#' @param codes a data frame contain the column of variable, code, and label.
+#' @param which set labels to which column, default the first column.
+#'
+#' @return a data frame.
+#' @export
+#'
+#' @examples
+#' dat <- data.frame(variblae = c("age",
+#'                                "sex", "  1", "  2",
+#'                                "race", "  1", "  2", " 3",
+#'                                "size",
+#'                                "meta", "  0", "  1",
+#'                                "status", "  0", "  1",
+#'                                "time"),
+#'                   meansd = sprintf("%.2f (%.2f)", rnorm(16) * 10, rnorm(16) * 2))
+#' dat
+#'
+#' print(cancer.codes)
+#' switch2labels(dat, cancer.codes)
+switch2labels <- function(data, codes, which = 1){
+  tdata <- extract_terms(data, which = which)
+  for(i in 1:nrow(data)){
+    label <- find_labels(codes, varname = tdata$.term[i])
+    if(!is_empty(label)){
+      data[[which]][i] <- regex_replace(string = data[[which]][i],
+                                      pattern = trimws(data[[which]][i]),
+                                      replacement = label)
     }
   }
   data
@@ -250,16 +269,26 @@ set_codes <- function(data, codes, as.factor = TRUE, exclude = "") {
       if (nrow(code) != 0L) {
         if (nrow(code) >= 2L) {
 
+          values <- code$.code[-1]
+          labels <- code$.label[-1]
+
+          if (as.factor) {
+            data[[varnames[[i]]]] <- labels[match(data[[varnames[i]]], values)]
+            data[[varnames[[i]]]] <- factor(data[[varnames[[i]]]], levels = labels)
+          }else{
+            names(labels) <- values
+            attr(data[[varnames[i]]], "labels") <- labels
+            class(data[[varnames[i]]]) <- c("haven_labelled", "vctrs_vctr", class(data[[varnames[i]]]))
+          }
         }
 
-        if (!is.na(code[1, 4][[1]])) {
-            attr(data[[varnames[i]]], "label") <- code[1, 4][[1]]
+        if (!is.na(code[1, 4, drop = TRUE])) {
+            attr(data[[varnames[i]]], "label") <- code[1, 4, drop = TRUE]
         }
       }
     }
   }
 
   data
-
 }
 

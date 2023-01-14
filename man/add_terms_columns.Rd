@@ -37,10 +37,10 @@ dat <- data.frame(variblae = c("age",
                                "sex", "  1", "  2",
                                "race", "  1", "  2", " 3",
                                "size",
-                               "metastasis", "  0", "  1",
+                               "meta", "  0", "  1",
                                "status", "  0", "  1",
                                "time"),
-                  meansd = sprintf("\%.2f (\%.2f)", rnorm(16) * 10, rnorm(16) * 2 ))
+                  meansd = sprintf("\%.2f (\%.2f)", rnorm(16) * 10, rnorm(16) * 2))
 dat
 
 add_terms_columns(dat)

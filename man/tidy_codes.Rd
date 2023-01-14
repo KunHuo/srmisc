@@ -16,3 +16,8 @@ A data frame contains the columns of .term, .varname, .code, and .label.
 \description{
 Tidy codes
 }
+\examples{
+data(cancer.codes)
+cancer.codes
+tidy_codes(cancer.codes)
+}
