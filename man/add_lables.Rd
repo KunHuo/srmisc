@@ -2,14 +2,14 @@
 % Please edit documentation in R/utilities-labels.R
 \name{add_lables}
 \alias{add_lables}
-\title{Add labels to  the first column of a data frame}
+\title{Add labels to the first column of a data frame}
 \usage{
-add_lables(data, ldata, col = 1)
+add_lables(data, codes, col = 1)
 }
 \arguments{
 \item{data}{a data frame.}
 
-\item{ldata}{a data frame contain the column of term, code, and label.}
+\item{codes}{a data frame contain the column of variable, code, and label.}
 
 \item{col}{col index.}
 }
@@ -17,5 +17,5 @@ add_lables(data, ldata, col = 1)
 a data frame.
 }
 \description{
-Add labels to  the first column of a data frame
+Add labels to the first column of a data frame
 }

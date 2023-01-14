@@ -174,8 +174,8 @@ merge_table <- function(x, y, name.x = NULL, name.y = NULL, name.x.index = 2, na
                   paste(name.y, names(y)[c(name.y.index:length(names(y)))], sep = sep))
   }
 
-  x <- add_terms_column(x, which = 1)
-  y <- add_terms_column(y, which = 1)
+  x <- add_terms_columns(x, which = 1, columns = "term")
+  y <- add_terms_columns(y, which = 1, columns = "term")
   y <- y[, -2, drop = FALSE]
   out <- merge_left(x, y, by = ".term")
   out <- out[, -1, drop = FALSE]
