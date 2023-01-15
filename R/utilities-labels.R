@@ -1,70 +1,3 @@
-#' Add title attribute to a data frame
-#'
-#' @param x a data frame.
-#' @param value a character string.
-#'
-#' @return a data frame.
-#' @export
-add_title <- function(x, value = NULL){
-  attr(x, "title") <- value
-  x
-}
-
-
-#' Add note attribute to a data frame
-#'
-#' @param x a data frame.
-#' @param value a character string.
-#' @param append a logical.
-#'
-#' @return a data frame.
-#' @export
-add_note <- function(x, value = NULL, append = TRUE){
-  if(is_empty(value)){
-    attr(x, "note") <- NULL
-  }else{
-    if(append){
-      note <- attr(x, "note")
-      if(is_empty(note)){
-        attr(x, "note") <- value
-      }else{
-        attr(x, "note") <- paste(note, value, sep = "\n")
-      }
-    }else{
-      attr(x, "note") <- value
-    }
-  }
-  x
-}
-
-
-#' Get label of variable in a data frame
-#'
-#' @description The function gets the label of the variable in a data frame,
-#'  and returns the variable name if the label has no label.
-#'
-#' @param data a data frame.
-#' @param varname variable name.
-#'
-#' @return a string.
-#' @export
-#'
-#' @examples
-#' get_label(iris, varname = "Species")
-#'
-#' attr(iris$Species, "label") <- "Species category"
-#' get_label(iris, varname = "Species")
-get_label <- function(data, varname) {
-  varname <- select_variable(data, varname)
-  label <- attr(data[[varname]], "label")
-  if (is.null(label)) {
-    varname
-  } else {
-    label
-  }
-}
-
-
 #' Extract terms from a variable
 #'
 #' @param data a data frame.
@@ -163,13 +96,19 @@ add_terms_columns <- function(data,
 #' Note, The order of columns cannot be changed.
 #'
 #' @return A data frame contains the columns of .term, .varname, .code, and .label.
+#' @keywords internal
 #' @export
 #'
 #' @examples
 #' data(cancer.codes)
 #' cancer.codes
 #' tidy_codes(cancer.codes)
-tidy_codes <- function(data){
+tidy_codes <- function(data = NULL){
+
+  if(is.null(data)){
+    return(NULL)
+  }
+
   term0 <- data[, 1, drop = TRUE]
   term1 <- term0
 
@@ -254,41 +193,378 @@ find_labels <- function(data, varname, code = NA, defalut = NULL){
 }
 
 
-set_codes <- function(data, codes, as.factor = TRUE, exclude = "") {
+#' Labels to a data frame by codes
+#'
+#' @param data a data frame.
+#' @param codes a data frame contains the 3 columns of variable, code, and label.
+#' Note, The order of columns cannot be changed.
+#' @param as.factor a logical indicating whether to convert codes to factors,
+#' default TRUE.
+#' @param exclude excluded variables when as.factor == TRUE.
+#'
+#' @return a data frame.
+#' @export
+#'
+#' @examples
+#' data("cancer")
+#' data("cancer.codes")
+#'
+#' head(cancer)
+#' print(cancer.codes)
+#'
+#' str(codes2labels(data = cancer, codes = cancer.codes))
+#' str(codes2labels(data = cancer, codes = cancer.codes, exclude = "status"))
+#' str(codes2labels(data = cancer, codes = cancer.codes, as.factor = FALSE))
+codes2labels <- function(data, codes, as.factor = TRUE, exclude = "") {
   codes <- tidy_codes(codes)
 
   varnames <- names(data)
+
+  if(exclude != ""){
+    exclude <- select_variable(data, exclude)
+  }
 
   for (i in seq_along(varnames)) {
     # code for each variable
     code <- codes[codes$.varname == varnames[i], ]
 
-    # exclude
-    if (!(varnames[[i]] %in% exclude)) {
-      # exec if find code
-      if (nrow(code) != 0L) {
-        if (nrow(code) >= 2L) {
+    # exec if find code
+    if (nrow(code) != 0L) {
 
-          values <- code$.code[-1]
-          labels <- code$.label[-1]
+      if (nrow(code) >= 2L) {
 
-          if (as.factor) {
-            data[[varnames[[i]]]] <- labels[match(data[[varnames[i]]], values)]
-            data[[varnames[[i]]]] <- factor(data[[varnames[[i]]]], levels = labels)
-          }else{
-            names(labels) <- values
-            attr(data[[varnames[i]]], "labels") <- labels
-            class(data[[varnames[i]]]) <- c("haven_labelled", "vctrs_vctr", class(data[[varnames[i]]]))
-          }
+        values <- code$.code[-1]
+        labels <- code$.label[-1]
+
+        if (as.factor & !(varnames[[i]] %in% exclude)) {
+          data[[varnames[[i]]]] <- labels[match(data[[varnames[i]]], values)]
+          data[[varnames[[i]]]] <- factor(data[[varnames[[i]]]], levels = labels)
+        }else{
+          names(values) <- labels
+          attr(data[[varnames[i]]], "labels") <- values
+          class(data[[varnames[i]]]) <- c("haven_labelled", "vctrs_vctr", class(data[[varnames[i]]]))
         }
 
-        if (!is.na(code[1, 4, drop = TRUE])) {
-            attr(data[[varnames[i]]], "label") <- code[1, 4, drop = TRUE]
-        }
+      } # End for 'nrow(code) >= 2L'
+
+      # set label
+      if (!is.na(code[1, 4, drop = TRUE])) {
+        attr(data[[varnames[i]]], "label") <- code[1, 4, drop = TRUE]
       }
+
+    } # End for 'nrow(code) != 0L'
+
+  } # End for loop
+
+  data
+}
+
+
+codes <- function(data, max = 5, factor = FALSE, ...){
+  exec <- function(x){
+    label <- get_var_label(data, x, default = NA)
+    if(length(unique(data[[x]])) >=2 & length(unique(data[[x]])) <= max){
+
+      if(is.factor(data[[x]])){
+        code <- c(NA, levels(data[[x]]))
+      }else{
+        code <- c(NA, sort(unique(data[[x]])))
+      }
+
+      label <- c(label, rep(NA, length(code) - 1))
+      variable <- c(x, rep(NA, length(code) - 1))
+
+      data.frame(variable = variable, code = code, label = label)
+
+    }else{
+      data.frame(variable = x, code = NA, label = label)
     }
   }
 
+  out <- lapply(names(data), exec)
+  out <- do.call(rbind, out)
+  row.names(out) <- NULL
+  out
+}
+
+
+#' Get / Set a variable label
+#'
+#' @param x a vector or a data frame.
+#' @param value a character string or `NULL` to remove the label
+#'  For data frames, it could also be a named list or a character vector
+#'  of same length as the number of columns in `x`.
+#' @param unlist for data frames, return a named vector instead of a list.
+#' @param null.action for data frames, by default `NULL` will be returned for
+#'  columns with no variable label. Use `"fill"` to populate with the column name
+#'  instead, or `"skip"` to remove such values from the returned list.
+#' @param ... further arguments.
+#'
+#' @details
+#'   For data frames, if `value` is a named list, only elements whose name will
+#'   match a column of the data frame will be taken into account. If `value`
+#'   is a character vector, labels should in the same order as the columns of
+#'   the data.frame.
+#'
+#' @export
+#'
+#' @examples
+#' var_label(iris$Sepal.Length)
+#' var_label(iris$Sepal.Length) <- 'Length of the sepal'
+#' var_label(iris$Sepal.Length)
+#'
+#' # To remove a variable label
+#' var_label(iris$Sepal.Length) <- NULL
+#' var_label(iris$Sepal.Length)
+#'
+#' # To change several variable labels at once
+#' var_label(iris) <- c(
+#'   "sepal length", "sepal width", "petal length",
+#'   "petal width", "species"
+#' )
+#' var_label(iris)
+#'
+#' var_label(iris) <- list(
+#'   Petal.Width = "width of the petal",
+#'   Petal.Length = "length of the petal",
+#'   Sepal.Width = NULL,
+#'   Sepal.Length = NULL
+#' )
+#' var_label(iris)
+#' var_label(iris, null_action = "fill")
+#' var_label(iris, null_action = "skip")
+#' var_label(iris, unlist = TRUE)
+var_label <- function(x, ...) {
+  UseMethod("var_label")
+}
+
+
+#' @export
+var_label.default <- function(x, ...) {
+  attr(x, "label", exact = TRUE)
+}
+
+
+#' @rdname var_label
+#' @export
+var_label.data.frame <- function(x,
+                                 unlist = FALSE,
+                                 null.action = c("keep", "fill", "skip"), ...) {
+  r <- lapply(x, var_label)
+
+  null.action <- match.arg(null.action)
+
+  if (null.action == "fill") {
+    r <- mapply(
+      function(l, n) {
+        if (is.null(l)) n else l
+      },
+      r,
+      names(r),
+      SIMPLIFY = FALSE
+    )
+  }
+
+  if (null.action == "skip") {
+    r <- r[!sapply(r, is.null)]
+  }
+
+  if (unlist) {
+    r <- lapply(
+      r,
+      function(x) {
+        if (is.null(x)) "" else x
+      }
+    )
+    r <- base::unlist(r, use.names = TRUE)
+  }
+
+  r
+}
+
+
+#' @rdname var_label
+#' @export
+`var_label<-` <- function(x, value) {
+  UseMethod("var_label<-")
+}
+
+
+#' @export
+`var_label<-.default` <- function(x, value) {
+  if ((!is.character(value) && !is.null(value)) || length(value) > 1)
+    stop("`value` should be a single character string or NULL",
+         call. = FALSE, domain = "R-labelled")
+  attr(x, "label") <- value
+  x
+}
+
+
+#' @export
+`var_label<-.data.frame` <- function(x, value) {
+  if ((!is.character(value) && !is.null(value)) && !is.list(value) ||
+      (is.character(value) && length(value) > 1 && length(value) != ncol(x)))
+    stop(
+      paste0(
+        "`value` should be a named list, NULL, a single character string or a ",
+        "character vector of same length than the number of columns in `x`"
+      ),
+      call. = FALSE, domain = "R-labelled")
+  if (is.character(value) && length(value) == 1) {
+    value <- as.list(rep(value, ncol(x)))
+    names(value) <- names(x)
+  }
+  if (is.character(value) && length(value) == ncol(x)) {
+    value <- as.list(value)
+    names(value) <- names(x)
+  }
+  if (is.null(value)) {
+    value <- as.list(rep(1, ncol(x)))
+    names(value) <- names(x)
+    value <- lapply(value, function(x) {
+      x <- NULL
+    })
+  }
+
+  if (!all(names(value) %in% names(x))) {
+    missing_names <- paste0(
+      setdiff(names(value), names(x)),
+      collapse = ", "
+    )
+    stop("some variables not found in x:", missing_names)
+  }
+
+  value <- value[names(value) %in% names(x)]
+  for (var in names(value)) var_label(x[[var]]) <- value[[var]]
+  x
+}
+
+
+#' Set variable labels in a data frame
+#'
+#' @param data a data frame.
+#' @param ... name-value pairs of variable labels.
+#'
+#' @return Return an updated copy of data.
+#' @export
+#'
+#' @seealso [get_var_label()] gets varaible label in a data frame.
+#'
+#' @examples
+#' data("mtcars")
+#'
+#' mtcars.copy <-  mtcars |>
+#'   set_var_label(am = "Transmission")  |>
+#'   set_var_label(vs = "Engine") |>
+#'   set_var_label(hp = "Gross horsepower", cyl = "Number of cylinders")
+#' str(mtcars)
+#' str(mtcars.copy)
+#'
+#' mtcars.copy <- set_var_label(mtcars.copy, am = NULL)
+#' str(mtcars.copy)
+set_var_label <- function(data, ...){
+  ldata <- list_flatten(list(...))
+  for(i in seq_along(ldata)){
+    name <- names(ldata)[i]
+    name <- select_variable(data, name)
+    var_label(data[[name]]) <- ldata[[i]]
+  }
   data
+}
+
+
+#' Get variable labels in a data frame
+#'
+#' @param data a data frame.
+#' @param ... variale names.
+#' @param default the returm value if can not find label, default == ".name" will
+#'  return the variable name.
+#' @param unlist if TRUE (default), return a named vector instead of a list.
+#'
+#' @return a named vector when unlist == TRUE, othewise a named list.
+#' @export
+#'
+#' @examples
+#' data("mtcars")
+#'
+#' mtcars.copy <-  mtcars |>
+#'   set_var_label(am = "Transmission")  |>
+#'   set_var_label(vs = "Engine") |>
+#'   set_var_label(hp = "Gross horsepower", cyl = "Number of cylinders")
+#'
+#' get_var_label(mtcars.copy, "am")
+#' get_var_label(mtcars.copy, "am", "vs", "wt")
+#' get_var_label(mtcars.copy, "am", "vs", "wt", default = ".name")
+#' get_var_label(mtcars.copy, "am", "vs", "wt", unlist = FALSE)
+get_var_label <- function(data, ..., default = NULL, unlist = TRUE){
+  names <- select_variable(data, ...)
+
+  out <-  lapply(names, \(nm){
+      if(is.null(var_label(data[[nm]]))){
+        if(!is.null(default)){
+          if(is.na(default)){
+            NA
+          }else{
+            if(default == ".name"){
+              nm
+            }else{
+              default
+            }
+          }
+        }else{
+          if(unlist){
+            ""
+          }
+        }
+      }else{
+        var_label(data[[nm]])
+      }
+    })
+
+  if(unlist){
+    unlist(out)
+  }else{
+    out
+  }
+}
+
+
+#' Add title attribute to a data frame
+#'
+#' @param x a data frame.
+#' @param value a character string.
+#'
+#' @return a data frame.
+#' @export
+add_title <- function(x, value = NULL){
+  attr(x, "title") <- value
+  x
+}
+
+
+#' Add note attribute to a data frame
+#'
+#' @param x a data frame.
+#' @param value a character string.
+#' @param append a logical.
+#'
+#' @return a data frame.
+#' @export
+add_note <- function(x, value = NULL, append = TRUE){
+  if(is_empty(value)){
+    attr(x, "note") <- NULL
+  }else{
+    if(append){
+      note <- attr(x, "note")
+      if(is_empty(note)){
+        attr(x, "note") <- value
+      }else{
+        attr(x, "note") <- paste(note, value, sep = "\n")
+      }
+    }else{
+      attr(x, "note") <- value
+    }
+  }
+  x
 }
 

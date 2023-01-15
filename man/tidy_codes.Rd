@@ -4,7 +4,7 @@
 \alias{tidy_codes}
 \title{Tidy codes}
 \usage{
-tidy_codes(data)
+tidy_codes(data = NULL)
 }
 \arguments{
 \item{data}{a data frame contains the 3 columns of variable, code, and label.
@@ -21,3 +21,4 @@ data(cancer.codes)
 cancer.codes
 tidy_codes(cancer.codes)
 }
+\keyword{internal}

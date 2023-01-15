@@ -299,7 +299,10 @@ fmt_desc <- function(data, varnames = names(data), methods = NULL, nonnormal.var
   foramt_execute <- function(varname) {
     # Get the label of the variable, or return the variable name if it cannot be obtained,
     # and then assign it to the variable column.
-    label <- get_label(data, varname)
+    label <- attr(data[[varname]], "label")
+    if(is.null(label)){
+      label <- varname
+    }
 
     # Only numeric and factor variables are formatted. String variables need to be
     # manually converted to factor variables. Other types of variables are not supported.
