@@ -1,4 +1,4 @@
-#' bind a list by rows
+#' Bind a list by rows
 #'
 #' @param data a list contain data frame.
 #' @param names.as.column names as a column, default TRUE..

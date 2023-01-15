@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities-labels.R
 \name{get_var_label}
 \alias{get_var_label}
-\title{Get variable labels in a data frame}
+\title{Get variable labels from a data frame}
 \usage{
 get_var_label(data, ..., default = NULL, unlist = TRUE)
 }
@@ -20,7 +20,7 @@ return the variable name.}
 a named vector when unlist == TRUE, othewise a named list.
 }
 \description{
-Get variable labels in a data frame
+Get variable labels from a data frame
 }
 \examples{
 data("mtcars")
@@ -34,4 +34,7 @@ get_var_label(mtcars.copy, "am")
 get_var_label(mtcars.copy, "am", "vs", "wt")
 get_var_label(mtcars.copy, "am", "vs", "wt", default = ".name")
 get_var_label(mtcars.copy, "am", "vs", "wt", unlist = FALSE)
+}
+\seealso{
+\code{\link[=set_var_label]{set_var_label()}} sets varaible labels to a data frame
 }

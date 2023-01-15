@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities-labels.R
 \name{set_var_label}
 \alias{set_var_label}
-\title{Set variable labels in a data frame}
+\title{Set variable labels to a data frame}
 \usage{
 set_var_label(data, ...)
 }
@@ -15,7 +15,7 @@ set_var_label(data, ...)
 Return an updated copy of data.
 }
 \description{
-Set variable labels in a data frame
+Set variable labels to a data frame
 }
 \examples{
 data("mtcars")
@@ -31,5 +31,5 @@ mtcars.copy <- set_var_label(mtcars.copy, am = NULL)
 str(mtcars.copy)
 }
 \seealso{
-\code{\link[=get_var_label]{get_var_label()}} gets varaible label in a data frame.
+\code{\link[=get_var_label]{get_var_label()}} gets varaible label from a data frame.
 }

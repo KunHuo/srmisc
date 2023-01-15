@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities-list.R
 \name{list_rbind}
 \alias{list_rbind}
-\title{bind a list by rows}
+\title{Bind a list by rows}
 \usage{
 list_rbind(
   data,
@@ -33,5 +33,5 @@ list_rbind(
 a data frame.
 }
 \description{
-bind a list by rows
+Bind a list by rows
 }

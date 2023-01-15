@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities-labels.R
 \name{codes2labels}
 \alias{codes2labels}
-\title{Labels to a data frame by codes}
+\title{Set codes to a data frame}
 \usage{
 codes2labels(data, codes, as.factor = TRUE, exclude = "")
 }
@@ -21,7 +21,7 @@ default TRUE.}
 a data frame.
 }
 \description{
-Labels to a data frame by codes
+Set codes to a data frame
 }
 \examples{
 data("cancer")

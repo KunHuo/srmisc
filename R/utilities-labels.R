@@ -193,7 +193,7 @@ find_labels <- function(data, varname, code = NA, defalut = NULL){
 }
 
 
-#' Labels to a data frame by codes
+#' Set codes to a data frame
 #'
 #' @param data a data frame.
 #' @param codes a data frame contains the 3 columns of variable, code, and label.
@@ -260,31 +260,70 @@ codes2labels <- function(data, codes, as.factor = TRUE, exclude = "") {
 }
 
 
+#' Get codes from a data frame
+#'
+#' @param data a data frame.
+#' @param max for numeric and character, the maximum number of levels of a
+#' variable below which variables will be coded.
+#' @param factor a logical indicating whether to code factors, default FALSE.
+#' @param ... unused.
+#'
+#' @return a data frame with class 'codes'.
+#' @export
+#'
+#' @examples
+#' data("cancer")
+#' codes(cancer)
+#'
+#' cancer <- codes2labels(cancer, cancer.codes)
+#' codes(cancer)
+#' codes(cancer, factor = TRUE)
 codes <- function(data, max = 5, factor = FALSE, ...){
   exec <- function(x){
+    var   <- x
+    code  <- NA
     label <- get_var_label(data, x, default = NA)
-    if(length(unique(data[[x]])) >=2 & length(unique(data[[x]])) <= max){
 
-      if(is.factor(data[[x]])){
-        code <- c(NA, levels(data[[x]]))
+    d <- data[[x]]
+
+    if(is.factor(d)){
+      if(factor){
+        code <- c(NA, 1:nlevels(d))
+        label <- c(label, levels(d))
       }else{
-        code <- c(NA, sort(unique(data[[x]])))
+        code <- c(NA, levels(d))
+        label <- c(label, rep(NA, length(code) - 1))
       }
-
-      label <- c(label, rep(NA, length(code) - 1))
-      variable <- c(x, rep(NA, length(code) - 1))
-
-      data.frame(variable = variable, code = code, label = label)
-
-    }else{
-      data.frame(variable = x, code = NA, label = label)
+    }else if(is.numeric(d) | is.character(d)){
+      ld <- length(unique(d))
+      if(ld >=2 & ld <= max){
+        code  <- c(NA, sort(unique(d)))
+        label <- c(label, rep(NA, length(code) - 1))
+      }
     }
+
+    var   <- c(x, rep(NA, length(code) - 1))
+    data.frame(variable = var, code = code, label = label)
   }
 
   out <- lapply(names(data), exec)
   out <- do.call(rbind, out)
   row.names(out) <- NULL
+  class(out) <- c("codes", "data.frame")
   out
+}
+
+
+#' Print object of 'codes'
+#'
+#' @param x a object of 'codes'.
+#' @param ... further arguments.
+#'
+#' @return No return value.
+#' @keywords internal
+#' @export
+print.codes <- function(x, ...){
+  print_booktabs(x, ...)
 }
 
 
@@ -440,7 +479,7 @@ var_label.data.frame <- function(x,
 }
 
 
-#' Set variable labels in a data frame
+#' Set variable labels to a data frame
 #'
 #' @param data a data frame.
 #' @param ... name-value pairs of variable labels.
@@ -448,7 +487,7 @@ var_label.data.frame <- function(x,
 #' @return Return an updated copy of data.
 #' @export
 #'
-#' @seealso [get_var_label()] gets varaible label in a data frame.
+#' @seealso [get_var_label()] gets varaible label from a data frame.
 #'
 #' @examples
 #' data("mtcars")
@@ -473,7 +512,7 @@ set_var_label <- function(data, ...){
 }
 
 
-#' Get variable labels in a data frame
+#' Get variable labels from a data frame
 #'
 #' @param data a data frame.
 #' @param ... variale names.
@@ -483,6 +522,8 @@ set_var_label <- function(data, ...){
 #'
 #' @return a named vector when unlist == TRUE, othewise a named list.
 #' @export
+#'
+#' @seealso [set_var_label()] sets varaible labels to a data frame
 #'
 #' @examples
 #' data("mtcars")
