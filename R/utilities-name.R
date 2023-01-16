@@ -134,6 +134,11 @@ rename <- function (x, ..., gsub = FALSE, fixed = TRUE, warn = TRUE) {
 #'
 #' @return a data frame.
 #' @export
+#'
+#' @examples
+#' data("mtcars")
+#' mtcars
+#' rownames_to_column(mtcars)
 rownames_to_column <- function(data, varname = "term"){
   if(!is.data.frame(data)){
     data <- as.data.frame(data, stringsAsFactors = FALSE)
