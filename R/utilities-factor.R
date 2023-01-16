@@ -1,5 +1,6 @@
+# fct_recode --------------------------------------------------------------
+
 #' Recode a factor
-#'
 #'
 #' Combining or rearranging a factor can be tedious if it has many levels.
 #' fct_recode supports this step by accepting a direct definition of new levels
@@ -9,8 +10,7 @@
 #'
 #'
 #' @param x
-#' the factor whose levels are to be altered. If x is character it will be
-#' factorized (using factor defaults).
+#' a facotr (or character vector) or a data frame.
 #' @param ...
 #' the old levels (combined by c() if there are several) named with the new level.
 #' See examples.
@@ -24,11 +24,12 @@
 #' which drops empty levels.
 #' @param num
 #' logical. If set to TRUE the result will be numeric
+#' @param varname variable name contains in the data frame.
 #'
 #' @seealso [factor], [levels]
 #'
-#' @return
-#' the factor having the new levels applied.
+#' @return Return a factor when 'x' is a factor or character, otherwise return a
+#' data frame when 'x' is a data frame.
 #' @export
 #'
 #' @examples
@@ -69,7 +70,14 @@
 #'
 #' # or directly turned to numeric
 #' fct_recode(likert, "1"=1:6, "2"=7:8, "5"=9:10, num=TRUE)
-fct_recode <- function (x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE) {
+fct_recode <- function (x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE){
+  UseMethod("fct_recode")
+}
+
+
+#' @rdname fct_recode
+#' @export
+fct_recode.factor <- function (x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE) {
   if (xchar <- is.character(x)) {
     x <- factor(x)
   }
@@ -101,55 +109,143 @@ fct_recode <- function (x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE
 }
 
 
-#' Reverse order of factor levels
-#'
-#' @param data a data frame.
-#' @param varname a string of variable name.
-#'
-#' @return a data frame.
-#'
+#' @rdname fct_recode
 #' @export
-fct_reverse <- function(data, varname){
-  data[[varname]] <- factor(data[[varname]], levels = rev(levels(data[[varname]])))
-  data
+fct_recode.character <- function (x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE) {
+  x <- factor(x)
+  fct_recode(x = x, ..., elselevel = elselevel, use.empty = use.empty, num = num)
 }
 
+
+#' @rdname fct_recode
+#' @export
+fct_recode.data.frame <- function (x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE, varname = NULL) {
+  varname <- select_variable(x, varname)
+  x <- x[[varname]]
+  fct_recode(x = x, ..., elselevel = elselevel, use.empty = use.empty, num = num)
+}
+
+
+# fct_reverse -------------------------------------------------------------
+
+#' Reverse order of factor levels
+#'
+#' @param x a facotr (or character vector) or a data frame.
+#' @param varname variable name contains in the data frame.
+#' @param ... further arguments.
+#'
+#' @return Return a factor when 'x' is a factor or character, otherwise return a
+#' data frame when 'x' is a data frame.
+#' @export
+#'
+#' @examples
+#' f <- factor(c("a", "b", "c"))
+#' f
+#' fct_reverse(f)
+
+#' fd <- data.frame(x = factor(c("a", "b", "c")), y = 1:3)
+#' fd$x
+#' fd <- fct_reverse(fd, varname = "x")
+#' fd$x
+fct_reverse <- function(x, ...){
+  UseMethod("fct_reverse")
+}
+
+
+#' @rdname fct_reverse
+#' @export
+fct_reverse.factor <- function(x, ...){
+  factor(x, levels = rev(levels(x)))
+}
+
+
+#' @rdname fct_reverse
+#' @export
+fct_reverse.character <- function(x, ...){
+  x <- factor(x)
+  factor(x, levels = rev(levels(x)))
+}
+
+
+#' @rdname fct_reverse
+#' @export
+fct_reverse.data.frame <- function(x, varname = NULL, ...){
+  varname <- select_variable(x, varname)
+  x[[varname]] <- fct_reverse(x[[varname]])
+  x
+}
+
+
+# fct_reorder -------------------------------------------------------------
 
 #' Reorder factor levels
 #'
-#' @param data a data frame.
+#' @param x a facotr (or character vector) or a data frame.
+#' @param ... the levels of factor.
 #' @param varname a string of variable name.
-#' @param order order levels.
 #' @param exclude a vector of values to be excluded when forming the set of levels.
 #' This may be factor with the same level set as x or should be a character.
 #'
-#' @return a data frame.
+#' @return Return a factor when 'x' is a factor or character, otherwise return a
+#' data frame when 'x' is a data frame.
 #' @export
-fct_reorder <- function(data, varname, order, exclude = NA) {
-  levels <- levels(data[[varname]])
+#'
+#' @examples
+#' # for character
+#' f <- c("a", "b", "c", "d")
+#' f
+#' fct_reorder(f, "c", "b")
+#'
+#' # for factor
+#' f <- factor(f)
+#' f
+#' fct_reorder(f, "d", "b")
+#'
+#' # for data.frame
+#' fd <- data.frame(x = factor(c("a", "b", "c", "d")), y = 1:4)
+#' fd$x
+#' fd <- fct_reorder(fd, varname = "x", "b", "d")
+#' fd$x
+fct_reorder <- function(x, ...){
+  UseMethod("fct_reorder")
+}
+
+
+#' @rdname fct_reorder
+#' @export
+fct_reorder.factor <- function(x, ..., exclude = NA){
+  levels <- levels(x)
+  order <- c(...)
   index <- order %in% levels
   if (!all(index)) {
     text <- paste(order[!index], collapse = ", ")
-    text <- sprintf("%s not at the level of %s.", text, varname)
+    text <- sprintf("The level of '%s' is not in the data.", text)
     stop(text, call. = FALSE)
   }
   levels <- c(order, setdiff(levels, order))
-  data[[varname]] <- factor(data[[varname]], levels = levels, exclude = exclude)
-  data
+  x<- factor(x, levels = levels, exclude = exclude)
+  x
 }
 
 
-#' Count of factor levels
-#'
-#' @param data a data frame.
-#' @param varname a string of variable name.
-#'
-#' @return a data frame.
+#' @rdname fct_reorder
 #' @export
-fct_count <- function(data, varname){
-  table(data[[varname]])
+fct_reorder.character <- function(x, ..., exclude = NA){
+  x <- factor(x)
+  fct_reorder(x, ..., exclude = exclude)
 }
 
+
+#' @rdname fct_reorder
+#' @export
+fct_reorder.data.frame <- function(x, ..., exclude = NA, varname = NULL) {
+  varname <- select_variable(x, varname)
+  x[[varname]] <- fct_reorder(x[[varname]], ..., exclude = exclude)
+  x
+}
+
+
+# fct_auto ----------------------------------------------------------------
 
 #' Automatic conversion to factor
 #'
@@ -163,7 +259,16 @@ fct_count <- function(data, varname){
 #'
 #' @return a data frame.
 #' @export
-fct_auto <- function(data, include = NULL, exclude = NULL, min = 2, max = 5, na.include = TRUE, na.level = "Missing"){
+#'
+#' @examples
+#' data("cancer")
+#'
+#' str(cancer)
+#' str(fct_auto(cancer))
+#' str(fct_auto(cancer, max = 2))
+#' str(fct_auto(cancer, exclude = "status"))
+fct_auto <- function(data, include = NULL, exclude = NULL, min = 2, max = 5,
+                     na.include = TRUE, na.level = "Missing"){
   if(is.null(include)){
     variables <- names(data)
   }else{
@@ -293,3 +398,16 @@ refactor <- function(f, new_levels, ordered = NA) {
   new_f
 }
 
+
+# Others ------------------------------------------------------------------
+
+#' Count of factor levels
+#'
+#' @param data a data frame.
+#' @param varname a string of variable name.
+#'
+#' @return a data frame.
+#' @export
+fct_count <- function(data, varname){
+  table(data[[varname]])
+}

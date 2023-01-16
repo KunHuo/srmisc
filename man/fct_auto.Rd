@@ -35,3 +35,11 @@ a data frame.
 \description{
 Automatic conversion to factor
 }
+\examples{
+data("cancer")
+
+str(cancer)
+str(fct_auto(cancer))
+str(fct_auto(cancer, max = 2))
+str(fct_auto(cancer, exclude = "status"))
+}

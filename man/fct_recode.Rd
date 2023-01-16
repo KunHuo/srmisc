@@ -2,13 +2,28 @@
 % Please edit documentation in R/utilities-factor.R
 \name{fct_recode}
 \alias{fct_recode}
+\alias{fct_recode.factor}
+\alias{fct_recode.character}
+\alias{fct_recode.data.frame}
 \title{Recode a factor}
 \usage{
 fct_recode(x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE)
+
+\method{fct_recode}{factor}(x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE)
+
+\method{fct_recode}{character}(x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE)
+
+\method{fct_recode}{data.frame}(
+  x,
+  ...,
+  elselevel = NULL,
+  use.empty = FALSE,
+  num = FALSE,
+  varname = NULL
+)
 }
 \arguments{
-\item{x}{the factor whose levels are to be altered. If x is character it will be
-factorized (using factor defaults).}
+\item{x}{a facotr (or character vector) or a data frame.}
 
 \item{...}{the old levels (combined by c() if there are several) named with the new level.
 See examples.}
@@ -22,9 +37,12 @@ Should it be left in the level's list or be dropped? The default is FALSE,
 which drops empty levels.}
 
 \item{num}{logical. If set to TRUE the result will be numeric}
+
+\item{varname}{variable name contains in the data frame.}
 }
 \value{
-the factor having the new levels applied.
+Return a factor when 'x' is a factor or character, otherwise return a
+data frame when 'x' is a data frame.
 }
 \description{
 Combining or rearranging a factor can be tedious if it has many levels.
