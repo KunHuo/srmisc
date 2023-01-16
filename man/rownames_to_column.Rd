@@ -17,3 +17,8 @@ a data frame.
 \description{
 Convert rownames to column
 }
+\examples{
+data("mtcars")
+mtcars
+rownames_to_column(mtcars)
+}
