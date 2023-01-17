@@ -15,10 +15,11 @@ URL: https://github.com/kunhuo/srmisc
 Imports: 
     flextable,
     ggplot2,
+    grDevices,
     officer,
     R.utils,
-    scales,
-    showtext
+    showtext,
+    stats
 Suggests: 
     knitr,
     rmarkdown
