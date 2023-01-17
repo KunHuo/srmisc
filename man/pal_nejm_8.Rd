@@ -21,6 +21,3 @@ Color palettes of NEJM journal
 pal_nejm_8()
 show_colors(pal_jco_10())
 }
-\seealso{
-\code{\link[ggsci:scale_nejm]{ggsci::scale_color_nejm()}}, \code{\link[ggsci:scale_nejm]{ggsci::scale_fill_nejm()}}
-}

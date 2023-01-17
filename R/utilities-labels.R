@@ -52,9 +52,7 @@ extract_terms <- function(data, which = 1){
 #' @param which terms form which column, default the first column.
 #' @param columns which columns will be added, one or more of 'term', 'varname',
 #' and 'code'.
-#' @param .before one-based column index or column name where to add the new columns,
-#' default: before first column.
-#' @param .after one-based column index or column name where to add the new columns,
+#' @param after one-based column index or column name where to add the new columns,
 #' default: before first column.
 #'
 #' @return A data frame contains the terms.
@@ -75,18 +73,19 @@ extract_terms <- function(data, which = 1){
 add_terms_columns <- function(data,
                               which = 1,
                               columns = c("term", "varname", "code"),
-                              .before = NULL,
-                              .after = NULL){
+                              after = NULL){
   terms <- extract_terms(data, which = which)
 
   columns <- paste0(".", columns)
 
   terms <- terms[, columns, drop = FALSE]
 
-  if(is.null(.before) & is.null(.after)){
-    .before <- 1
+  if(is.null(after)){
+    after <- 0
   }
-  tibble::add_column(data, terms, .after = .after, .before = .before)
+  # tibble::add_column(data, terms, .after = .after, .before = .before)
+
+  append2(data, terms, after = after)
 }
 
 
@@ -122,7 +121,7 @@ tidy_codes <- function(data = NULL){
   data[1] <- term1
 
   names(data) <- c(".varname", ".code", ".label")
-  data <- tibble::add_column(data, .term = data[, 1, drop = TRUE], .after = 0)
+  data <- append2(data, data[, 1, drop = TRUE], names = ".term", after = 0)
 
   for(i in 1:nrow(data)){
     if(is.na(term0[i])){

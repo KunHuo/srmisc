@@ -21,6 +21,3 @@ Color palettes of AAAS journal
 pal_aaas_10()
 show_colors(pal_aaas_10())
 }
-\seealso{
-\code{\link[ggsci:scale_aaas]{ggsci::scale_color_aaas()}}, \code{\link[ggsci:scale_aaas]{ggsci::scale_fill_aaas()}}
-}

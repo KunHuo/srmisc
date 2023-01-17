@@ -90,7 +90,7 @@ get_template <- function(template) {
   regression <- regexpr(paste("(\\.(?i)(docx))$", sep = ""), template)
 
   if (regression < 1) {
-    stop("invalid template name, it must have extension .docx", call. = FALSE)
+    stop("invalid template name, it must have extension.docx", call. = FALSE)
   }
   template <- R.utils::getAbsolutePath(template, expandTilde = TRUE)
 

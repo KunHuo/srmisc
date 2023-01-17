@@ -21,6 +21,3 @@ Color palettes of JCO journal
 pal_jco_10()
 show_colors(pal_jco_10())
 }
-\seealso{
-\code{\link[ggsci:scale_jco]{ggsci::scale_color_jco()}}, \code{\link[ggsci:scale_jco]{ggsci::scale_fill_jco()}}
-}

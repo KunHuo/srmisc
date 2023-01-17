@@ -129,8 +129,18 @@ append2.data.frame <- function (x, values, after = NULL, rows = FALSE, names = N
     x
   }
   if (rows) {
-    .InsertRow(x, values, after = after)
+    output <- .InsertRow(x, values, after = after)
   }else {
-    as.data.frame(append(x, set_names(list(values), names = names), after = after))
+    output <- as.data.frame(append(x, set_names(list(values), names = names),
+                                   after = after),
+                            check.names = FALSE)
   }
+
+  attr.old <- attributes(x)
+  attr.new <- attributes(output)
+  attr.out <- attr.old
+  attr.out$names <- attr.new$names
+  attr.out$row.names <- attr.new$row.names
+  attributes(output) <- attr.out
+  output
 }

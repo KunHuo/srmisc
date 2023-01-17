@@ -21,6 +21,3 @@ Color palettes of JAMA journal
 pal_jama_7()
 show_colors(pal_jama_7())
 }
-\seealso{
-\code{\link[ggsci:scale_jama]{ggsci::scale_color_jama()}}, \code{\link[ggsci:scale_jama]{ggsci::scale_fill_jama()}}
-}

@@ -8,8 +8,7 @@ add_terms_columns(
   data,
   which = 1,
   columns = c("term", "varname", "code"),
-  .before = NULL,
-  .after = NULL
+  after = NULL
 )
 }
 \arguments{
@@ -20,10 +19,7 @@ add_terms_columns(
 \item{columns}{which columns will be added, one or more of 'term', 'varname',
 and 'code'.}
 
-\item{.before}{one-based column index or column name where to add the new columns,
-default: before first column.}
-
-\item{.after}{one-based column index or column name where to add the new columns,
+\item{after}{one-based column index or column name where to add the new columns,
 default: before first column.}
 }
 \value{

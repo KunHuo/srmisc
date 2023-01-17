@@ -6,13 +6,14 @@
 #' @return A character vectors of hex color.
 #' @export
 #'
-#' @seealso [ggsci::scale_color_aaas()], [ggsci::scale_fill_aaas()]
-#'
 #' @examples
 #' pal_aaas_10()
 #' show_colors(pal_aaas_10())
 pal_aaas_10 <- function(n = 1:10, alpha = 1){
-  ggsci::pal_aaas(alpha = alpha)(10)[n]
+
+  cols <- c("#3B4992FF", "#EE0000FF", "#008B45FF", "#631879FF", "#008280FF",
+            "#BB0021FF", "#5F559BFF", "#A20056FF", "#808180FF", "#1B1919FF")
+  pals(cols = cols, n = n, alpha = alpha)
 }
 
 
@@ -22,13 +23,13 @@ pal_aaas_10 <- function(n = 1:10, alpha = 1){
 #' @inherit pal_aaas_10 return
 #' @export
 #'
-#' @seealso [ggsci::scale_color_jama()], [ggsci::scale_fill_jama()]
-#'
 #' @examples
 #' pal_jama_7()
 #' show_colors(pal_jama_7())
 pal_jama_7 <- function(n = 1:7, alpha = 1){
-  ggsci::pal_jama(alpha = alpha)(7)[n]
+  cols <- c("#374E55FF", "#DF8F44FF", "#00A1D5FF", "#B24745FF", "#79AF97FF",
+            "#6A6599FF", "#80796BFF")
+  pals(cols = cols, n = n, alpha = alpha)
 }
 
 
@@ -38,13 +39,13 @@ pal_jama_7 <- function(n = 1:7, alpha = 1){
 #' @inherit pal_aaas_10 return
 #' @export
 #'
-#' @seealso [ggsci::scale_color_jco()], [ggsci::scale_fill_jco()]
-#'
 #' @examples
 #' pal_jco_10()
 #' show_colors(pal_jco_10())
 pal_jco_10 <- function(n = 1:10, alpha = 1){
-  ggsci::pal_jco(alpha = alpha)(10)[n]
+  cols <- c("#0073C2FF", "#EFC000FF", "#868686FF", "#CD534CFF", "#7AA6DCFF",
+            "#003C67FF", "#8F7700FF", "#3B3B3BFF", "#A73030FF", "#4A6990FF")
+  pals(cols = cols, n = n, alpha = alpha)
 }
 
 
@@ -54,13 +55,13 @@ pal_jco_10 <- function(n = 1:10, alpha = 1){
 #' @inherit pal_aaas_10 return
 #' @export
 #'
-#' @seealso [ggsci::scale_color_nejm()], [ggsci::scale_fill_nejm()]
-#'
 #' @examples
 #' pal_nejm_8()
 #' show_colors(pal_jco_10())
 pal_nejm_8 <- function(n = 1:8, alpha = 1){
-  ggsci::pal_nejm(alpha = alpha)(8)[n]
+  cols <- c("#BC3C29FF", "#0072B5FF", "#E18727FF", "#20854EFF",
+            "#7876B1FF", "#6F99ADFF", "#FFDC91FF", "#EE4C97FF")
+  pals(cols = cols, n = n, alpha = alpha)
 }
 
 
@@ -70,13 +71,13 @@ pal_nejm_8 <- function(n = 1:8, alpha = 1){
 #' @inherit pal_aaas_10 return
 #' @export
 #'
-#' @seealso [ggsci::scale_color_lancet()], [ggsci::scale_fill_lancet()]
-#'
 #' @examples
 #' pal_lancet_9()
 #' show_colors(pal_lancet_9())
 pal_lancet_9 <- function(n = 1:9, alpha = 1){
-  ggsci::pal_lancet(alpha = alpha)(9)[n]
+  cols <- c("#00468BFF", "#ED0000FF", "#42B540FF", "#0099B4FF", "#925E9FFF",
+           "#FDAF91FF", "#AD002AFF", "#ADB6B6FF", "#1B1919FF")
+  pals(cols = cols, n = n, alpha = alpha)
 }
 
 
@@ -119,53 +120,23 @@ show_colors <- function(colors,
 }
 
 
-# Reexport from ggsci package ---------------------------------------------
+set_alpha <- function(cols, alpha = 1){
+  output <- sapply(cols, function(x){
+    r <- col2rgb(x, alpha = TRUE)
+    rgb(red = r[1, 1],
+        green = r[2, 1],
+        blue = r[3, 1],
+        alpha = r[4, 1] * alpha,
+        maxColorValue = 255)
+  })
+  names(output) <- NULL
+  output
+}
 
-#' @importFrom ggsci scale_color_aaas
-#' @export
-ggsci::scale_color_aaas
-
-
-#' @importFrom ggsci scale_fill_aaas
-#' @export
-ggsci::scale_fill_aaas
-
-
-#' @importFrom ggsci scale_color_jco
-#' @export
-ggsci::scale_color_jco
-
-
-#' @importFrom ggsci scale_fill_jco
-#' @export
-ggsci::scale_fill_jco
-
-
-#' @importFrom ggsci scale_color_nejm
-#' @export
-ggsci::scale_color_nejm
-
-
-#' @importFrom ggsci scale_fill_nejm
-#' @export
-ggsci::scale_fill_nejm
-
-
-#' @importFrom ggsci scale_color_jama
-#' @export
-ggsci::scale_color_jama
-
-
-#' @importFrom ggsci scale_fill_jama
-#' @export
-ggsci::scale_fill_jama
-
-
-#' @importFrom ggsci scale_color_lancet
-#' @export
-ggsci::scale_color_lancet
-
-
-#' @importFrom ggsci scale_fill_lancet
-#' @export
-ggsci::scale_fill_lancet
+pals <- function(cols, n, alpha = 1){
+  if(alpha < 0 | alpha > 1){
+    stop("Transparency level, a real number in (0, 1].")
+  }
+  cols <- cols[n]
+  set_alpha(cols = cols, alpha = alpha)
+}

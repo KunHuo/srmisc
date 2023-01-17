@@ -21,6 +21,3 @@ Color palettes of lancet journal
 pal_lancet_9()
 show_colors(pal_lancet_9())
 }
-\seealso{
-\code{\link[ggsci:scale_lancet]{ggsci::scale_color_lancet()}}, \code{\link[ggsci:scale_lancet]{ggsci::scale_fill_lancet()}}
-}
