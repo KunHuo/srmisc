@@ -140,3 +140,22 @@ pals <- function(cols, n, alpha = 1){
   cols <- cols[n]
   set_alpha(cols = cols, alpha = alpha)
 }
+
+show_colors2 <- function(colors){
+
+  set.seed(1234)
+  df <- data.frame(y = colors, x = runif(length(colors), min = 4, max = 10))
+  df$y <- factor(df$y, levels = rev(colors))
+
+  ggplot(df) +
+    geom_col(aes(x = x, y = y, fill = y), show.legend = FALSE, width = 0.8) +
+    scale_fill_manual(values = colors) +
+    gg_theme_sci() +
+    ggplot2::coord_cartesian(expand = FALSE) +
+    theme(axis.line = element_blank(),
+          axis.ticks = element_blank(),
+          axis.title = element_blank(),
+          axis.text.x = element_blank())
+
+
+}
