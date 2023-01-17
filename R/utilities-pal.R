@@ -81,49 +81,10 @@ pal_lancet_9 <- function(n = 1:9, alpha = 1){
 }
 
 
-#' Show colors
-#'
-#' @description
-#' A quick and dirty way to show colors in a plot.
-#'
-#' @param colors a character vector of colors.
-#' @param labels label each colour with its hex name?
-#' @param borders a logical indicating whether or not to show border colour for
-#' each tile, default FALSE.
-#' @param cex.label size of printed labels, as multiplier of default size.
-#' @param ncol number of columns. If not supplied, tries to be as square as
-#' possible.
-#'
-#' @return No return value.
-#' @export
-#'
-#' @examples
-#' show_colors(pal_jama_7())
-#'
-#' show_colors(pal_lancet_9(), labels = FALSE)
-show_colors <- function(colors,
-                        labels = TRUE,
-                        borders = FALSE,
-                        cex.label = 1,
-                        ncol = NULL){
-
-  if(borders){
-    borders <- NULL
-  }else{
-    borders <- NA
-  }
-  scales::show_col(colours = colors,
-                   labels = labels,
-                   borders = borders,
-                   cex_label = cex.label,
-                   ncol = ncol)
-}
-
-
 set_alpha <- function(cols, alpha = 1){
   output <- sapply(cols, function(x){
-    r <- col2rgb(x, alpha = TRUE)
-    rgb(red = r[1, 1],
+    r <- grDevices::col2rgb(x, alpha = TRUE)
+    grDevices::rgb(red = r[1, 1],
         green = r[2, 1],
         blue = r[3, 1],
         alpha = r[4, 1] * alpha,
@@ -133,6 +94,7 @@ set_alpha <- function(cols, alpha = 1){
   output
 }
 
+
 pals <- function(cols, n, alpha = 1){
   if(alpha < 0 | alpha > 1){
     stop("Transparency level, a real number in (0, 1].")
@@ -141,21 +103,34 @@ pals <- function(cols, n, alpha = 1){
   set_alpha(cols = cols, alpha = alpha)
 }
 
-show_colors2 <- function(colors){
 
-  set.seed(1234)
-  df <- data.frame(y = colors, x = runif(length(colors), min = 4, max = 10))
-  df$y <- factor(df$y, levels = rev(colors))
+#' Show colors
+#'
+#' @description
+#' A quick and dirty way to show colors in a plot.
+#'
+#' @param colors a character vector of colors.
+#'
+#' @return No return value.
+#' @export
+#'
+#' @examples
+#' show_colors(pal_jama_7())
+show_colors <- function(colors){
 
-  ggplot(df) +
-    geom_col(aes(x = x, y = y, fill = y), show.legend = FALSE, width = 0.8) +
-    scale_fill_manual(values = colors) +
-    gg_theme_sci() +
+  colors <- rev(colors)
+  df <- data.frame(y = colors, x = statas::runif(length(colors), min = 5, max = 10))
+  df$y <- factor(df$y, levels = colors)
+
+  ggplot2::ggplot(df) +
+    ggplot2::geom_col(ggplot2::aes_string(x = "x", y = "y", fill = "y"),
+                      show.legend = FALSE,
+                      width = 0.7) +
+    ggplot2::scale_fill_manual(values = colors) +
+    gg_theme_sci(plot.margin = rep(1.5, 4)) +
     ggplot2::coord_cartesian(expand = FALSE) +
-    theme(axis.line = element_blank(),
-          axis.ticks = element_blank(),
-          axis.title = element_blank(),
-          axis.text.x = element_blank())
-
-
+    ggplot2::theme(axis.line = ggplot2::element_blank(),
+                   axis.ticks = ggplot2::element_blank(),
+                   axis.title = ggplot2::element_blank(),
+                   axis.text.x = ggplot2::element_blank())
 }
