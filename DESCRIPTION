@@ -18,7 +18,6 @@ Imports:
     grDevices,
     officer,
     R.utils,
-    showtext,
     stats
 Suggests: 
     knitr,

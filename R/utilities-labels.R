@@ -241,7 +241,7 @@ codes2labels <- function(data, codes, as.factor = TRUE, exclude = "") {
         }else{
           names(values) <- labels
           attr(data[[varnames[i]]], "labels") <- values
-          class(data[[varnames[i]]]) <- c("haven_labelled", "vctrs_vctr", class(data[[varnames[i]]]))
+          class(data[[varnames[i]]]) <- class(data[[varnames[i]]]) # "haven_labelled", "vctrs_vctr",
         }
 
       } # End for 'nrow(code) >= 2L'

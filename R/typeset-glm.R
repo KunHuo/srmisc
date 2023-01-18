@@ -6,6 +6,17 @@
 #' @export
 #'
 #' @seealso [stats::glm()]
+#'
+#' @examples
+#' data("cancer")
+#' data("cancer.codes")
+#'
+#' dat <- codes2labels(data = cancer, codes = cancer.codes)
+#'
+#' fit <- glm(status ~ age + size + race + size + meta,
+#'            data = dat,
+#'            family = binomial())
+#' typeset(fit)
 typeset.glm <- function(x,
                         data = NULL,
                         outcome = NULL,

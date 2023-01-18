@@ -648,8 +648,6 @@ gg_draw_label <- function (label,
 #' @param units Units, default cm.
 #' @param dpi DPI to use for raster graphics.
 #' @param aspect.ratio aspect ratio of the panel.
-#' @param use.showtext when TRUE, the package of showtext is using for supporting
-#' more fonts.
 #' @param ... Other arguments passed on to the graphics device function,
 #' as specified by device.
 #'
@@ -662,14 +660,12 @@ gg_save <- function(plot = ggplot2::last_plot(),
                     units = "cm",
                     dpi = 300,
                     aspect.ratio,
-                    use.showtext = FALSE,
                     ...) {
 
   if(!missing(aspect.ratio)){
     plot <- ggplot2::theme(aspect.ratio = aspect.ratio)
   }
 
- if(!use.showtext){
    ggplot2::ggsave(
      filename = path,
      plot = plot,
@@ -677,21 +673,7 @@ gg_save <- function(plot = ggplot2::last_plot(),
      height = height,
      units = units,
      dpi = dpi,
-     ...
-   )
- }else{
-   showtext::showtext_auto()
-   ggplot2::ggsave(
-     filename = path,
-     plot = plot,
-     width = width,
-     height = height,
-     units = units,
-     dpi = dpi,
-     ...
-   )
-   showtext::showtext_auto(FALSE)
- }
+     ...)
 }
 
 

@@ -12,7 +12,6 @@ gg_save(
   units = "cm",
   dpi = 300,
   aspect.ratio,
-  use.showtext = FALSE,
   ...
 )
 }
@@ -30,9 +29,6 @@ gg_save(
 \item{dpi}{DPI to use for raster graphics.}
 
 \item{aspect.ratio}{aspect ratio of the panel.}
-
-\item{use.showtext}{when TRUE, the package of showtext is using for supporting
-more fonts.}
 
 \item{...}{Other arguments passed on to the graphics device function,
 as specified by device.}

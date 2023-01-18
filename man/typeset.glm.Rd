@@ -64,6 +64,17 @@ a data frame with class 'typeset'.
 \description{
 Typeset a(n) glm object
 }
+\examples{
+data("cancer")
+data("cancer.codes")
+
+dat <- codes2labels(data = cancer, codes = cancer.codes)
+
+fit <- glm(status ~ age + size + race + size + meta,
+           data = dat,
+           family = binomial())
+typeset(fit)
+}
 \seealso{
 \code{\link[stats:glm]{stats::glm()}}
 }
