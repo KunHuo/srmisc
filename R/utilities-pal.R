@@ -117,10 +117,9 @@ pals <- function(cols, n, alpha = 1){
 #' @examples
 #' show_colors(pal_jama_7())
 show_colors <- function(colors){
-
   colors <- rev(colors)
-  df <- data.frame(y = colors, x = statas::runif(length(colors), min = 5, max = 10))
-  df$y <- factor(df$y, levels = colors)
+  df     <- data.frame(y = colors, x = stats::runif(length(colors), min = 5, max = 10))
+  df$y   <- factor(df$y, levels = colors)
 
   ggplot2::ggplot(df) +
     ggplot2::geom_col(ggplot2::aes_string(x = "x", y = "y", fill = "y"),
