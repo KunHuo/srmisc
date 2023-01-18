@@ -68,6 +68,11 @@ relocate <- function(data, variables, before = NULL, after = NULL) {
 
   pos <- unique(c(lhs, to_move, rhs))
   out <- data[pos]
+
+  attr.out <- attributes(data)
+  attr.out$names <- attributes(out)$names
+  attr.out$row.names <- attributes(out)$row.names
+  attributes(out) <- attr.out
   out
 }
 
@@ -115,21 +120,68 @@ seq2 <- function(from, to) {
 #' @param x a data frame.
 #' @param y a data frame.
 #' @param by specifications of the columns used for merging.
+#' @param attr Choose one of the two, whether to retain the attributes of the
+#' left data frame or the right data frame, but no matter whether you choose
+#' the left or the right, the attributes of the variables will all be retained.
 #'
 #' @return A data frame.
 #' @export
 #'
 #' @examples
-#' A <- data.frame(term = c("t1", "t2", "t3"), x = 1:3)
-#' B <- data.frame(term = c("t1", "t3"), y = 4:5)
+#' dA <- data.frame(term = sprintf("term%d", 1:6), x = letters[1:6])
+#' dA
 #'
-#' merge_left(A, B, by = "term")
-#' merge_left(B, A, by = "term")
-merge_left <- function(x, y, by){
+#' dB <- data.frame(term = sprintf("term%d", 2:4), y = LETTERS[2:4])
+#' dB
+#'
+#' dR <- merge_left(dA, dB, by = "term")
+#' dR
+#' str(dR)
+#'
+#' attr(dA, "title")   <- "Title of A"
+#' attr(dB, "title")   <- "Title of B"
+#' attr(dA$x, "label") <- "label of x"
+#' attr(dB$y, "label") <- "label of y"
+#'
+#' str(dA)
+#' str(dB)
+#'
+#' str(merge_left(dA, dB, by = "term", attr = "left"))
+#' str(merge_left(dA, dB, by = "term", attr = "right"))
+merge_left <- function(x, y, by, attr = c("left", "right")){
+
+  attr <- match.arg(attr)
+
   x$.id <- 1:nrow(x)
   res <- merge(x, y, sort = FALSE, by = by, all.x = TRUE)
   res <- res[order(res$.id), ]
-  res[, -which(names(res) == ".id")]
+  res <- res[, -which(names(res) == ".id")]
+
+  if(attr == "left"){
+    attr.x <- attributes(x)
+    attr.out <- attr.x
+  }else if(attr == "right"){
+    attr.y <- attributes(y)
+    attr.out <- attr.y
+  }
+
+  attr.r <- attributes(res)
+  attr.out$names <- attr.r$names
+  attr.out$row.names <- attr.r$row.names
+  attributes(res) <- attr.out
+
+  attr.var.x <- lapply(x, attributes)
+  attr.var.y <- lapply(y, attributes)
+
+  for(i in 1:length(attr.var.x)){
+    attributes(res[[names(attr.var.x[i])]]) <- attr.var.x[[i]]
+  }
+
+  for(i in 1:length(attr.var.y)){
+    attributes(res[[names(attr.var.y[i])]]) <- attr.var.y[[i]]
+  }
+
+  res
 }
 
 
@@ -203,10 +255,7 @@ merge_table <- function(x, y, name.x = NULL, name.y = NULL, name.x.index = 2, na
 #' transpose(dat)
 #' transpose(dat, varname = "variable")
 transpose <- function(x, row.names.col = 1, varname = NULL){
-
-  title <- attr(x, "title")
-  note  <- attr(x, "note")
-  args  <- attr(x, "args")
+  attr.out <- attributes(x)
 
   if(row.names.col == 0){
     x <- rownames_to_column(x, varname = "variable")
@@ -217,7 +266,6 @@ transpose <- function(x, row.names.col = 1, varname = NULL){
     varname <- names(x)[row.names.col]
   }
 
-  o.class <- class(x)
   row.names <- x[[row.names.col]]
   x <- x[-row.names.col]
   col.names <- names(x)
@@ -227,10 +275,10 @@ transpose <- function(x, row.names.col = 1, varname = NULL){
   x <- append2(x, col.names, after = 0)
   names(x)[1] <- varname
 
-  class(x) <- o.class
-  attr(x, "title") <- title
-  attr(x, "note")  <- note
-  attr(x, "args")  <- args
+  attr.out$names <- attributes(x)$names
+  attr.out$row.names <- attributes(x)$row.names
+  attributes(x) <- attr.out
+
   x
 }
 
