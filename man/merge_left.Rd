@@ -4,7 +4,7 @@
 \alias{merge_left}
 \title{Merge two data frames by left}
 \usage{
-merge_left(x, y, by)
+merge_left(x, y, by, attr = c("left", "right"))
 }
 \arguments{
 \item{x}{a data frame.}
@@ -12,6 +12,10 @@ merge_left(x, y, by)
 \item{y}{a data frame.}
 
 \item{by}{specifications of the columns used for merging.}
+
+\item{attr}{Choose one of the two, whether to retain the attributes of the
+left data frame or the right data frame, but no matter whether you choose
+the left or the right, the attributes of the variables will all be retained.}
 }
 \value{
 A data frame.
@@ -20,9 +24,24 @@ A data frame.
 Merge two data frames by left, includes all rows in x.
 }
 \examples{
-A <- data.frame(term = c("t1", "t2", "t3"), x = 1:3)
-B <- data.frame(term = c("t1", "t3"), y = 4:5)
+dA <- data.frame(term = sprintf("term\%d", 1:6), x = letters[1:6])
+dA
 
-merge_left(A, B, by = "term")
-merge_left(B, A, by = "term")
+dB <- data.frame(term = sprintf("term\%d", 2:4), y = LETTERS[2:4])
+dB
+
+dR <- merge_left(dA, dB, by = "term")
+dR
+str(dR)
+
+attr(dA, "title")   <- "Title of A"
+attr(dB, "title")   <- "Title of B"
+attr(dA$x, "label") <- "label of x"
+attr(dB$y, "label") <- "label of y"
+
+str(dA)
+str(dB)
+
+str(merge_left(dA, dB, by = "term", attr = "left"))
+str(merge_left(dA, dB, by = "term", attr = "right"))
 }
