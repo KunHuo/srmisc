@@ -178,9 +178,10 @@ fmt_reg <- function(data,
     label <- varname
     if(!is.null(data)){
       label <- attr(data[[varname]], "label")
-      if(is.null(label)){
-        label <- varname
-      }
+      # if(is.null(label)){
+      #   label <- varname
+      # }
+      label <- varname
     }
     if(is.numeric(data[[varname]])){
       data.frame(term = varname, varname = varname, ref = FALSE, variable = label, stringsAsFactors = FALSE)
