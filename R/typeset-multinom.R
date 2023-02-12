@@ -36,10 +36,10 @@ typeset.multinom <- function(x,
   statistic.name <- "Wald"
 
 
-  output <- lapply(1:nrow(coef(x)), function(i){
+  output <- lapply(1:nrow(stats::coef(x)), function(i){
 
     term0 <- x$coefnames
-    estimate <- coef(x)[i, ]
+    estimate <- stats::coef(x)[i, ]
     effect <- estimate
     std.error <- summary(x)$standard.errors[i, ]
 
@@ -105,7 +105,7 @@ typeset.multinom <- function(x,
     out
   })
 
-  names(output) <- row.names(coef(model))
+  names(output) <- row.names(stats::coef(x))
 
   output <- list_rbind(output, collapse.names = TRUE)
   class(output) <- c("typeset", "data.frame")
