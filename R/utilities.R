@@ -121,5 +121,44 @@ chinese <- function(data){
   }else{
     data
   }
+}
 
+
+#' Convert numeric to factor by quantiles
+#'
+#' @param data a data frame
+#' @param varname variable name.
+#' @param n indicates how many quantiles to convert.
+#' @param median Whether to calculate the median of each group.
+#' @param right logical, indicating if the intervals should be closed on the
+#' right (and open on the left) or vice versa.
+#' @param labels labels for the levels of the resulting category. By default,
+#' labels are constructed using "(a,b]" interval notation. If labels = FALSE,
+#' simple integer codes are returned instead of a factor.
+#' @param ... further arguments passed to or from other methods
+#'
+#' @return a data frame.
+#' @export
+cut_quantile <- function(data, varname, n = 4, median = TRUE, right = TRUE, labels = NULL, ...){
+  varname <- select_variable(data, varname)
+  g <- cut(data[[varname]],
+           breaks = stats::quantile(data[[varname]], probs = (0:n) / n),
+           include.lowest = TRUE,
+           labels = labels,
+           right = right,
+           ...)
+  m <- tapply(data[[varname]], g, median, na.rm = TRUE)
+  m <- m[match(g, names(m))]
+
+  if(paste0("gq_", varname) %in% names(data)){
+    data <- data[, -which(names(data) == paste0("gq_", varname)),drop = FALSE]
+  }
+  data <- append2(data, g, after = varname, names = paste0("gq_", varname))
+  if(median){
+    if(paste0("mq_", varname) %in% names(data)){
+      data <- data[, -which(names(data) == paste0("mq_", varname)),drop = FALSE]
+    }
+    data <- append2(data, m, after = paste0("gq_", varname), names = paste0("mq_", varname))
+  }
+  data
 }
