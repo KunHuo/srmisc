@@ -162,3 +162,22 @@ cut_quantile <- function(data, varname, n = 4, median = TRUE, right = TRUE, labe
   }
   data
 }
+
+
+#' Describe event
+#'
+#' @param data a data frame.
+#' @param event event variable name.
+#' @param varnames variable names.
+#' @param method describe method.
+#' @param digits digits.
+#'
+#' @return a data frame.
+#' @export
+describe_event <- function(data, event = NULL, varnames = NULL, method = "n.total", digits = 1){
+  helpers_describe_event(data,
+                         event = event,
+                         varnames = varnames,
+                         method = method,
+                         digits = digits)
+}
