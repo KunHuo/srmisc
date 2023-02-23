@@ -11,7 +11,7 @@ format_flex <- function(data, headers = NULL, font.size = 11){
   }
   border <- officer::fp_border(color = "black")
 
-  ft <- flextable::padding(ft, padding = 3, part = "all")
+  ft <- flextable::padding(ft, padding = 2, part = "all")
   ft <- flextable::fontsize(ft, size = font.size, part = "all")
   ft <- flextable::font(ft, fontname = "Times New Roman", part = "all")
   ft <- flextable::merge_v(ft, part = "header")
