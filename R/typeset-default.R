@@ -16,6 +16,19 @@ typeset.default <- function(x,
                             term = FALSE,
                             ...){
 
+
+  if(is.null(data)){
+    stop("data can not be NULL.", call. = FALSE)
+  }
+
+  if(is.null(outcome)){
+    stop("outcome can not be NULL.", call. = FALSE)
+  }
+
+  if(is.null(varnames)){
+    stop("varnames can not be NULL.", call. = FALSE)
+  }
+
   # set the separator of the confidence interval.
   if(is.null(conf.separator)){
     conf.separator <- ", "
