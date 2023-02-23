@@ -44,75 +44,84 @@ typeset.glm <- function(x,
     event <- outcome
   }
 
-  if(x$family$family == "gaussian"){
-    estimate.name <- "\u03b2"
-    effect.name <- "\u03b2"
-    statistic.name <-  "t"
-    conf.separator <- " to "
+  if(x$family$family == "poisson"){
+    results <- lmtest::coeftest(fit, vcov = sandwich::sandwich)
+    typeset.default(results, data = data, outcome = event, varnames = varnames)
+
   }else{
-    estimate.name <- "B"
-    effect.name <- "OR"
-    statistic.name <- "Wald"
-  }
-
-  # tidy coefficients
-  if(x$family$link == "logit" | x$family$link == "log"){
-    coefs <- tidy_glm(x, conf.level = conf.level, exp = TRUE, ...)
-  }else{
-    coefs <- tidy_glm(x, conf.level = conf.level, exp = FALSE, ...)
-  }
-
-  # format coefficients
-  coefs <- helpers_fmt_coefs(coefs,
-                             conf.brackets = conf.brackets,
-                             conf.separator = conf.separator,
-                             digits.pvalue = digits.pvalue,
-                             digits.effect = digits.effect)
-
-  out <- helpers_fmt_reg(data = data,
-                         varnames = varnames,
-                         fold = fold,
-                         coefs = coefs)
-
-  if(!fold){
-    if(length(unique(data[[event]])) == 2L){
-      desc <- helpers_describe_event(data = data,
-                                     event = event,
-                                     varnames = varnames)
-      if(is.null(select)){
-        select <- c("net", "effect", "p.value")
-      }
+    if(x$family$family == "gaussian"){
+      estimate.name <- "\u03b2"
+      effect.name <- "\u03b2"
+      statistic.name <-  "t"
+      conf.separator <- " to "
     }else{
-      desc <- helpers_describe_event(data = data, varnames = varnames)
-      if(is.null(select)){
-        select <- c("n", "effect", "p.value")
-      }
+      estimate.name <- "B"
+      effect.name <- "OR"
+      statistic.name <- "Wald"
     }
-    out <- merge_left(out, desc, by = "term")
-  }
 
 
-  out <- merge_left(out, coefs, by = "term")
-  out <- helpers_subset_stat(out, select)
-  out <- helpers_set_reference(out,
-                               value = ref.value,
+
+    # tidy coefficients
+    if(x$family$link == "logit" | x$family$link == "log"){
+      coefs <- tidy_glm(x, conf.level = conf.level, exp = TRUE, ...)
+    }else{
+      coefs <- tidy_glm(x, conf.level = conf.level, exp = FALSE, ...)
+    }
+
+    # format coefficients
+    coefs <- helpers_fmt_coefs(coefs,
+                               conf.brackets = conf.brackets,
+                               conf.separator = conf.separator,
+                               digits.pvalue = digits.pvalue,
                                digits.effect = digits.effect)
-  out <- helpers_rename_output(out,
-                               estimate = estimate.name,
-                               effect = effect.name,
-                               statistic = statistic.name,
-                               conf.level = conf.level)
 
-  if(!is.null(filter)){
-    out <- out[out$varname %in% filter, ]
+    out <- helpers_fmt_reg(data = data,
+                           varnames = varnames,
+                           fold = fold,
+                           coefs = coefs)
+
+    if(!fold){
+      if(length(unique(data[[event]])) == 2L){
+        desc <- helpers_describe_event(data = data,
+                                       event = event,
+                                       varnames = varnames)
+        if(is.null(select)){
+          select <- c("net", "effect", "p.value")
+        }
+      }else{
+        desc <- helpers_describe_event(data = data, event = event, varnames = varnames)
+        if(is.null(select)){
+          select <- c("n", "effect", "p.value")
+        }
+      }
+      out <- merge_left(out, desc, by = "term")
+    }
+
+
+    out <- merge_left(out, coefs, by = "term")
+    out <- helpers_subset_stat(out, select)
+    out <- helpers_set_reference(out,
+                                 value = ref.value,
+                                 digits.effect = digits.effect)
+    out <- helpers_rename_output(out,
+                                 estimate = estimate.name,
+                                 effect = effect.name,
+                                 statistic = statistic.name,
+                                 conf.level = conf.level)
+
+    if(!is.null(filter)){
+      out <- out[out$varname %in% filter, ]
+    }
+
+    out <- helpers_delete_terms(out, term)
+
+    #attr(out, "title") <- "Multivariable logistic regression"
+    class(out) <- c("typeset", "data.frame")
+
+    out
   }
 
-  out <- helpers_delete_terms(out, term)
-
-  #attr(out, "title") <- "Multivariable logistic regression"
-  class(out) <- c("typeset", "data.frame")
-
-  out
 }
 
 
