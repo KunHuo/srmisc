@@ -34,10 +34,6 @@ typeset.default <- function(x,
     conf.separator <- ", "
   }
 
-  if("coeftest" %in% class(x)){
-    x <- unclass(x)
-  }
-
   x <- as.data.frame(x)
 
   if(!("term" %in% names(x))){
