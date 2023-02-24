@@ -31,7 +31,7 @@ format_flex <- function(data, headers = NULL, font.size = 11){
   index <- regex_detect(headers$col_keys, pattern = "blank\\d+")
   index <- which(index == TRUE)
   if(!is_empty(index)){
-    ft <- width(ft, j = index, width = 0.2)
+    ft <- flextable::width(ft, j = index, width = 0.2)
   }
 
   ft <- flextable::fix_border_issues(ft)
