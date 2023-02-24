@@ -16,8 +16,10 @@ Imports:
     flextable,
     ggplot2,
     grDevices,
+    lmtest,
     officer,
     R.utils,
+    sandwich,
     stats
 Suggests: 
     knitr,
