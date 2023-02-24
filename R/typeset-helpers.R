@@ -76,6 +76,18 @@ helpers_fmt_reg <- function(data, varnames, fold, coefs){
 }
 
 
+helper_default_describe <- function(data, event, select = NULL){
+  if(is.null(select)){
+    if(length(unique(data[[event]])) == 2L){
+      select <- c("net", "effect", "p.value")
+    }else{
+      select <- c("n", "effect", "p.value")
+    }
+  }
+  select
+}
+
+
 helpers_describe_event <- function(data, event = NULL, varnames = NULL, method = "n.total", digits = 1){
   if(length(unique(data[[event]])) != 2L){
     res <- lapply(varnames, function(x){
