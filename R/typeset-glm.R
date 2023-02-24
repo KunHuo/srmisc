@@ -45,8 +45,23 @@ typeset.glm <- function(x,
   }
 
   if(x$family$family == "poisson"){
-    results <- lmtest::coeftest(fit, vcov = sandwich::sandwich)
-    typeset.default(results, data = data, outcome = event, varnames = varnames)
+    results <- lmtest::coeftest(x, vcov = sandwich::sandwich)
+    typeset.default(results,
+                    data = data,
+                    outcome = event,
+                    varnames = varnames,
+                    conf.level = conf.level,
+                    conf.brackets = conf.brackets,
+                    conf.separator = conf.separator,
+                    digits.pvalue = digits.pvalue,
+                    digits.effect = digits.effect,
+                    ref.value = ref.value,
+                    select = select,
+                    filter = filter,
+                    fold = fold,
+                    exp = TRUE,
+                    term = term,
+                    ...)
 
   }else{
     if(x$family$family == "gaussian"){
