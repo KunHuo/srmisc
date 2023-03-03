@@ -50,7 +50,7 @@ typeset.glm <- function(x,
       fold = fold,
       term = term,
       ...)
-  }else if(x$family$family == "binomial"){
+  }else if(x$family$family == "binomial" | x$family$family == "quasibinomial"){
     typeset_logit(
       x = x,
       data = data,
