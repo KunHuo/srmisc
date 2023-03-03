@@ -110,5 +110,4 @@ typeset.multinom <- function(x,
   output <- list_rbind(output, collapse.names = TRUE)
   class(output) <- c("typeset", "data.frame")
   output
-
 }
