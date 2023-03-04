@@ -103,6 +103,18 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
          index = index)
 }
 
+cc <- function(text){
+  if(regex_detect(text, pattern = ",\\s+|\\s+\\+\\s+", fixed = FALSE)){
+    text <- regex_split(string = text, pattern = ",\\s+|\\s+\\+\\s+")[[1]]
+  }
+  text
+}
+
+
+as_cc <- function(text){
+  paste(text, collapse = ", ")
+}
+
 
 .col_index <- function(data, ...){
   varnames <- list(...)
@@ -113,6 +125,7 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
       }
       x
     }else{
+      x <- cc(x)
       sapply(x, function(i){
         if(regex_detect(i, pattern = ":", fixed = TRUE)){
           st <- regex_split(i, pattern = ":", fixed = TRUE)[[1]]
@@ -121,8 +134,6 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
           start <- which(names(data) == st[1])
           end   <- which(names(data) == st[2])
           start:end
-
-
         }else{
           check_name(data, i)
           which(names(data) == i)
