@@ -183,18 +183,4 @@ describe_event <- function(data, event = NULL, varnames = NULL, method = "n.tota
 }
 
 
-cc <- function(text){
-  if(regex_detect(text, pattern = ",", fixed = TRUE)){
-    text <- regex_split(string = text, pattern = ",\\s+")[[1]]
-  }
 
-  out <- lapply(text, \(x){
-    if(regex_detect(x, pattern = ":", fixed = TRUE)){
-      regex_split(x, pattern = ":", fixed = TRUE)[[1]]
-    }else{
-      x
-    }
-  })
-
-  unlist(out)
-}
