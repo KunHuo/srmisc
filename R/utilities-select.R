@@ -121,6 +121,8 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
           start <- which(names(data) == st[1])
           end   <- which(names(data) == st[2])
           start:end
+
+
         }else{
           check_name(data, i)
           which(names(data) == i)
