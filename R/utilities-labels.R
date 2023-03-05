@@ -517,6 +517,7 @@ set_var_label <- function(data, ...){
 #' @param ... variale names.
 #' @param default the returm value if can not find label, default == ".name" will
 #'  return the variable name.
+#'  @param units Whether to display the units.
 #' @param unlist if TRUE (default), return a named vector instead of a list.
 #'
 #' @return a named vector when unlist == TRUE, othewise a named list.
@@ -536,7 +537,7 @@ set_var_label <- function(data, ...){
 #' get_var_label(mtcars.copy, "am", "vs", "wt")
 #' get_var_label(mtcars.copy, "am", "vs", "wt", default = ".name")
 #' get_var_label(mtcars.copy, "am", "vs", "wt", unlist = FALSE)
-get_var_label <- function(data, ..., default = NULL, unlist = TRUE){
+get_var_label <- function(data, ..., default = NULL, units = TRUE, unlist = TRUE){
   names <- select_variable(data, ...)
 
   out <-  lapply(names, \(nm){
@@ -557,7 +558,13 @@ get_var_label <- function(data, ..., default = NULL, unlist = TRUE){
           }
         }
       }else{
-        var_label(data[[nm]])
+        lb <- var_label(data[[nm]])
+        if(!units){
+          if(regex_detect(lb, pattern = ",|\\s+\\(")){
+            lb <- regex_split(lb, pattern = ",|\\s+\\(")[[1]][1]
+          }
+        }
+        lb
       }
     })
 
