@@ -103,18 +103,6 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
          index = index)
 }
 
-cc <- function(text){
-  if(regex_detect(text, pattern = ",\\s+|\\s+\\+\\s+", fixed = FALSE)){
-    text <- regex_split(string = text, pattern = ",\\s+|\\s+\\+\\s+")[[1]]
-  }
-  text
-}
-
-
-as_cc <- function(text){
-  paste(text, collapse = ", ")
-}
-
 
 .col_index <- function(data, ...){
   varnames <- list(...)

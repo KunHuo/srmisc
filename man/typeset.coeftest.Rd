@@ -15,7 +15,7 @@
   digits.pvalue = 3,
   digits.effect = 2,
   ref.value = "Reference",
-  select = c("n", "effect", "p.value"),
+  select = NULL,
   filter = NULL,
   fold = FALSE,
   exp = FALSE,

@@ -183,4 +183,62 @@ describe_event <- function(data, event = NULL, varnames = NULL, method = "n.tota
 }
 
 
+#' Enhanced c function
+#'
+#' @param text a vector.
+#'
+#' @return a vector.
+#' @export
+#'
+#' @examples
+#'
+#' cc("age, gender")
+#' cc(c("age, gender", "man"))
+cc <- function(text){
+  out <- lapply(text, \(x){
+    if(regex_detect(x, pattern = ",", fixed = TRUE)){
+      regex_split(string = x, pattern = ",\\s+")[[1]]
+    }else{
+      x
+    }
+  })
+  unlist(out)
+}
 
+
+#' As Enhanced c function
+#'
+#' @param text a vector.
+#'
+#' @return a vector.
+#' @export
+#'
+#' @examples
+#' as_cc(c("a", "b", "c"))
+as_cc <- function(text){
+  paste(text, collapse = ", ")
+}
+
+
+#' As formula
+#'
+#' @param x x variables.
+#' @param y y varaibles.
+#'
+#' @return a formula.
+#' @export
+as_frm <- function(x = NULL, y = NULL){
+  if(!is.null(x)){
+    x <- cc(x)
+    x <- paste(x, collapse = " + ")
+  }else{
+    x <- "1"
+  }
+
+  if(is.null(y)){
+    frm <- paste(" ~ ", x, sep = "")
+  }else{
+    frm <- paste(y, x, sep = " ~ ")
+  }
+  stats::as.formula(frm)
+}

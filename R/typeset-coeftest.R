@@ -14,7 +14,7 @@ typeset.coeftest <- function(x,
                             digits.pvalue = 3,
                             digits.effect = 2,
                             ref.value = "Reference",
-                            select = c("n", "effect", "p.value"),
+                            select = NULL,
                             filter = NULL,
                             fold = FALSE,
                             exp = FALSE,
@@ -78,12 +78,15 @@ typeset.coeftest <- function(x,
     desc <- helpers_describe_event(data = data,
                                    event = outcome,
                                    varnames = varnames)
+    select <- helper_default_describe(data, outcome, select)
     out <- merge_left(out, desc, by = "term")
   }
 
   out <- merge_left(out, coefs, by = "term")
   out <- helpers_subset_stat(out, select)
   out <- helpers_set_reference(out, value = ref.value, digits.effect = digits.effect)
+
+
   out <- helpers_rename_output(out,
                                estimate = "estimate",
                                effect = "effect",
