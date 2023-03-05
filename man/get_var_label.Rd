@@ -4,7 +4,7 @@
 \alias{get_var_label}
 \title{Get variable labels from a data frame}
 \usage{
-get_var_label(data, ..., default = NULL, unlist = TRUE)
+get_var_label(data, ..., default = NULL, units = TRUE, unlist = TRUE)
 }
 \arguments{
 \item{data}{a data frame.}
@@ -12,7 +12,8 @@ get_var_label(data, ..., default = NULL, unlist = TRUE)
 \item{...}{variale names.}
 
 \item{default}{the returm value if can not find label, default == ".name" will
-return the variable name.}
+return the variable name.
+@param units Whether to display the units.}
 
 \item{unlist}{if TRUE (default), return a named vector instead of a list.}
 }
