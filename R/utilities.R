@@ -242,3 +242,47 @@ as_frm <- function(x = NULL, y = NULL){
   }
   stats::as.formula(frm)
 }
+
+
+#' View data
+#'
+#' @param data a data frame
+#'
+#' @return a data frame
+#' @export
+overview <- function(data){
+
+
+
+  out <- lapply(names(data), \(x){
+
+    if(any(is.na(data[[x]]))){
+      Unique <- length(unique(data[[x]])) - 1
+    }else{
+      Unique <- length(unique(data[[x]]))
+    }
+
+    Missing <- sprintf("%d (%.1f%%)", sum(is.na(data[[x]])),
+                                          sum(is.na(data[[x]]) / length(data[[x]]) * 100))
+
+    data.frame(Variable = x,
+               Labels = get_var_label(data, x, default = ".name"),
+               Missing = Missing,
+               Unique = Unique)
+  })
+  out <- list_rbind(out, varname = "Col")
+  class(out) <- c("overview", "data.frame")
+  out
+}
+
+
+#' Print overview object
+#'
+#' @param x an overview object
+#' @param ... unused.
+#'
+#' @keywords internal
+#' @export
+print.overview <- function(x, ...){
+  print_booktabs(x, ...)
+}
