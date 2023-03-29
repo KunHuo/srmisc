@@ -753,6 +753,6 @@ add_tags <- function(plots, tags = NULL){
     tags <- LETTERS[1:length(plots)]
   }
   Map(function(p, tag){
-    p + srmisc::gg_tags(tag)
+    p + gg_tags(tag)
   }, plots, tags)
 }
