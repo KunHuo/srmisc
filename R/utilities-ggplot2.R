@@ -739,3 +739,20 @@ add_col_label <- function(plot, col, y = NULL, label, vjust = -0.5, family = "se
                       size = size / 2.875,
                       color = color)
 }
+
+
+#' Add tags for ggplot
+#'
+#' @param plots a list of ggplot object.
+#' @param tags tags.
+#'
+#' @return a list of ggplot object
+#' @export
+add_tags <- function(plots, tags = NULL){
+  if(is.null(tags)){
+    tags <- LETTERS[1:length(plots)]
+  }
+  Map(function(p, tag){
+    p + srmisc::gg_tags(tag)
+  }, plots, tags)
+}
