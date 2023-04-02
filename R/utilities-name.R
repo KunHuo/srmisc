@@ -127,6 +127,27 @@ rename <- function (x, ..., gsub = FALSE, fixed = TRUE, warn = TRUE) {
 }
 
 
+#' Change names of a data frame
+#'
+#' @param data a data frame.
+#' @param columns which columns will be rename.
+#' @param newnames new names.
+#'
+#' @return a data frame.
+#' @export
+#'
+#' @examples
+#' rename2(head(iris), 5, "species")
+#' rename2(head(iris), "Species, "species")
+#' rename2(head(iris), 1:2, c("A", "B"))
+rename2 <- function(data, columns, newnames){
+  columns <- select_variable(data, columns, type = "index")
+  for(i in 1:length(columns)){
+    names(data)[columns[i]] <- newnames[i]
+  }
+  data
+}
+
 #' Convert rownames to column
 #'
 #' @param data 	a data frame.
