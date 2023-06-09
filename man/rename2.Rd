@@ -19,3 +19,8 @@ a data frame.
 \description{
 Change names of a data frame
 }
+\examples{
+rename2(head(iris), 5, "species")
+rename2(head(iris), "Species", "species")
+rename2(head(iris), 1:2, c("A", "B"))
+}

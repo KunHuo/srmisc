@@ -81,6 +81,13 @@ pal_lancet_9 <- function(n = 1:9, alpha = 1){
 }
 
 
+#' Set color alpha
+#'
+#' @param cols color.
+#' @param alpha alpha.
+#'
+#' @return a string vector.
+#' @export
 set_alpha <- function(cols, alpha = 1){
   output <- sapply(cols, function(x){
     r <- grDevices::col2rgb(x, alpha = TRUE)

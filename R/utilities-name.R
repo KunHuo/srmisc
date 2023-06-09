@@ -138,7 +138,7 @@ rename <- function (x, ..., gsub = FALSE, fixed = TRUE, warn = TRUE) {
 #'
 #' @examples
 #' rename2(head(iris), 5, "species")
-#' rename2(head(iris), "Species, "species")
+#' rename2(head(iris), "Species", "species")
 #' rename2(head(iris), 1:2, c("A", "B"))
 rename2 <- function(data, columns, newnames){
   columns <- select_variable(data, columns, type = "index")
