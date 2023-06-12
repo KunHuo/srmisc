@@ -12,8 +12,9 @@ get_var_label(data, ..., default = NULL, units = TRUE, unlist = TRUE)
 \item{...}{variale names.}
 
 \item{default}{the returm value if can not find label, default == ".name" will
-return the variable name.
-@param units Whether to display the units.}
+return the variable name.}
+
+\item{units}{Whether to display the units.}
 
 \item{unlist}{if TRUE (default), return a named vector instead of a list.}
 }

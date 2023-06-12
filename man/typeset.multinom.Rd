@@ -20,6 +20,7 @@
   fold = FALSE,
   exp = TRUE,
   term = FALSE,
+  cbind = TRUE,
   ...
 )
 }
@@ -55,6 +56,8 @@ corresponds to a 95 percent confidence interval.}
 \item{exp}{exp effect, only used on typeset.default.}
 
 \item{term}{wether the columns of term, varname, and ref, default FALSE.}
+
+\item{cbind}{bind results by column or row.}
 
 \item{...}{Additional arguments.}
 }

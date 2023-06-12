@@ -1,6 +1,7 @@
 #' Typeset a(n) multinom object
 #'
 #' @inheritParams typeset
+#' @param cbind bind results by column or row.
 #'
 #' @inherit typeset return
 #' @export
@@ -19,6 +20,7 @@ typeset.multinom <- function(x,
                         fold = FALSE,
                         exp = TRUE,
                         term = FALSE,
+                        cbind = TRUE,
                         ...){
 
   data <- helpers_extract_data(fit = x, data = data)
@@ -107,7 +109,27 @@ typeset.multinom <- function(x,
 
   names(output) <- row.names(stats::coef(x))
 
-  output <- list_rbind(output, collapse.names = TRUE)
+  if(cbind){
+    output <- cbind_multinom(output)
+  }else{
+    output <- list_rbind(output, collapse.names = TRUE)
+  }
+
   class(output) <- c("typeset", "data.frame")
+  output
+}
+
+
+cbind_multinom <- function(object){
+
+  output <- merge_table(object[[1]],
+                        object[[2]],
+                        name.x = names(object)[1],
+                        name.y = names(object)[2])
+  if(length(object) > 2L){
+    for(i in 3:length(object)){
+      output <- merge_table(output, object[[i]], name.y = names(object)[i])
+    }
+  }
   output
 }

@@ -517,7 +517,7 @@ set_var_label <- function(data, ...){
 #' @param ... variale names.
 #' @param default the returm value if can not find label, default == ".name" will
 #'  return the variable name.
-#'  @param units Whether to display the units.
+#' @param units Whether to display the units.
 #' @param unlist if TRUE (default), return a named vector instead of a list.
 #'
 #' @return a named vector when unlist == TRUE, othewise a named list.
