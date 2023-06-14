@@ -85,7 +85,7 @@ typeset.multinom <- function(x,
     out <- merge_left(out, coefs, by = "term")
 
     if(is.null(select)){
-      select <- c("estimate", "std.error", "effect", "p")
+      select <- c("effect", "p")
     }
 
     out <- helpers_subset_stat(out, select)
