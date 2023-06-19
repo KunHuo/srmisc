@@ -316,6 +316,13 @@ fct_auto <- function(data, include = NULL, exclude = NULL, min = 2, max = 5,
 }
 
 
+#' Make missing values explicit
+#'
+#' @param f A factor (or character vector).
+#' @param na_level Level to use for missing values: this is what NAs will be changed to.
+#'
+#' @return a factor vector.
+#' @export
 fct_explicit_na <- function (f, na_level = "Missing") {
   f <- check_factor(f)
   is_missing <- is.na(f)
