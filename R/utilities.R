@@ -252,8 +252,6 @@ as_frm <- function(x = NULL, y = NULL){
 #' @export
 overview <- function(data){
 
-
-
   out <- lapply(names(data), \(x){
 
     if(any(is.na(data[[x]]))){
@@ -285,4 +283,28 @@ overview <- function(data){
 #' @export
 print.overview <- function(x, ...){
   print_booktabs(x, ...)
+}
+
+
+#' Sample n rows from a data frame
+#'
+#' @param data A data.frame.
+#' @param size  the number of rows to select.
+#' @param replace Sample with or without replacement?
+#' @param seed 	a single value, interpreted as an integer, or NULL.
+#'
+#' @return a data.frame.
+#' @export
+#'
+#' @examples
+#' rand_sample_n(iris, size = 15)
+rand_sample_n <- function(data, size, replace = FALSE, seed = 1234){
+  set.seed(seed)
+  if(size > nrow(data)){
+    size <- nrow(data)
+  }
+  index <- sample(1:nrow(data), size = size, replace = replace)
+  data <- data[index, , drop = FALSE]
+  row.names(data) <- NULL
+  data
 }
