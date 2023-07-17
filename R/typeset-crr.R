@@ -14,7 +14,7 @@ typeset.crr <- function(x,
                         digits.pvalue = 3,
                         digits.effect = 2,
                         ref.value = "Reference",
-                        select = c("n", "effect", "pvalue"),
+                        select = c("net", "effect", "pvalue"),
                         filter = NULL,
                         fold = FALSE,
                         exp = FALSE,
@@ -50,7 +50,12 @@ typeset.crr <- function(x,
                          coefs = coefs)
 
   if(!fold){
-    desc <- helpers_describe_event(data = data,
+
+    tmpdat <- data
+
+    tmpdat[[event]] <- ifelse(tmpdat[[event]] == x$failcode, 1, 0)
+
+    desc <- helpers_describe_event(data = tmpdat,
                                    event = event,
                                    varnames = varnames)
     out <- merge_left(out, desc, by = "term")
