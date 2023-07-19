@@ -308,3 +308,21 @@ rand_sample_n <- function(data, size, replace = FALSE, seed = 1234){
   row.names(data) <- NULL
   data
 }
+
+
+#' Length of unique values
+#'
+#' @param x an R object.
+#' @param na.rm a logical evaluating to TRUE or FALSE indicating whether NA
+#' values should be stripped before the computation proceeds.
+#'
+#' @export
+#' @examples
+#' unique_length(iris$Species)
+unique_length <- function(x, na.rm = FALSE){
+  if(na.rm){
+    length(unique(na.omit(x)))
+  }else{
+    length(unique(x))
+  }
+}
