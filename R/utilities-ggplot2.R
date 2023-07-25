@@ -756,3 +756,68 @@ add_tags <- function(plots, tags = NULL){
     p + gg_tags(tag)
   }, plots, tags)
 }
+
+
+
+#' Wrap plots into a patchwork
+#'
+#' @param ... multiple ggplots or a list containing ggplot objects.
+#' @param ncol the dimensions of the grid to create - if both are NULL it will
+#' use the same logic as facet_wrap() to set the dimensions
+#' @param nrow the dimensions of the grid to create - if both are NULL it will
+#' use the same logic as facet_wrap() to set the dimensions
+#' @param byrow analogous to byrow in matrix(). If FALSE the plots will be
+#' filled in in column-major order
+#' @param widths the relative widths of each column and row in the grid. Will
+#' get repeated to match the dimensions of the grid.
+#' @param heights the relative heights of each column and row in the grid. Will
+#' get repeated to match the dimensions of the grid.
+#' @param tags tags.
+#' @param guides A string specifying how guides should be treated in the layout.
+#'  'collect' will collect guides below to the given nesting level, removing duplicates.
+#'  'keep' will stop collection at this level and let guides be placed alongside
+#'  their plot. auto will allow guides to be collected if a upper level tries,
+#'  but place them alongside the plot if not. If you modify default guide
+#'  "position" with theme(legend.position=...) while also collecting guides you
+#'  must apply that change to the overall patchwork (see example).
+#' @param design Specification of the location of areas in the layout. Can either
+#' be specified as a text string or by concatenating calls to area() together.
+#' See the examples for further information on use.
+#'
+#' @return a patchwork object.
+#' @export
+wrap_plots2 <- function(...,
+                        ncol = NULL,
+                        nrow = NULL,
+                        byrow = NULL,
+                        widths = NULL,
+                        heights = NULL,
+                        tags = NULL,
+                        bold.tags = FALSE,
+                        plot.margin = NULL,
+                        guides = NULL,
+                        design = NULL){
+  plots <- list(...)
+  plots <- list_flatten(plots)
+  plots <- add_tags(plots, tags)
+  plots <- patchwork::wrap_plots(plots,
+                        ncol = ncol,
+                        nrow = nrow,
+                        byrow = byrow,
+                        widths = widths,
+                        heights = heights,
+                        guides = guides,
+                        design = design)
+
+  plots <- plots & ggplot2::coord_cartesian(clip = "off")
+
+  if(bold.tags){
+    plots <- plots & gg_bold_tags()
+  }
+
+  if(!is.null(plot.margin)){
+    plots <-  plots & ggplot2::theme(plot.margin = ggplot2::unit(plot.margin, "cm"))
+  }
+
+  plots
+}
