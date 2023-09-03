@@ -51,6 +51,11 @@ typeset.lm <- function(x,
                                        data = data,
                                        varnames = varnames)
 
+
+  if(is.null(select)){
+    select <- c("n", "effect", "p.value")
+  }
+
   if(is.null(outcome)){
     event <- all.vars(x$terms)[1]
   }else{

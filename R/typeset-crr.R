@@ -21,6 +21,10 @@ typeset.crr <- function(x,
                         term = FALSE,
                         ...){
 
+  if(is.null(select)){
+    select <- c("net", "effect", "pvalue")
+  }
+
   if(is.null(data)){
     data <- x$data
   }

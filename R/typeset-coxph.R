@@ -21,6 +21,11 @@ typeset.coxph <- function(x,
                           term = FALSE,
                           ...){
 
+
+  if(is.null(select)){
+    select <- c("net", "effect", "pvalue")
+  }
+
   data <- helpers_extract_data(fit = x, data = data)
 
   varnames <- helpers_extract_varnames(fit = x, data = data, varnames = varnames)
