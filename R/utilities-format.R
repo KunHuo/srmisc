@@ -47,8 +47,9 @@ fmt_stat <- function(x, digits) {
     }
   })
 
-  small <- paste0("<0.", paste0(rep("0", digits - 1), collapse = ""), "1")
-  pos.small <- grepl("^0\\.0*$", pVec)
+  small <- paste0(">0.", paste0(rep("9", digits - 1), collapse = ""), "9")
+  small
+  pos.small <- grepl("^1\\.0*$", pVec)
   pVec[pos.small] <- small
 
   return(pVec)
