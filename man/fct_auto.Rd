@@ -10,7 +10,7 @@ fct_auto(
   exclude = NULL,
   min = 2,
   max = 5,
-  na.include = TRUE,
+  na.include = FALSE,
   na.level = "Missing"
 )
 }

@@ -268,7 +268,7 @@ fct_reorder.data.frame <- function(x, ..., exclude = NA, varname = NULL) {
 #' str(fct_auto(cancer, max = 2))
 #' str(fct_auto(cancer, exclude = "status"))
 fct_auto <- function(data, include = NULL, exclude = NULL, min = 2, max = 5,
-                     na.include = TRUE, na.level = "Missing"){
+                     na.include = FALSE, na.level = "Missing"){
   if(is.null(include)){
     variables <- names(data)
   }else{

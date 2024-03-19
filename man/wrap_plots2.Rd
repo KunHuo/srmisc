@@ -12,6 +12,8 @@ wrap_plots2(
   widths = NULL,
   heights = NULL,
   tags = NULL,
+  bold.tags = FALSE,
+  plot.margin = NULL,
   guides = NULL,
   design = NULL
 )

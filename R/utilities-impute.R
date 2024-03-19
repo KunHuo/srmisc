@@ -127,3 +127,43 @@ impute_mode <- function(x){
   x[is.na(x)] <- u
   x
 }
+
+
+#' Multivariate Imputation by Chained Equations
+#'
+#' @param data A data frame or a matrix containing the incomplete data. Missing
+#' values are coded as NA.
+#' @param varnames Variable names
+#' @param m Number of multiple imputations. The default is m=1.
+#' @param method Can be either a single string, or a vector of strings with
+#' length length(blocks), specifying the imputation method to be used for each
+#' column in data. If specified as a single string, the same method will be used
+#' for all blocks. The default imputation method (when no argument is specified)
+#' depends on the measurement level of the target column, as regulated by the
+#' defaultMethod argument. Columns that need not be imputed have the empty
+#' method "". See details.
+#' @param seed An integer that is used as argument by the set.seed() for
+#' offsetting the random number generator. Default is to leave the random number
+#' generator alone.
+#' @param printFlag If TRUE, mice will print history on console.
+#' @param ... Named arguments that are passed down to the univariate imputation functions.
+#'
+#' @seealso [mice::mice()]
+#'
+#' @return a data frame.
+#' @export
+impute_mice <- function(data, varnames = NULL, m = 1, method = NULL, seed = 123, printFlag = FALSE, ...){
+  varnames <- srmisc::select_variable(data, varnames)
+
+  if(srmisc::is_empty(varnames)){
+    varnames <- names(data)
+  }
+  mdata <- data[varnames]
+  mdata <- mice::mice(data = mdata, m = 5, method = method, seed = seed, printFlag = printFlag, ...)
+  mdata <- mice::complete(mdata, 1)
+
+  for(i in 1:length(varnames)){
+    data[varnames[i]] <- mdata[varnames[i]]
+  }
+  data
+}
