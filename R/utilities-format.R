@@ -48,7 +48,6 @@ fmt_stat <- function(x, digits) {
   })
 
   small <- paste0(">0.", paste0(rep("9", digits - 1), collapse = ""), "9")
-  small
   pos.small <- grepl("^1\\.0*$", pVec)
   pVec[pos.small] <- small
 
@@ -108,7 +107,7 @@ fmt_signif <- function(pvalues, digits = 3){
     pvalues <- ifelse(is.na(pvalues), "", format(pvalues, justify = "right"))
     paste(pvalues, sign, sep = " ")
   }else{
-    pvalues.numeric <- as.numeric(gsub(pattern = "<|>", replacement = "", x = pvalues))
+    pvalues.numeric <- as.numeric(gsub(pattern = "<|>|[a-z]", replacement = "", x = pvalues))
     sign <- ifelse(pvalues.numeric <= 0.001, "***",
                    ifelse(pvalues.numeric <= 0.01, "**",
                           ifelse(pvalues.numeric <= 0.05, "*",
