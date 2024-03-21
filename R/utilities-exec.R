@@ -117,3 +117,17 @@ group_exec <- function(data, group = NULL, func = NULL, ..., labels = NULL, out.
   }
   out
 }
+
+
+#' exec text.
+#'
+#' @param text text expression.
+#'
+#' @export
+#'
+#' @examples
+#' exec_text("1+2")
+exec_text <- function(text){
+  eval(parse(text = text))
+}
+
