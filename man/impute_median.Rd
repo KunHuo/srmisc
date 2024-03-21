@@ -25,5 +25,5 @@ md
 impute_median(md)
 }
 \seealso{
-\code{\link[=impute_mean]{impute_mean()}}, \code{\link[=impute_mode]{impute_mode()}}, \code{\link[=impute]{impute()}}
+\code{\link[=impute_mean]{impute_mean()}}, \code{\link[=impute_mode]{impute_mode()}}, \code{\link[=impute_simple]{impute_simple()}}
 }

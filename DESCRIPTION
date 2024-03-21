@@ -19,6 +19,7 @@ Imports:
     lmtest,
     mice,
     officer,
+    patchwork,
     R.utils,
     sandwich,
     stats

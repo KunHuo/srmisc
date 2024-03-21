@@ -783,6 +783,8 @@ add_tags <- function(plots, tags = NULL){
 #' @param design Specification of the location of areas in the layout. Can either
 #' be specified as a text string or by concatenating calls to area() together.
 #' See the examples for further information on use.
+#' @param bold.tags bold tags.
+#' @param plot.margin plot margin.
 #'
 #' @return a patchwork object.
 #' @export

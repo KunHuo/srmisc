@@ -321,7 +321,7 @@ rand_sample_n <- function(data, size, replace = FALSE, seed = 1234){
 #' unique_length(iris$Species)
 unique_length <- function(x, na.rm = FALSE){
   if(na.rm){
-    length(unique(na.omit(x)))
+    length(unique(stats::na.omit(x)))
   }else{
     length(unique(x))
   }

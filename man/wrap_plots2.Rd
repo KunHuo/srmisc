@@ -38,6 +38,10 @@ get repeated to match the dimensions of the grid.}
 
 \item{tags}{tags.}
 
+\item{bold.tags}{bold tags.}
+
+\item{plot.margin}{plot margin.}
+
 \item{guides}{A string specifying how guides should be treated in the layout.
 'collect' will collect guides below to the given nesting level, removing duplicates.
 'keep' will stop collection at this level and let guides be placed alongside

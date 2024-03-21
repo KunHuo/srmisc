@@ -48,7 +48,7 @@ impute_simple <- function(data, method.numeric = c("median", "mean"), method.cat
 #' @return a numeric vector after impute with median value.
 #' @export
 #'
-#' @seealso [impute_mean()], [impute_mode()], [impute()]
+#' @seealso [impute_mean()], [impute_mode()], [impute_simple()]
 #'
 #' @examples
 #' md <- c(4.0, 5.9, 3.2, 6.1, 7.6, NA, 9.1, 7.2, NA, 8.3)
@@ -77,7 +77,7 @@ impute_median <- function(x, digits = NULL){
 #' @return a numeric vector after impute with mean value.
 #' @export
 #'
-#' @seealso [impute_median()], [impute_mode()], [impute()]
+#' @seealso [impute_median()], [impute_mode()], [impute_simple()]
 #'
 #' @examples
 #' md <- c(4.0, 5.9, 3.2, 6.1, 7.6, NA, 9.1, 7.2, NA, 8.3)
@@ -104,7 +104,7 @@ impute_mean <- function(x, digits = NULL){
 #' @return a numeric vector after impute.
 #' @export
 #'
-#' @seealso [impute_median()], [impute_mean()], [impute()]
+#' @seealso [impute_median()], [impute_mean()], [impute_simple()]
 #'
 #' @examples
 #' # for numeric

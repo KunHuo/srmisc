@@ -32,5 +32,5 @@ md3
 impute_mode(md3)
 }
 \seealso{
-\code{\link[=impute_median]{impute_median()}}, \code{\link[=impute_mean]{impute_mean()}}, \code{\link[=impute]{impute()}}
+\code{\link[=impute_median]{impute_median()}}, \code{\link[=impute_mean]{impute_mean()}}, \code{\link[=impute_simple]{impute_simple()}}
 }
