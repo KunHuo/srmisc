@@ -41,6 +41,7 @@ chinese <- function(data){
   }
 
   VARIABLES <- list(variable = "\u53d8\u91cf",
+                    Variable = "\u53d8\u91cf",
                     Items = "\u9879\u76ee",
                     overall = "\u6240\u6709",
                     Statistic = "\u7edf\u8ba1\u503c",
@@ -65,7 +66,8 @@ chinese <- function(data){
                     "Validation set" = "\u9a8c\u8bc1\u96c6",
                     "Brier score" = "Brier\u8bc4\u5206",
                     Models = "\u6a21\u578b",
-                    Nomogram = "\u5217\u7ebf\u56fe\u6a21\u578b")
+                    Nomogram = "\u5217\u7ebf\u56fe\u6a21\u578b",
+                    Characteristic = "\u7279\u5f81")
 
 
   TITLES <- list("Performance metrics" = "\u9884\u6d4b\u6548\u80fd\u8bc4\u4ef7\u6307\u6807",
@@ -73,6 +75,19 @@ chinese <- function(data){
                  "Baseline characteritics" = "\u60a3\u8005\u57fa\u7ebf\u8d44\u6599",
                  "Multivariable logistic regression analysis results for nomogram" = "\u5217\u7ebf\u56fe\u6a21\u578b\u7684\u591a\u56e0\u7d20\u006c\u006f\u0067\u0069\u0073\u0074\u0069\u0063\u56de\u5f52\u5206\u6790\u7ed3",
                  "Univariable logistic regression analysis results for nomogram" = "\u5217\u7ebf\u56fe\u6a21\u578b\u7684\u5355\u56e0\u7d20\u006c\u006f\u0067\u0069\u0073\u0074\u0069\u0063\u56de\u5f52\u5206\u6790\u7ed3")
+
+  NOTES <- list("Calculated by one-way analysis of variance." = "\u91c7\u7528\u5355\u56e0\u7d20\u65b9\u5dee\u5206\u6790\u8ba1\u7b97\u3002",
+                "Calculated by Kruskal-Wallis rank sum test." = "\u91c7\u7528kruskal-wallis\u79e9\u548c\u68c0\u9a8c\u8ba1\u7b97\u3002",
+                "Calculated by two sample t-test." = "\u91c7\u7528\u72ec\u7acb\u6837\u672ct\u68c0\u9a8c\u8ba1\u7b97\u3002",
+                "Calculated by Wilcoxon rank sum test." = "\u91c7\u7528wilcoxon\u79e9\u548c\u68c0\u9a8c\u8ba1\u7b97\u3002",
+                "Calculated by Pearson's Chi-squared test." = "\u91c7\u7528\u5361\u65b9\u68c0\u9a8c\u8ba1\u7b97\u3002",
+                "Calculated by Fisher's exact test." = "\u91c7\u7528fisher\u7cbe\u786e\u6982\u7387\u6cd5\u8ba1\u7b97\u3002",
+                "Data were mean±SD, median (IQR) or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u3001\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u6216\u006e\u0028\u0025\u0029\u3002",
+                "Data were median (IQR) or n(%), unless otherwise specified."  = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u6216\u006e\u0028\u0025\u0029\u3002",
+                "Data were median (IQR), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u3002",
+                "Data were n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u006e\u0028\u0025\u0029\u3002",
+                "Data were mean±SD, unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u3002",
+                "Data were mean±SD or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u6216\u006e\u0028\u0025\u0029\u3002")
 
   for(i in 1:length(VARIABLES)){
     pattern <- paste0("^", names(VARIABLES)[i], "\\b")
@@ -112,6 +127,14 @@ chinese <- function(data){
     if(title %in% names(TITLES)){
       attr(data, "title") <- TITLES[[title]]
     }
+  }
+
+  note <- attr(data, "note")
+  if(!is.null(note)){
+    for(i in 1:length(NOTES)){
+      note <- regex_replace(note, names(NOTES)[i], NOTES[[i]], fixed = TRUE)
+    }
+    attr(data, "note") <- note
   }
 
 
