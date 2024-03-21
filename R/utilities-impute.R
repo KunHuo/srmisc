@@ -15,8 +15,8 @@
 #'   y = c("a", "b", "c", "a", "b", "c", "c", NA, "c", "a", NA),
 #'   z = factor(c("a", "b", "c", NA, "b", "c", "c", "a", "c", NA, "a")))
 #' md
-#' impute(md)
-impute <- function(data, method.numeric = c("median", "mean"), method.category = "mode", digits = NULL){
+#' impute_simple(md)
+impute_simple <- function(data, method.numeric = c("median", "mean"), method.category = "mode", digits = NULL){
   method.numeric <- match.arg(method.numeric)
   method.category <- match.arg(method.category)
   data[, ] <- lapply(data[, ], function(x){
@@ -159,11 +159,21 @@ impute_mice <- function(data, varnames = NULL, m = 1, method = NULL, seed = 123,
     varnames <- names(data)
   }
   mdata <- data[varnames]
-  mdata <- mice::mice(data = mdata, m = 5, method = method, seed = seed, printFlag = printFlag, ...)
-  mdata <- mice::complete(mdata, 1)
+  mdata <- mice::mice(data = mdata, m = m, method = method, seed = seed, printFlag = printFlag, ...)
 
-  for(i in 1:length(varnames)){
-    data[varnames[i]] <- mdata[varnames[i]]
+  out <- lapply(1:m, \(j){
+    res <- data
+    for(i in 1:length(varnames)){
+      res[varnames[i]] <- mice::complete(mdata, j)[varnames[i]]
+    }
+    res
+  })
+
+  if(m == 1){
+    out <- out[[1]]
+  }else{
+    class(out) <- c("mlist", "list")
   }
-  data
+
+  out
 }
