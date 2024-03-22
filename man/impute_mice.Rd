@@ -6,8 +6,8 @@
 \usage{
 impute_mice(
   data,
-  varnames = NULL,
   m = 1,
+  varnames = NULL,
   method = NULL,
   seed = 123,
   printFlag = FALSE,
@@ -18,9 +18,9 @@ impute_mice(
 \item{data}{A data frame or a matrix containing the incomplete data. Missing
 values are coded as NA.}
 
-\item{varnames}{Variable names}
-
 \item{m}{Number of multiple imputations. The default is m=1.}
+
+\item{varnames}{Variable names}
 
 \item{method}{Can be either a single string, or a vector of strings with
 length length(blocks), specifying the imputation method to be used for each

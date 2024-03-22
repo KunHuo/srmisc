@@ -152,7 +152,7 @@ impute_mode <- function(x){
 #'
 #' @return a data frame.
 #' @export
-impute_mice <- function(data, varnames = NULL, m = 1, method = NULL, seed = 123, printFlag = FALSE, ...){
+impute_mice <- function(data, m = 1, varnames = NULL, method = NULL, seed = 123, printFlag = FALSE, ...){
   varnames <- srmisc::select_variable(data, varnames)
 
   if(srmisc::is_empty(varnames)){
