@@ -1,10 +1,10 @@
-#' Typeset a(n) mlinear object
+#' Typeset a(n) micelm object
 #'
 #' @inheritParams typeset
 #'
 #' @inherit typeset return
 #' @export
-typeset.mlinear <- function(x,
+typeset.micelm<- function(x,
                             data = NULL,
                             outcome = NULL,
                             varnames = NULL,
@@ -44,8 +44,7 @@ typeset.mlinear <- function(x,
   }
 
   # tidy coefficients
-  coefs <- tidy_mlinear(x, conf.level = conf.level, ...)
-
+  coefs <- tidy_mice(x, conf.int = TRUE, exp = FALSE, conf.level = conf.level, ...)
 
   # format coefficients
   coefs <- helpers_fmt_coefs(coefs,
@@ -88,48 +87,3 @@ typeset.mlinear <- function(x,
 }
 
 
-tidy_mlinear <- function(x, conf.int = TRUE, conf.level = 0.95, ...) {
-
-   fits <- lapply(x, \(i){
-     rownames_to_column(as.data.frame(summary(i)$coefficients))
-   })
-
-   terms <- fits[[1]]$term
-
-   ret <- lapply(terms, \(term){
-     estimate <- sapply(fits, \(m){
-       m[[2]][m$term == term]
-     })
-
-     std.error <- sapply(fits, \(m){
-       m[[3]][m$term == term]
-     })
-
-     pool_coef_linear(estimate, std.error)
-   })
-
-   ret <- do.call(rbind, ret)
-   colnames(ret) <- c("estimate", "std.error", "statistic", "p.value")
-   row.names(ret) <- fits[[1]]$term
-   ret <- srmisc::rownames_to_column(ret)
-
-   ret$effect <- ret$estimate
-
-  if (conf.int) {
-    ret$conf.low  <- ret$estimate -
-      stats::qnorm((1 - conf.level) / 2, lower.tail = FALSE) * ret$std.error
-    ret$conf.high <- ret$estimate +
-      stats::qnorm((1 - conf.level) / 2, lower.tail = FALSE) * ret$std.error
-  }
-  ret
-}
-
-
-pool_coef_linear <- function(B, se) {
-  B.mean <- mean(B)
-  B.var <- var(B)
-  B.se <- sqrt(mean(se ^ 2) + var(B))
-  B.t <- B.mean / B.se
-  B.p <- ifelse(B.t > 0, (1 - stats::pnorm(B.t)) * 2, stats::pnorm(B.t) * 2)
-  return(c(B.mean, B.se, B.t, B.p))
-}

@@ -82,12 +82,12 @@ chinese <- function(data){
                 "Calculated by Wilcoxon rank sum test." = "\u91c7\u7528wilcoxon\u79e9\u548c\u68c0\u9a8c\u8ba1\u7b97\u3002",
                 "Calculated by Pearson's Chi-squared test." = "\u91c7\u7528\u5361\u65b9\u68c0\u9a8c\u8ba1\u7b97\u3002",
                 "Calculated by Fisher's exact test." = "\u91c7\u7528fisher\u7cbe\u786e\u6982\u7387\u6cd5\u8ba1\u7b97\u3002",
-                "Data were mean±SD, median (IQR) or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u3001\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u6216\u006e\u0028\u0025\u0029\u3002",
+                "Data were mean\u00Bb1SD, median (IQR) or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u3001\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u6216\u006e\u0028\u0025\u0029\u3002",
                 "Data were median (IQR) or n(%), unless otherwise specified."  = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u6216\u006e\u0028\u0025\u0029\u3002",
                 "Data were median (IQR), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u3002",
                 "Data were n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u006e\u0028\u0025\u0029\u3002",
-                "Data were mean±SD, unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u3002",
-                "Data were mean±SD or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u6216\u006e\u0028\u0025\u0029\u3002")
+                "Data were mean\u00B1SD, unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u3002",
+                "Data were mean\u00B1SD or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u6216\u006e\u0028\u0025\u0029\u3002")
 
   for(i in 1:length(VARIABLES)){
     pattern <- paste0("^", names(VARIABLES)[i], "\\b")
