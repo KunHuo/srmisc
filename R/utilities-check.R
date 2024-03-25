@@ -65,3 +65,34 @@ check_installed <- function (pkg, message = FALSE) {
     }
   }
 }
+
+
+
+check_missing <- function(data, digits = 1){
+
+  out <- lapply(data, \(x){
+    data.frame(Missing = sum(is.na(x)),
+               Missing.p = sprintf("%s%%", fmt_digits(sum(is.na(x)) / length(x) * 100, digits = digits)),
+               valid = length(x) - sum(is.na(x)))
+  })
+
+  names(out) <- get_var_label(data, names(data), default = ".name")
+  out <- list_rbind(out)
+  out$NO <- 1:nrow(out)
+  out <- relocate(out, "NO")
+
+  names(out) <- c("No.", "Variable", "Missing (n)", "Missing (%)", "Valid (n)")
+  attr(out, "title") <- "Data missingness"
+  attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", sum(out[[3]] != 0), ncol(data))
+  out
+}
+
+check_type <- function(data){
+  out <- lapply(names(data), \(x){
+    data.frame(Variable = x, class = class(data[[x]]), unique = unique_length(data[[x]]))
+  })
+
+  out <- list_rbind(out, varname = "No.")
+  attr(out, "title") <- "Data structure"
+  out
+}
