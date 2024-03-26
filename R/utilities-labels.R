@@ -259,57 +259,112 @@ codes2labels <- function(data, codes, as.factor = TRUE, exclude = "") {
 }
 
 
-#' Get codes from a data frame
+#' Codes in a data frame
 #'
 #' @param data a data frame.
-#' @param max for numeric and character, the maximum number of levels of a
-#' variable below which variables will be coded.
-#' @param factor a logical indicating whether to code factors, default FALSE.
 #' @param ... unused.
 #'
 #' @return a data frame with class 'codes'.
 #' @export
-#'
-#' @examples
-#' data("cancer")
-#' codes(cancer)
-#'
-#' cancer <- codes2labels(cancer, cancer.codes)
-#' codes(cancer)
-#' codes(cancer, factor = TRUE)
-codes <- function(data, max = 5, factor = FALSE, ...){
+codes <- function(data, ...){
   exec <- function(x){
     var   <- x
     code  <- NA
-    label <- get_var_label(data, x, default = NA)
+    label <- get_var_label(data, x, default = ".name")
 
     d <- data[[x]]
 
     if(is.factor(d)){
-      if(factor){
-        code <- c(NA, 1:nlevels(d))
-        label <- c(label, levels(d))
-      }else{
-        code <- c(NA, levels(d))
-        label <- c(label, rep(NA, length(code) - 1))
-      }
-    }else if(is.numeric(d) | is.character(d)){
-      ld <- length(unique(d))
-      if(ld >=2 & ld <= max){
-        code  <- c(NA, sort(unique(d)))
-        label <- c(label, rep(NA, length(code) - 1))
-      }
+      code <- c(NA, 1:nlevels(d))
+      label <- c(label, levels(d))
     }
 
     var   <- c(x, rep(NA, length(code) - 1))
-    data.frame(variable = var, code = code, label = label)
+    data.frame(Variable = var, Code = code, Label = label)
   }
 
   out <- lapply(names(data), exec)
   out <- do.call(rbind, out)
   row.names(out) <- NULL
+  attr(out, "title") <- "Data coding"
   class(out) <- c("codes", "data.frame")
   out
+}
+
+
+#' Codes in a data frame
+#'
+#' @param data a data frame.
+#' @param ... more arguments.
+#'
+#' @return a data frame.
+#' @export
+codes2 <- function(data, ...){
+  out <- lapply(names(data), \(x){
+    if(is.factor(data[[x]])){
+      code <- paste(sprintf("%d: %s", 1:nlevels(data[[x]]), levels(data[[x]])), collapse = "; ")
+    }else{
+      code <- ""
+    }
+    data.frame(Variable = x,
+               Label  = get_var_label(data, x, default = ".name"),
+               Type = class(data[[x]]),
+               Code = code)
+  })
+  out <- list_rbind(out, names.as.column = FALSE)
+  attr(out, "title") <- "Data coding"
+  class(out) <- c("codes", "data.frame")
+  out
+}
+
+
+#' Transcoding
+#'
+#' @param data an object of 'codes'
+#'
+#' @return a data frame.
+#' @export
+codes_t <- function(data){
+  if(ncol(data) == 3L){
+    data <- tidy_codes(data)
+    data <- split.data.frame(data, data$.varname)
+
+    res <- lapply(data, \(d){
+      if(nrow(d) == 1L){
+        d <- d[c(1, 4)]
+        names(d) <- c("Variable", "Label")
+        d$Type <- ""
+        d$Code <- ""
+        d
+      }else{
+        data.frame(Variable = d[1, 2],
+                   Label = d[1, 4],
+                   Type = "factor",
+                   Code = paste( sprintf("%d: %s", d[[3]][-1], d[[4]][-1]), collapse = "; "))
+      }
+    })
+    res <- do.call(rbind, res)
+  }else{
+
+    res <- lapply(1:nrow(data), \(i){
+      if(data[i, 4] != ""){
+        r <- regex_split(data[i, 4], pattern = "[;|,]\\s*")[[1]]
+        r <- regex_split(r, pattern = "[:|=]\\s*")
+        r <- do.call(rbind, r)
+        r <- as.data.frame(r)
+        names(r) <- c("Code", "Label")
+        r$Variable <- NA
+        r <- relocate(r, "Variable")
+        rbind(data.frame(Variable = data[i, 1], Code = "", Label = data[i, 2]), r)
+      }else{
+        data.frame(Variable = data[i, 1], Code = "", Label = data[i, 2])
+      }
+    })
+    res <- do.call(rbind, res)
+  }
+  res <- add_title(res, "Data coding")
+  class(res) <- c("codes", "data.frame")
+  res
 }
 
 
