@@ -68,7 +68,15 @@ check_installed <- function (pkg, message = FALSE) {
 
 
 
-check_missing <- function(data, digits = 1){
+#' Check missing
+#'
+#' @param data a data frame.
+#' @param digits digits for percent. Default 1.
+#' @param label Whether to replace variable names with variable labels. Default is FALSE.
+#'
+#' @return a data frame.
+#' @export
+check_missing <- function(data, digits = 1, label = FALSE){
 
   out <- lapply(data, \(x){
     data.frame(Missing = sum(is.na(x)),
@@ -76,7 +84,12 @@ check_missing <- function(data, digits = 1){
                valid = length(x) - sum(is.na(x)))
   })
 
-  names(out) <- get_var_label(data, names(data), default = ".name")
+  if(label){
+    names(out) <- get_var_label(data, names(data), default = ".name")
+  }else{
+    names(out) <- names(data)
+  }
+
   out <- list_rbind(out)
   out$NO <- 1:nrow(out)
   out <- relocate(out, "NO")
@@ -84,15 +97,55 @@ check_missing <- function(data, digits = 1){
   names(out) <- c("No.", "Variable", "Missing (n)", "Missing (%)", "Valid (n)")
   attr(out, "title") <- "Data missingness"
   attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", sum(out[[3]] != 0), ncol(data))
+  class(out) <- c("check", "data.frame")
   out
 }
 
-check_type <- function(data){
+
+#' Check data structure
+#'
+#' @param data a data frame.
+#' @param label Whether to replace variable names with variable labels. Default is FALSE.
+#'
+#' @return a data frame.
+#' @export
+check_type <- function(data, label = FALSE){
   out <- lapply(names(data), \(x){
-    data.frame(Variable = x, class = class(data[[x]]), unique = unique_length(data[[x]]))
+    if(label){
+      Variable <- get_var_label(data, x, default = ".name")
+    }else{
+      Variable <- x
+    }
+
+    if(unique_length(data[[x]]) <= 5L){
+      Value <- paste(unique(data[[x]]), collapse = ", ")
+    }else{
+      Value <- paste0(paste(head(data[[x]]), collapse = ", "), ", ...")
+    }
+
+    data.frame(Variable = Variable,
+               class = class(data[[x]]),
+               Missing = sum(is.na(data[[x]])),
+               Unique = unique_length(data[[x]]),
+               Value = Value)
   })
 
   out <- list_rbind(out, varname = "No.")
+
   attr(out, "title") <- "Data structure"
+  class(out) <- c("check", "data.frame")
   out
 }
+
+
+#' Print 'check' object
+#'
+#' @param data a object of 'check'.
+#' @param ... more.
+#'
+#' @keywords internal
+#' @export
+print.check <- function(data, ...){
+  print_booktabs(data, ...)
+}
+

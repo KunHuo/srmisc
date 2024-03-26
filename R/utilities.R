@@ -267,31 +267,55 @@ as_frm <- function(x = NULL, y = NULL){
 }
 
 
-#' View data
+#' View data structure
 #'
-#' @param data a data frame
+#' @param data a data frame.
+#' @param digits digits for percent. Default 1.
+#' @param label Whether to replace variable names with variable labels. Default is FALSE.
 #'
-#' @return a data frame
+#' @return a data frame.
 #' @export
-overview <- function(data){
+overview <- function(data, digits = 1, label = FALSE){
 
   out <- lapply(names(data), \(x){
-
-    if(any(is.na(data[[x]]))){
-      Unique <- length(unique(data[[x]])) - 1
+    if(label){
+      Variable <- get_var_label(data, x, default = ".name")
     }else{
-      Unique <- length(unique(data[[x]]))
+      Variable <- x
     }
 
-    Missing <- sprintf("%d (%.1f%%)", sum(is.na(data[[x]])),
-                                          sum(is.na(data[[x]]) / length(data[[x]]) * 100))
+    if(unique_length(data[[x]]) <= 5L){
+      Value <- paste(unique(data[[x]]), collapse = ", ")
+    }else{
+      Value <- paste0(paste(head(data[[x]]), collapse = ", "), ", ...")
+    }
 
-    data.frame(Variable = x,
-               Labels = get_var_label(data, x, default = ".name"),
-               Missing = Missing,
-               Unique = Unique)
+
+    data.frame(Variable = Variable,
+               class = class(data[[x]]),
+               "Missing (n)" = sum(is.na(data[[x]])),
+               "Missing (%)" = sprintf("%s%%", fmt_digits(sum(is.na(data[[x]])) / length(data[[x]]) * 100, digits = digits)),
+               Unique = unique_length(data[[x]]),
+               Value = Value)
   })
-  out <- list_rbind(out, varname = "Col")
+
+
+
+  out <- list_rbind(out, varname = "No.")
+
+  names(out)[4:5] <- c("Miss (n)", "Miss (%)")
+
+  if(sum(out[[4]]) == 0){
+    out <- out[-c(4:5)]
+    attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", 0, ncol(data))
+  }else{
+    attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", sum(out[[4]] != 0), ncol(data))
+  }
+
+
+
+  attr(out, "title") <- "Data structure"
+
   class(out) <- c("overview", "data.frame")
   out
 }
