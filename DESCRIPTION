@@ -19,6 +19,7 @@ Imports:
     lmtest,
     mice,
     officer,
+    openxlsx,
     patchwork,
     R.utils,
     sandwich,
