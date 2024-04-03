@@ -373,3 +373,35 @@ unique_length <- function(x, na.rm = FALSE){
     length(unique(x))
   }
 }
+
+
+#' Add table number
+#'
+#' @param data a data frame.
+#' @param num table number.
+#' @param chinese Chinese, default FALSE.
+#' @param sep  separator.
+#'
+#' @return a data frame.
+#' @export
+add_table_num <- function(data, num = 1, chinese = FALSE, sep = ":"){
+
+  title <- attr(data, "title")
+
+  if(is_empty(title)){
+    if(chinese){
+      title <- sprintf("表%s", as.character(num))
+    }else{
+      title <- sprintf("Table %s", as.character(num))
+    }
+  }else{
+    if(chinese){
+      title <- sprintf("表%s %s", as.character(num), title)
+    }else{
+      title <- sprintf("Table %s%s  %s", as.character(num), sep, title)
+    }
+  }
+
+  data <- add_title(data, title)
+  data
+}

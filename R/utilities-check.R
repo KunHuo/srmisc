@@ -138,6 +138,103 @@ check_type <- function(data, label = FALSE){
 }
 
 
+#' Identify univariate outliers
+#'
+#' Detect outliers using boxplot methods. Boxplots are a popular and an easy
+#' method for identifying outliers. There are two categories of outlier: (1)
+#' outliers and (2) extreme points.Values above Q3 + 1.5xIQR or below Q1 -
+#' 1.5xIQR are considered as outliers. Values above Q3 + 3xIQR or below Q1 -
+#' 3xIQR are considered as extreme points (or extreme outliers). Q1 and Q3 are
+#' the first and third quartile, respectively. IQR is the interquartile range
+#' (IQR = Q3 - Q1).Generally speaking, data points that are labelled outliers in
+#' boxplots are not considered as troublesome as those considered extreme points
+#' and might even be ignored. Note that, any NA and NaN are automatically
+#' removed before the quantiles are computed.
+#'
+#' @param data a data frame.
+#' @param group group variable name.
+#' @param varnames numeric variable names.
+#' @param ... unused arguments.
+#'
+#' @return a data frame.
+#' @export
+check_outlier <-  function(data, group = NULL, varnames = NULL, ...){
+
+  group <- select_variable(data, group, type = "name")
+  varnames <- select_numeric(data, varnames, type = "name")
+  varnames <- setdiff(varnames, group)
+
+  if(length(varnames) == 0L){
+    cat("\n No numeric variables to identify outliers. \n\n")
+    return(invisible(NULL))
+  }
+
+  names(varnames) <- varnames
+
+  data$.row.number <- 1:nrow(data)
+
+  exec <- function(data, varname){
+    data$outlier <- is_outlier(data[[varname]])
+    data$extreme <- is_extreme(data[[varname]])
+    data <- data[, c(".row.number", varname, "outlier", "extreme")]
+    names(data)[2] <- "value"
+    data
+  }
+
+  out <- lapply(varnames, function(varname){
+    res <- group_exec(data, group = group, \(d){
+      exec(data, varname)
+    })
+  })
+
+  out <- list_rbind(out, collapse.names = FALSE)
+  out <- out[!is.na(out$outlier) & out$outlier, ]
+
+  if(nrow(out) < 1L){
+    cat("\nNo outliers.\n\n")
+    return(invisible(NULL))
+  }
+
+  out[[1]] <- sapply(out[[1]], \(x) get_var_label(data, x, default = ".name"))
+  out[[1]] <- delete_duplicate_values(out[[1]])
+  out <- tibble::as_tibble(out)
+
+  if(is_empty(group)){
+    names(out) <- c("Variable", "Row", "Value", "Outlier", "Extreme")
+  }else{
+    names(out) <- c("Variable", get_var_label(data, group, default = ".name"), "Row", "Value", "Outlier", "Extreme")
+  }
+
+  out <- add_title(out, "Identify univariate outliers using boxplot methods")
+  out <- add_note(out, "Note: Values above Q3 + 1.5×IQR or below Q1 - 1.5×IQR are considered as outliers.")
+  out <- add_note(out, "Values above Q3 + 3×IQR or below Q1 - 3×IQR are considered as extreme points (or extreme outliers).")
+  out <- add_note(out, "Q1 and Q3 are the first and third quartile, respectively. IQR is the interquartile range (IQR = Q3 - Q1).")
+
+  class(out) <- c("check", "data.frame")
+
+  out
+}
+
+
+is_outlier <- function (x, coef = 1.5) {
+  res  <- x
+  Q1   <- stats::quantile(x, 0.25, na.rm = TRUE)
+  Q3   <- stats::quantile(x, 0.75, na.rm = TRUE)
+  .IQR <- stats::IQR(x, na.rm = TRUE)
+
+  upper.limit <- Q3 + (coef * .IQR)
+  lower.limit <- Q1 - (coef * .IQR)
+
+  outlier <- ifelse(x < lower.limit | x > upper.limit, TRUE, FALSE)
+  outlier
+}
+
+
+is_extreme <- function (x) {
+  is_outlier(x, coef = 3)
+}
+
+
 #' Print 'check' object
 #'
 #' @param data a object of 'check'.
