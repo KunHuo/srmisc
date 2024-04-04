@@ -4,7 +4,7 @@
 \alias{read_xlsx}
 \title{Read an excel file}
 \usage{
-read_xlsx(path, sheet, code.sheet, ...)
+read_xlsx(path, sheet, code.sheet, str2num = TRUE, ...)
 }
 \arguments{
 \item{path}{an xlsx file, Workbook object or URL to xlsx file.}
@@ -12,6 +12,8 @@ read_xlsx(path, sheet, code.sheet, ...)
 \item{sheet}{the name or index of the sheet to read data from.}
 
 \item{code.sheet}{the name or index of the sheet to read code data from.}
+
+\item{str2num}{convert text to numbers.}
 
 \item{...}{arguments passed to \code{\link[openxlsx:read.xlsx]{openxlsx::read.xlsx()}}}
 }

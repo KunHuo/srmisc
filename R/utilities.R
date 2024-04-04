@@ -67,7 +67,9 @@ chinese <- function(data){
                     "Brier score" = "Brier\u8bc4\u5206",
                     Models = "\u6a21\u578b",
                     Nomogram = "\u5217\u7ebf\u56fe\u6a21\u578b",
-                    Characteristic = "\u7279\u5f81")
+                    Characteristic = "\u7279\u5f81",
+                    "Mean\u00b1SD" = "均数±标准差",
+                    "Median (IQR)" = "中位数(四分位数间距)")
 
 
   TITLES <- list("Performance metrics" = "\u9884\u6d4b\u6548\u80fd\u8bc4\u4ef7\u6307\u6807",
@@ -82,7 +84,7 @@ chinese <- function(data){
                 "Calculated by Wilcoxon rank sum test." = "\u91c7\u7528wilcoxon\u79e9\u548c\u68c0\u9a8c\u8ba1\u7b97\u3002",
                 "Calculated by Pearson's Chi-squared test." = "\u91c7\u7528\u5361\u65b9\u68c0\u9a8c\u8ba1\u7b97\u3002",
                 "Calculated by Fisher's exact test." = "\u91c7\u7528fisher\u7cbe\u786e\u6982\u7387\u6cd5\u8ba1\u7b97\u3002",
-                "Data were mean\u00Bb1SD, median (IQR) or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u3001\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u6216\u006e\u0028\u0025\u0029\u3002",
+                "Data were mean\u00B1SD, median (IQR) or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u3001\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u6216\u006e\u0028\u0025\u0029\u3002",
                 "Data were median (IQR) or n(%), unless otherwise specified."  = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u6216\u006e\u0028\u0025\u0029\u3002",
                 "Data were median (IQR), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u4e2d\u4f4d\u6570\u0028\u0049\u0051\u0052\u0029\u3002",
                 "Data were n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u006e\u0028\u0025\u0029\u3002",

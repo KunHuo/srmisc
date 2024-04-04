@@ -3,13 +3,18 @@
 #' @param path an xlsx file, Workbook object or URL to xlsx file.
 #' @param sheet the name or index of the sheet to read data from.
 #' @param code.sheet the name or index of the sheet to read code data from.
+#' @param str2num convert text to numbers.
 #' @param ... arguments passed to [openxlsx::read.xlsx()]
 #'
 #' @return a data frame.
 #' @export
-read_xlsx <- function(path, sheet, code.sheet, ...){
+read_xlsx <- function(path, sheet, code.sheet, str2num = TRUE, ...){
 
   data <- openxlsx::read.xlsx(xlsxFile = path, sheet = sheet, ...)
+
+  if(str2num){
+    data <- str2num(data)
+  }
 
   if(missing(code.sheet)){
     code.sheet <- "code"
@@ -24,6 +29,24 @@ read_xlsx <- function(path, sheet, code.sheet, ...){
       data
     }
   )
+  data
+}
+
+
+#' Convert text to numbers
+#'
+#' @param data a data frame.
+#'
+#' @return a data frame.
+#' @export
+str2num <- function(data){
+  data[, ] <- lapply(data[, ], \(x){
+    if(is.character(x) & all(srmisc::regex_detect(x, pattern = "^(\\-|\\+)?\\d+(\\.\\d+)?$"))){
+      as.numeric(x)
+    }else{
+      x
+    }
+  })
   data
 }
 
