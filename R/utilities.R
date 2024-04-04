@@ -294,6 +294,7 @@ overview <- function(data, digits = 1, label = FALSE){
 
 
     data.frame(Variable = Variable,
+               Label = get_var_label(data, x, default = ".name"),
                class = class(data[[x]]),
                "Missing (n)" = sum(is.na(data[[x]])),
                "Missing (%)" = sprintf("%s%%", fmt_digits(sum(is.na(data[[x]])) / length(data[[x]]) * 100, digits = digits)),
@@ -305,10 +306,10 @@ overview <- function(data, digits = 1, label = FALSE){
 
   out <- list_rbind(out, varname = "No.")
 
-  names(out)[4:5] <- c("Miss (n)", "Miss (%)")
+  names(out)[5:6] <- c("Miss (n)", "Miss (%)")
 
-  if(sum(out[[4]]) == 0){
-    out <- out[-c(4:5)]
+  if(sum(out[[5]]) == 0){
+    out <- out[-c(5:6)]
     attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", 0, ncol(data))
   }else{
     attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", sum(out[[4]] != 0), ncol(data))

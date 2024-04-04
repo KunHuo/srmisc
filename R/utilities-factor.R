@@ -316,6 +316,61 @@ fct_auto <- function(data, include = NULL, exclude = NULL, min = 2, max = 5,
 }
 
 
+
+#' categorize
+#'
+#' @param data a data frame.
+#' @param varnames variable names.
+#' @param exclude exclude variable names.
+#' @param min usually taking a min number of distinct values only when varnames = ".auto". Default 2.
+#' @param max usually taking a max number of distinct values only when varnames = ".auto". Default 5.
+#' @param na.include whether to include NA values in the table.
+#' @param na.level level to use for missing values.
+#' @param ... unused.
+#'
+#' @return a data frame.
+#' @export
+categorize <- function(data, varnames = ".auto", exclude = NULL, min = 2, max = 5, na.include = FALSE, na.level = "Missing", ...){
+
+  if(varnames[1] == ".auto"){
+    index <- sapply(data, \(x){
+      unique_length(x, na.rm = TRUE) >= min & unique_length(x, na.rm = TRUE) <= max
+    })
+    varnames <- names(data)[index]
+  }else{
+    varnames <- select_variable(data, varnames)
+  }
+
+  exclude <- select_variable(data, exclude)
+  varnames <- setdiff(varnames, exclude)
+
+  if(is_empty(varnames)){
+    return(data)
+  }
+
+  data[varnames] <- lapply(data[varnames], function(x) {
+
+    labels <- attr(x, "labels")
+    label <- attr(x, "label")
+
+    if(!is.null(labels)){
+      levels <- attr(x, "labels")
+      x <- factor(x, levels = levels, labels = names(levels))
+    }else{
+      x <- factor(x)
+    }
+
+    if (na.include) {
+      x <- fct_explicit_na(x, na_level = na.level)
+    }
+    attr(x, "label") <- label
+    x
+  })
+
+  data
+}
+
+
 #' Make missing values explicit
 #'
 #' @param f A factor (or character vector).
