@@ -92,7 +92,8 @@ chinese <- function(data){
                 "Data were mean\u00B1SD or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u6216\u006e\u0028\u0025\u0029\u3002")
 
   for(i in 1:length(VARIABLES)){
-    pattern <- paste0("^", names(VARIABLES)[i], "\\b")
+    # pattern <- paste0("^", names(VARIABLES)[i], "\\b")
+    pattern <- names(VARIABLES)[i]
     for(j in 1:ncol(data)){
       if(regex_detect(string = names(data)[j],
                       pattern = pattern,
@@ -107,15 +108,18 @@ chinese <- function(data){
 
   for(i in 1:length(VARIABLES)){
 
-    pattern <- paste0("(^|\\s)", names(VARIABLES)[i], "\\b")
+    # pattern <- paste0("(^|\\s)", names(VARIABLES)[i], "\\b")
+
+    pattern <- names(VARIABLES)[i]
     for(j in 1:nrow(data)){
       if(regex_detect(string = data[j, 1],
-                      pattern = pattern,
+                      pattern = pattern, fixed = TRUE,
                       ignore.case = TRUE)){
         data[j, 1] <- regex_replace(string = data[j, 1],
                                     pattern = pattern,
                                     replacement = VARIABLES[[i]],
-                                    ignore.case = TRUE)
+                                    ignore.case = TRUE,
+                                    fixed = TRUE)
       }
 
       if(data[j, 1] == "(Intercept)"){
