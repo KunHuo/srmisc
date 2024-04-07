@@ -110,3 +110,69 @@ sim_category <- function(..., seed = 123, miss = 0, factor = TRUE) {
 
   x
 }
+
+
+#' Expand Categorical Data
+#'
+#' Expand categorical data based on category frequencies to generate original data.
+#'
+#' @param ... An unnamed argument taking category frequencies as input.
+#'            Each category frequency should be specified as a numeric value.
+#' @param names An optional argument to specify the names of the resulting variables.
+#'If provided, it should be a character vector with two elements, where the first
+#'element represents the name of the first variable and the second element
+#'represents the name of the second variable.
+#' @param factor Logical indicating whether to return the generated variables as
+#' factors. Default is TRUE.
+#'
+#' @return A data frame representing the expanded categorical data.
+#'
+#' @details This function expands categorical data based on category frequencies
+#' to generate original data. The category frequencies are specified as unnamed
+#' arguments to the function, where each argument corresponds to the frequency
+#' of a category.
+#'
+#' If \code{factor} is TRUE (default), the generated variables are returned as
+#' factors; otherwise, they are returned as numeric values.
+#'
+#' @export
+#'
+#' @examples
+#' expand_category(High = c(Male = 94,  Female = 13),
+#'                 Low  = c(Male = 141, Female = 25),
+#'                 names = c("HLA", "Sex"))
+expand_category <- function(..., names = NULL, factor = TRUE) {
+
+  # Create a list of category frequencies
+  d <- list(...)
+
+  # Extract category levels
+  levels1 <- names(d)
+  levels2 <- names(d[[1]])
+
+  # Generate expanded variables
+  d <- lapply(d, \(x) {
+    rep(names(x), x)
+  })
+
+  # Create variables for data frame
+  var1 <- rep(names(d), sapply(d, length))
+  var2 <- unlist(d)
+  names(var2) <- NULL
+
+  # Convert variables to factors if specified
+  if (factor) {
+    var1 <- factor(var1, levels = levels1)
+    var2 <- factor(var2, levels = levels2)
+  }
+
+  # Create data frame
+  out <- data.frame(var1, var2)
+
+  # Set variable names if specified
+  if (!is.null(names)) {
+    names(out) <- names
+  }
+
+  out
+}
