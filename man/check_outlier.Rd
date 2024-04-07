@@ -13,6 +13,8 @@ check_outlier(data, group = NULL, varnames = NULL, ...)
 
 \item{varnames}{The numeric variable(s) to check for outliers. Default is NULL
 (checks all numeric variables).}
+
+\item{...}{unused.}
 }
 \value{
 A data frame summarizing the identified outliers.
@@ -23,7 +25,7 @@ Identify univariate outliers in numeric variables using boxplot methods.
 \details{
 This function identifies univariate outliers in numeric variables
 using boxplot methods. It calculates the outliers based on the interquartile
-range (IQR) rule, where values above Q3 + 1.5×IQR or below Q1 - 1.5×IQR are
+range (IQR) rule, where values above Q3 + 1.5xIQR or below Q1 - 1.5xIQR are
 considered outliers, and extreme points based on the same rule but with a
 multiplier of 3.
 

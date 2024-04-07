@@ -139,7 +139,7 @@ check_type <- function(data, label = FALSE){
     if(unique_length(data[[x]]) <= 5L){
       Value <- paste(unique(data[[x]]), collapse = ", ")
     }else{
-      Value <- paste0(paste(head(data[[x]]), collapse = ", "), ", ...")
+      Value <- paste0(paste(utils::head(data[[x]]), collapse = ", "), ", ...")
     }
 
     data.frame(Variable = Variable,
@@ -165,12 +165,13 @@ check_type <- function(data, label = FALSE){
 #' @param group The grouping variable(s). Default is NULL.
 #' @param varnames The numeric variable(s) to check for outliers. Default is NULL
 #' (checks all numeric variables).
+#' @param ... unused.
 #'
 #' @return A data frame summarizing the identified outliers.
 #'
 #' @details This function identifies univariate outliers in numeric variables
 #' using boxplot methods. It calculates the outliers based on the interquartile
-#' range (IQR) rule, where values above Q3 + 1.5×IQR or below Q1 - 1.5×IQR are
+#' range (IQR) rule, where values above Q3 + 1.5xIQR or below Q1 - 1.5xIQR are
 #' considered outliers, and extreme points based on the same rule but with a
 #' multiplier of 3.
 #'
@@ -228,8 +229,8 @@ check_outlier <-  function(data, group = NULL, varnames = NULL, ...){
   }
 
   out <- add_title(out, "Identify univariate outliers using boxplot methods")
-  out <- add_note(out, "Note: Values above Q3 + 1.5×IQR or below Q1 - 1.5×IQR are considered as outliers.")
-  out <- add_note(out, "Values above Q3 + 3×IQR or below Q1 - 3×IQR are considered as extreme points (or extreme outliers).")
+  out <- add_note(out, "Note: Values above Q3 + 1.5\u00d7IQR or below Q1 - 1.5\u00d7IQR are considered as outliers.")
+  out <- add_note(out, "Values above Q3 + 3\u00d7IQR or below Q1 - 3\u00d7IQR are considered as extreme points (or extreme outliers).")
   out <- add_note(out, "Q1 and Q3 are the first and third quartile, respectively. IQR is the interquartile range (IQR = Q3 - Q1).")
 
   class(out) <- c("check", "data.frame")
@@ -257,14 +258,14 @@ is_extreme <- function (x) {
 }
 
 
-#' Print 'check' object
+#' Print check object
 #'
-#' @param data a object of 'check'.
+#' @param x a object of check.
 #' @param ... more.
 #'
 #' @keywords internal
 #' @export
-print.check <- function(data, ...){
-  print_booktabs(data, ...)
+print.check <- function(x, ...){
+  print_booktabs(x, ...)
 }
 

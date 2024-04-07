@@ -75,7 +75,7 @@ write_xlsx <- function(data, path = "", code = TRUE, asTable = FALSE, ...){
           d
         }
       })
-      openxlsx::write.xlsx(listdata, file = path, asTable = asTable, ...)
+      openxlsx::write.xlsx(data, file = path, asTable = asTable, ...)
 
     }else{
       openxlsx::write.xlsx(data, file = path, asTable = asTable, ...)

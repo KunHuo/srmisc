@@ -2,16 +2,16 @@
 % Please edit documentation in R/utilities-check.R
 \name{print.check}
 \alias{print.check}
-\title{Print 'check' object}
+\title{Print check object}
 \usage{
-\method{print}{check}(data, ...)
+\method{print}{check}(x, ...)
 }
 \arguments{
-\item{data}{a object of 'check'.}
+\item{x}{a object of check.}
 
 \item{...}{more.}
 }
 \description{
-Print 'check' object
+Print check object
 }
 \keyword{internal}

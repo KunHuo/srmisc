@@ -23,7 +23,8 @@ Imports:
     patchwork,
     R.utils,
     sandwich,
-    stats
+    stats,
+    tibble
 Suggests: 
     knitr,
     rmarkdown

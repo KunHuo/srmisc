@@ -67,9 +67,7 @@ chinese <- function(data){
                     "Brier score" = "Brier\u8bc4\u5206",
                     Models = "\u6a21\u578b",
                     Nomogram = "\u5217\u7ebf\u56fe\u6a21\u578b",
-                    Characteristic = "\u7279\u5f81",
-                    "Mean\u00b1SD" = "均数±标准差",
-                    "Median (IQR)" = "中位数(四分位数间距)")
+                    Characteristic = "\u7279\u5f81")
 
 
   TITLES <- list("Performance metrics" = "\u9884\u6d4b\u6548\u80fd\u8bc4\u4ef7\u6307\u6807",
@@ -306,7 +304,7 @@ overview <- function(data, digits = 1, label = FALSE){
     if(unique_length(data[[x]]) <= 5L){
       Value <- paste(unique(data[[x]]), collapse = ", ")
     }else{
-      Value <- paste0(paste(head(data[[x]]), collapse = ", "), ", ...")
+      Value <- paste0(paste(utils::head(data[[x]]), collapse = ", "), ", ...")
     }
 
 
@@ -413,13 +411,13 @@ add_table_num <- function(data, num = 1, chinese = FALSE, sep = ":"){
 
   if(is_empty(title)){
     if(chinese){
-      title <- sprintf("表%s", as.character(num))
+      title <- sprintf("\u8868%s", as.character(num))
     }else{
       title <- sprintf("Table %s", as.character(num))
     }
   }else{
     if(chinese){
-      title <- sprintf("表%s %s", as.character(num), title)
+      title <- sprintf("\u8868%s %s", as.character(num), title)
     }else{
       title <- sprintf("Table %s%s  %s", as.character(num), sep, title)
     }
