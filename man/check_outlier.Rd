@@ -2,31 +2,33 @@
 % Please edit documentation in R/utilities-check.R
 \name{check_outlier}
 \alias{check_outlier}
-\title{Identify univariate outliers}
+\title{Check for Outliers}
 \usage{
 check_outlier(data, group = NULL, varnames = NULL, ...)
 }
 \arguments{
-\item{data}{a data frame.}
+\item{data}{The input data frame.}
 
-\item{group}{group variable name.}
+\item{group}{The grouping variable(s). Default is NULL.}
 
-\item{varnames}{numeric variable names.}
-
-\item{...}{unused arguments.}
+\item{varnames}{The numeric variable(s) to check for outliers. Default is NULL
+(checks all numeric variables).}
 }
 \value{
-a data frame.
+A data frame summarizing the identified outliers.
 }
 \description{
-Detect outliers using boxplot methods. Boxplots are a popular and an easy
-method for identifying outliers. There are two categories of outlier: (1)
-outliers and (2) extreme points.Values above Q3 + 1.5xIQR or below Q1 -
-1.5xIQR are considered as outliers. Values above Q3 + 3xIQR or below Q1 -
-3xIQR are considered as extreme points (or extreme outliers). Q1 and Q3 are
-the first and third quartile, respectively. IQR is the interquartile range
-(IQR = Q3 - Q1).Generally speaking, data points that are labelled outliers in
-boxplots are not considered as troublesome as those considered extreme points
-and might even be ignored. Note that, any NA and NaN are automatically
-removed before the quantiles are computed.
+Identify univariate outliers in numeric variables using boxplot methods.
+}
+\details{
+This function identifies univariate outliers in numeric variables
+using boxplot methods. It calculates the outliers based on the interquartile
+range (IQR) rule, where values above Q3 + 1.5×IQR or below Q1 - 1.5×IQR are
+considered outliers, and extreme points based on the same rule but with a
+multiplier of 3.
+
+If no numeric variables are provided or identified in the data, the function
+prints a message and returns NULL. The function returns a data frame with
+columns for variable name, grouping variable (if provided), row number,
+variable value, outlier status, and extreme status.
 }

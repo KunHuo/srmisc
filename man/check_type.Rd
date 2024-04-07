@@ -2,18 +2,25 @@
 % Please edit documentation in R/utilities-check.R
 \name{check_type}
 \alias{check_type}
-\title{Check data structure}
+\title{Check Variable Types and Values}
 \usage{
 check_type(data, label = FALSE)
 }
 \arguments{
-\item{data}{a data frame.}
+\item{data}{The input data frame.}
 
-\item{label}{Whether to replace variable names with variable labels. Default is FALSE.}
+\item{label}{Logical indicating whether to include variable labels. Default is FALSE.}
 }
 \value{
-a data frame.
+A data frame summarizing variable types and unique values.
 }
 \description{
-Check data structure
+Check variable types and unique values in a data frame.
+}
+\details{
+This function checks the variable types and unique values in each
+variable of a data frame. The function returns a data frame with columns for
+variable name, class, number of missing values, number of unique values,
+and sample values. If the number of unique values for a variable exceeds 5,
+only the first 5 values are displayed followed by "...".
 }

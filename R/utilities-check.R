@@ -67,14 +67,24 @@ check_installed <- function (pkg, message = FALSE) {
 }
 
 
-
-#' Check missing
+#' Check Missing Values
 #'
-#' @param data a data frame.
-#' @param digits digits for percent. Default 1.
-#' @param label Whether to replace variable names with variable labels. Default is FALSE.
+#' Check missing values in each variable of a data frame.
 #'
-#' @return a data frame.
+#' @param data The input data frame.
+#' @param digits The number of digits to display for percentages. Default is 1.
+#' @param label Logical indicating whether to include variable labels. Default
+#' is FALSE.
+#'
+#' @return A data frame summarizing missing values in each variable.
+#'
+#' @details
+#' This function checks missing values in each variable of a data frame. It
+#' calculates the number and percentage of missing values, as well as the number
+#' of valid (non-missing) values for each variable. The
+#' function returns a data frame with columns for variable name, number of
+#' missing values, percentage of missing values, and number of valid values.
+#'
 #' @export
 check_missing <- function(data, digits = 1, label = FALSE){
 
@@ -102,12 +112,21 @@ check_missing <- function(data, digits = 1, label = FALSE){
 }
 
 
-#' Check data structure
+#' Check Variable Types and Values
 #'
-#' @param data a data frame.
-#' @param label Whether to replace variable names with variable labels. Default is FALSE.
+#' Check variable types and unique values in a data frame.
 #'
-#' @return a data frame.
+#' @param data The input data frame.
+#' @param label Logical indicating whether to include variable labels. Default is FALSE.
+#'
+#' @return A data frame summarizing variable types and unique values.
+#'
+#' @details This function checks the variable types and unique values in each
+#' variable of a data frame. The function returns a data frame with columns for
+#' variable name, class, number of missing values, number of unique values,
+#' and sample values. If the number of unique values for a variable exceeds 5,
+#' only the first 5 values are displayed followed by "...".
+#'
 #' @export
 check_type <- function(data, label = FALSE){
   out <- lapply(names(data), \(x){
@@ -138,25 +157,28 @@ check_type <- function(data, label = FALSE){
 }
 
 
-#' Identify univariate outliers
+#' Check for Outliers
 #'
-#' Detect outliers using boxplot methods. Boxplots are a popular and an easy
-#' method for identifying outliers. There are two categories of outlier: (1)
-#' outliers and (2) extreme points.Values above Q3 + 1.5xIQR or below Q1 -
-#' 1.5xIQR are considered as outliers. Values above Q3 + 3xIQR or below Q1 -
-#' 3xIQR are considered as extreme points (or extreme outliers). Q1 and Q3 are
-#' the first and third quartile, respectively. IQR is the interquartile range
-#' (IQR = Q3 - Q1).Generally speaking, data points that are labelled outliers in
-#' boxplots are not considered as troublesome as those considered extreme points
-#' and might even be ignored. Note that, any NA and NaN are automatically
-#' removed before the quantiles are computed.
+#' Identify univariate outliers in numeric variables using boxplot methods.
 #'
-#' @param data a data frame.
-#' @param group group variable name.
-#' @param varnames numeric variable names.
-#' @param ... unused arguments.
+#' @param data The input data frame.
+#' @param group The grouping variable(s). Default is NULL.
+#' @param varnames The numeric variable(s) to check for outliers. Default is NULL
+#' (checks all numeric variables).
 #'
-#' @return a data frame.
+#' @return A data frame summarizing the identified outliers.
+#'
+#' @details This function identifies univariate outliers in numeric variables
+#' using boxplot methods. It calculates the outliers based on the interquartile
+#' range (IQR) rule, where values above Q3 + 1.5×IQR or below Q1 - 1.5×IQR are
+#' considered outliers, and extreme points based on the same rule but with a
+#' multiplier of 3.
+#'
+#' If no numeric variables are provided or identified in the data, the function
+#' prints a message and returns NULL. The function returns a data frame with
+#' columns for variable name, grouping variable (if provided), row number,
+#' variable value, outlier status, and extreme status.
+#'
 #' @export
 check_outlier <-  function(data, group = NULL, varnames = NULL, ...){
 

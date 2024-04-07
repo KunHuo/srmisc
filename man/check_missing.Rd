@@ -2,20 +2,28 @@
 % Please edit documentation in R/utilities-check.R
 \name{check_missing}
 \alias{check_missing}
-\title{Check missing}
+\title{Check Missing Values}
 \usage{
 check_missing(data, digits = 1, label = FALSE)
 }
 \arguments{
-\item{data}{a data frame.}
+\item{data}{The input data frame.}
 
-\item{digits}{digits for percent. Default 1.}
+\item{digits}{The number of digits to display for percentages. Default is 1.}
 
-\item{label}{Whether to replace variable names with variable labels. Default is FALSE.}
+\item{label}{Logical indicating whether to include variable labels. Default
+is FALSE.}
 }
 \value{
-a data frame.
+A data frame summarizing missing values in each variable.
 }
 \description{
-Check missing
+Check missing values in each variable of a data frame.
+}
+\details{
+This function checks missing values in each variable of a data frame. It
+calculates the number and percentage of missing values, as well as the number
+of valid (non-missing) values for each variable. The
+function returns a data frame with columns for variable name, number of
+missing values, percentage of missing values, and number of valid values.
 }

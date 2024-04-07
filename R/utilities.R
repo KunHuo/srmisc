@@ -273,14 +273,27 @@ as_frm <- function(x = NULL, y = NULL){
 }
 
 
-#' View data structure
+#' Overview of Data Structure
 #'
-#' @param data a data frame.
-#' @param digits digits for percent. Default 1.
-#' @param label Whether to replace variable names with variable labels. Default is FALSE.
+#' Generate an overview of the data structure including variable names, labels
+#' (if available), class, missing values, unique values, and sample values.
 #'
-#' @return a data frame.
+#' @param data The input data frame.
+#' @param digits The number of digits to display for percentages. Default is 1.
+#' @param label Logical indicating whether to include variable labels. Default is FALSE.
+#'
+#' @return A data frame providing an overview of the data structure.
+#'
+#' @details This function generates an overview of the data structure including
+#' variable names, labels (if available), class, missing values, unique values,
+#' and sample values. If the number of unique values for a variable exceeds 5,
+#' only the first 5 values are displayed followed by "...". The function
+#' calculates the percentage of missing values for each variable.
+#'
 #' @export
+#'
+#' @examples
+#' overview(iris)
 overview <- function(data, digits = 1, label = FALSE){
 
   out <- lapply(names(data), \(x){
@@ -319,8 +332,6 @@ overview <- function(data, digits = 1, label = FALSE){
     attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", sum(out[[4]] != 0), ncol(data))
   }
 
-
-
   attr(out, "title") <- "Data structure"
 
   class(out) <- c("overview", "data.frame")
@@ -328,10 +339,15 @@ overview <- function(data, digits = 1, label = FALSE){
 }
 
 
-#' Print overview object
+#' Print Method for Overview Objects
 #'
-#' @param x an overview object
-#' @param ... unused.
+#' Print method for objects of class "overview".
+#'
+#' @param x An object of class "overview".
+#' @param ... Additional arguments to be passed to print_booktabs function.
+#'
+#' @details This function prints the overview object using the print_booktabs
+#' function, which is suitable for printing tables with booktabs formatting.
 #'
 #' @keywords internal
 #' @export

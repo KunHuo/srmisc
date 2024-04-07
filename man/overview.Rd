@@ -2,20 +2,31 @@
 % Please edit documentation in R/utilities.R
 \name{overview}
 \alias{overview}
-\title{View data structure}
+\title{Overview of Data Structure}
 \usage{
 overview(data, digits = 1, label = FALSE)
 }
 \arguments{
-\item{data}{a data frame.}
+\item{data}{The input data frame.}
 
-\item{digits}{digits for percent. Default 1.}
+\item{digits}{The number of digits to display for percentages. Default is 1.}
 
-\item{label}{Whether to replace variable names with variable labels. Default is FALSE.}
+\item{label}{Logical indicating whether to include variable labels. Default is FALSE.}
 }
 \value{
-a data frame.
+A data frame providing an overview of the data structure.
 }
 \description{
-View data structure
+Generate an overview of the data structure including variable names, labels
+(if available), class, missing values, unique values, and sample values.
+}
+\details{
+This function generates an overview of the data structure including
+variable names, labels (if available), class, missing values, unique values,
+and sample values. If the number of unique values for a variable exceeds 5,
+only the first 5 values are displayed followed by "...". The function
+calculates the percentage of missing values for each variable.
+}
+\examples{
+overview(iris)
 }

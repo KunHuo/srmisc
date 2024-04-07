@@ -2,16 +2,20 @@
 % Please edit documentation in R/utilities.R
 \name{print.overview}
 \alias{print.overview}
-\title{Print overview object}
+\title{Print Method for Overview Objects}
 \usage{
 \method{print}{overview}(x, ...)
 }
 \arguments{
-\item{x}{an overview object}
+\item{x}{An object of class "overview".}
 
-\item{...}{unused.}
+\item{...}{Additional arguments to be passed to print_booktabs function.}
 }
 \description{
-Print overview object
+Print method for objects of class "overview".
+}
+\details{
+This function prints the overview object using the print_booktabs
+function, which is suitable for printing tables with booktabs formatting.
 }
 \keyword{internal}
