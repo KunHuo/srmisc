@@ -143,7 +143,7 @@ check_type <- function(data, label = FALSE){
     }
 
     data.frame(Variable = Variable,
-               class = class(data[[x]]),
+               Type = class(data[[x]]),
                Missing = sum(is.na(data[[x]])),
                Unique = unique_length(data[[x]]),
                Value = Value)
@@ -179,6 +179,10 @@ check_type <- function(data, label = FALSE){
 #' prints a message and returns NULL. The function returns a data frame with
 #' columns for variable name, grouping variable (if provided), row number,
 #' variable value, outlier status, and extreme status.
+#'
+#' @examples
+#' check_outlier(iris)
+#' check_outlier(iris, group = "Species")
 #'
 #' @export
 check_outlier <-  function(data, group = NULL, varnames = NULL, ...){
@@ -238,7 +242,33 @@ check_outlier <-  function(data, group = NULL, varnames = NULL, ...){
   out
 }
 
-
+#' Determine outliers
+#'
+#' This function calculates outliers in a numeric vector using the interquartile
+#' range (IQR) method.
+#'
+#' @param x Numeric vector containing the values to be checked for outliers.
+#' @param coef Coefficient to determine the threshold for defining outliers.
+#' Default is 1.5.
+#'
+#' @return Logical vector indicating outliers (TRUE) and non-outliers (FALSE).
+#'
+#' @details
+#' The interquartile range (IQR) method identifies outliers based on the difference
+#' between the first quartile (Q1) and third quartile (Q3). Outliers are defined
+#' as values outside the range (Q1 - coef*IQR, Q3 + coef*IQR),
+#' where \code{coef} is the coefficient.
+#'
+#' @seealso \code{\link{is_extreme}}
+#'
+#' @examples
+#' # Define a numeric vector
+#' x <- c(1, 2, 3, 4, 5, 20)
+#'
+#' # Determine outliers
+#' is_outlier(x)
+#'
+#' @export
 is_outlier <- function (x, coef = 1.5) {
   res  <- x
   Q1   <- stats::quantile(x, 0.25, na.rm = TRUE)
@@ -253,6 +283,29 @@ is_outlier <- function (x, coef = 1.5) {
 }
 
 
+#' Determine extreme values
+#'
+#' This function calculates extreme values in a numeric vector using the
+#' interquartile range (IQR) method.
+#'
+#' @param x Numeric vector containing the values to be checked for extreme values.
+#'
+#' @return Logical vector indicating extreme values (TRUE) and non-extreme values (FALSE).
+#'
+#' @details
+#' This function internally calls \code{\link{is_outlier}} with a coefficient of
+#' 3 to determine extreme values.
+#'
+#' @seealso \code{\link{is_outlier}}
+#'
+#' @examples
+#' # Define a numeric vector
+#' x <- c(1, 2, 3, 4, 5, 100)
+#'
+#' # Determine outliers
+#' is_extreme(x)
+#'
+#' @export
 is_extreme <- function (x) {
   is_outlier(x, coef = 3)
 }

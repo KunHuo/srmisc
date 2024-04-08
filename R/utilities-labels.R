@@ -259,14 +259,24 @@ codes2labels <- function(data, codes, as.factor = TRUE, exclude = "") {
 }
 
 
-#' Codes in a data frame
+#' Data coding information
 #'
-#' @param data a data frame.
+#' This function generates coding information for each variable in the data frame.
+#'
+#' @param data A data frame containing the variables.
+#' @param language Specify language, 'en' is English, 'cn' or 'zh' is Chinese.
+#' Default is 'en'.
 #' @param ... unused.
 #'
-#' @return a data frame with class 'codes'.
+#' @return A data frame containing the coding information.
+#'
+#' @seealso [codes2()], [codes_t()].
+#'
+#' @examples
+#' codes(iris)
+#'
 #' @export
-codes <- function(data, ...){
+codes <- function(data, language = "en", ...){
   exec <- function(x){
     var   <- x
     code  <- NA
@@ -285,36 +295,84 @@ codes <- function(data, ...){
 
   out <- lapply(names(data), exec)
   out <- do.call(rbind, out)
+
   row.names(out) <- NULL
-  attr(out, "title") <- "Data coding"
+
+  if(language != "en"){
+    names(out) <- c("\u53d8\u91cf", "\u7f16\u7801", "\u6807\u7b7e")
+  }
+
+  attr(out, "title") <- ifelse(language == "en", "Data coding information", "\u6570\u636e\u7f16\u7801\u4fe1\u606f")
   class(out) <- c("codes", "data.frame")
   out
 }
 
 
-#' Codes in a data frame
+#' Data coding information
 #'
-#' @param data a data frame.
-#' @param ... more arguments.
+#' This function generates coding information for each variable in the data frame.
 #'
-#' @return a data frame.
+#' @param data A data frame containing the variables.
+#' @param language Specify language, 'en' is English, 'cn' or 'zh' is Chinese.
+#' Default is 'en'.
+#' @param ... unused.
+#'
+#' @return A data frame containing the coding information.
+#'
+#' @seealso [codes()], [codes_t()].
+#'
+#' @examples
+#' codes2(iris)
+#'
 #' @export
-codes2 <- function(data, ...){
+codes2 <- function(data, language = "en", ...){
+
   out <- lapply(names(data), \(x){
     if(is.factor(data[[x]])){
+      # If it is a factor, create coding information
       code <- paste(sprintf("%d: %s", 1:nlevels(data[[x]]), levels(data[[x]])), collapse = "; ")
     }else{
+      # If not a factor, leave coding information empty
       code <- ""
     }
+
+    # Create a data frame with Variable, Label, Type, and Code columns
     data.frame(Variable = x,
                Label  = get_var_label(data, x, default = ".name"),
-               Type = class(data[[x]]),
+               Type = data_type(class(data[[x]]), language),
                Code = code)
   })
+  # Combine the list of data frames into a single data frame
   out <- list_rbind(out, names.as.column = FALSE)
-  attr(out, "title") <- "Data coding"
+
+  if(language != "en"){
+    names(out) <- c("\u53d8\u91cf",
+                    "\u6807\u7b7e",
+                    "\u6570\u636e\u7c7b\u578b",
+                    "\u7f16\u7801")
+  }
+
+  attr(out, "title") <- ifelse(language == "en", "Data coding information", "\u6570\u636e\u7f16\u7801\u4fe1\u606f")
   class(out) <- c("codes", "data.frame")
+
   out
+}
+
+
+data_type <- function(type, language = "en"){
+  if(language == "en"){
+    switch(type,
+           integer = "numeric",
+           type)
+  }else{
+    switch(type,
+           integer = "\u8fde\u7eed\u53d8\u91cf",
+           numeric = "\u8fde\u7eed\u53d8\u91cf",
+           characte = "\u5b57\u7b26\u53d8\u91cf",
+           factor = "\u5206\u7c7b\u53d8\u91cf",
+           logical = "\u903b\u8f91\u53d8\u91cf",
+           type)
+  }
 }
 
 

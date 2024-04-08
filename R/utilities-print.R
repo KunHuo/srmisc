@@ -1,11 +1,19 @@
-#' Print booktags
+#' Print a table using the booktabs style.
 #'
-#' @param data a data frame.
-#' @param sep sep.
-#' @param adj adj.
-#' @param ... unused
+#' This function prints a table in the booktabs style, which is commonly used
+#' in LaTeX documents.
 #'
-#' @keywords internal
+#' @param data A data frame or matrix to be printed.
+#' @param sep Separator used to split column names into two parts for table headers.
+#' @param adj A vector specifying the alignment of each column. Default is "left"
+#' for character columns and "center" for numeric columns.
+#' @param ... Additional arguments to be passed to the function.
+#'
+#' @details
+#' This function prints a table in the booktabs style. It handles numeric values
+#' by formatting them to a maximum number of digits and aligning them to the center.
+#' Character values are aligned to the left. It also supports multi-level column
+#' headers separated by the specified separator.
 #'
 #' @export
 print_booktabs <- function(data, sep = "__", adj = NULL, ...){
@@ -124,15 +132,41 @@ print_booktabs <- function(data, sep = "__", adj = NULL, ...){
 }
 
 
+#' Determine the number of digits
+#'
+#' This function calculates the number of digits after the decimal point in
+#' numeric values.
+#'
+#' @param x A numeric vector.
+#'
+#' @return A numeric vector indicating the number of digits after the decimal
+#' point for each element in \code{x}.
+#'
+#' @details
+#' This function takes a numeric vector as input and returns another numeric
+#' vector indicating the number of digits after the decimal point for each
+#' element in the input vector. If the input value is not numeric, the function
+#' returns 0.
+#'
+#' @examples
+#' n_digits(2.45)
+#'
+#' n_digits(3)
+#'
+#' @export
 n_digits <- function(x){
+
   x <- as.character(x)
+
   sapply(x, function(i) {
+    # Split the character at the decimal point
     i <- regex_split(i, pattern = ".", fixed = TRUE)
     i <- unlist(i)
+
     if (length(i) == 1L) {
-      0
+      0 # If there is no decimal point, return 0
     } else{
-      nchar(i[2])
+      nchar(i[2]) # Otherwise, return the number of characters after the decimal point
     }
   })
 }

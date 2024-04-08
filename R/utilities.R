@@ -90,7 +90,7 @@ chinese <- function(data){
                 "Data were mean\u00B1SD or n(%), unless otherwise specified." = "\u6ce8\uff1a\u9664\u7279\u522b\u6307\u660e\u5916\uff0c\u6570\u636e\u63cf\u8ff0\u4e3a\u5747\u6570\u00b1\u6807\u51c6\u5dee\u6216\u006e\u0028\u0025\u0029\u3002")
 
   for(i in 1:length(VARIABLES)){
-    # pattern <- paste0("^", names(VARIABLES)[i], "\\b")
+    # pattern <- paste0("^", names(VARIABLES)[i], "\b")
     pattern <- names(VARIABLES)[i]
     for(j in 1:ncol(data)){
       if(regex_detect(string = names(data)[j],
@@ -106,7 +106,7 @@ chinese <- function(data){
 
   for(i in 1:length(VARIABLES)){
 
-    # pattern <- paste0("(^|\\s)", names(VARIABLES)[i], "\\b")
+    # pattern <- paste0("(^|\s)", names(VARIABLES)[i], "\b")
 
     pattern <- names(VARIABLES)[i]
     for(j in 1:nrow(data)){
@@ -279,6 +279,9 @@ as_frm <- function(x = NULL, y = NULL){
 #' @param data The input data frame.
 #' @param digits The number of digits to display for percentages. Default is 1.
 #' @param label Logical indicating whether to include variable labels. Default is FALSE.
+#' @param language Specify language, 'en' is English, 'cn' or 'zh' is Chinese.
+#' Default is 'en'.
+#'
 #'
 #' @return A data frame providing an overview of the data structure.
 #'
@@ -292,7 +295,7 @@ as_frm <- function(x = NULL, y = NULL){
 #'
 #' @examples
 #' overview(iris)
-overview <- function(data, digits = 1, label = FALSE){
+overview <- function(data, digits = 1, label = FALSE, language = "en"){
 
   out <- lapply(names(data), \(x){
     if(label){
@@ -307,10 +310,9 @@ overview <- function(data, digits = 1, label = FALSE){
       Value <- paste0(paste(utils::head(data[[x]]), collapse = ", "), ", ...")
     }
 
-
     data.frame(Variable = Variable,
                Label = get_var_label(data, x, default = ".name"),
-               class = class(data[[x]]),
+               Type = data_type(class(data[[x]]), language),
                "Missing (n)" = sum(is.na(data[[x]])),
                "Missing (%)" = sprintf("%s%%", fmt_digits(sum(is.na(data[[x]])) / length(data[[x]]) * 100, digits = digits)),
                Unique = unique_length(data[[x]]),
@@ -318,19 +320,34 @@ overview <- function(data, digits = 1, label = FALSE){
   })
 
 
-
   out <- list_rbind(out, varname = "No.")
-
   names(out)[5:6] <- c("Miss (n)", "Miss (%)")
+
+  if(language != "en"){
+    names(out) <- c("\u5e8f\u53f7",  # No.
+                    "\u53d8\u91cf",  # Variable
+                    "\u6807\u7b7e",  # Label
+                    "\u6570\u636e\u7c7b\u578b", # Type
+                    "\u7f3a\u5931\u4f8b\u6570", # Miss (n)
+                    "\u7f3a\u5931\u6bd4\u4f8b", # Miss (%)
+                    "\u552f\u4e00\u503c", # Unique
+                    "\u6570\u636e")        # Value
+  }
+
+  if(language == "en"){
+    fmt <- "Note: %d of the %d variables had missing values."
+  }else{
+    fmt <- "\u6ce8\uff1a%d\u4e2a\u53d8\u91cf(\u5171%d\u4e2a\u53d8\u91cf)\u5b58\u5728\u7f3a\u5931\u503c\u3002"
+  }
 
   if(sum(out[[5]]) == 0){
     out <- out[-c(5:6)]
-    attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", 0, ncol(data))
+    attr(out, "note") <- sprintf(fmt, 0, ncol(data))
   }else{
-    attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", sum(out[[4]] != 0), ncol(data))
+    attr(out, "note") <- sprintf(fmt, sum(out[[5]] != 0), ncol(data))
   }
 
-  attr(out, "title") <- "Data structure"
+  attr(out, "title") <- ifelse(language == "en", "Data structure", "\u6570\u636e\u7ed3\u6784")
 
   class(out) <- c("overview", "data.frame")
   out

@@ -1,41 +1,29 @@
 #' Typeset a(n) object
 #'
-#' @param x
-#' a(n) object.
-#' @param data
-#' a data frame of fitted models.
-#' @param outcome
-#' outcome variable name.
-#' @param varnames
-#' variable names.
-#' @param conf.level
-#' The confidence level to use for the confidence interval if conf.int = TRUE.
-#' Must be strictly greater than 0 and less than 1. Defaults to 0.95, which
-#' corresponds to a 95 percent confidence interval.
-#' @param conf.brackets
-#' brackets of CI format.
-#' @param conf.separator
-#' separate of CI format.
-#' @param digits.pvalue
-#' digits for P value, default 3.
-#' @param digits.effect
-#' digits for effect value (e.g., OR, HR, or RR), default 2.
-#' @param ref.value
-#' reference value.
-#' @param select
-#' statistic.
-#' @param filter
-#' filter.
-#' @param fold
-#' fold variables, default FALSE.
-#' @param exp
-#' exp effect, only used on typeset.default.
-#' @param term
-#' wether the columns of term, varname, and ref, default FALSE.
-#' @param ...
-#' Additional arguments.
+#' @param x The object to be typeset.
+#' @param data An optional data frame containing the data.
+#' @param outcome An optional character vector specifying the outcome variable.
+#' @param varnames An optional character vector specifying the variable names to
+#' be used.
+#' @param conf.level The confidence level for calculating confidence intervals.
+#' @param conf.brackets An optional character vector specifying the format of
+#' confidence interval brackets.
+#' @param conf.separator An optional character vector specifying the separator
+#' between lower and upper bounds of confidence intervals.
+#' @param digits.pvalue The number of digits to display for p-values.
+#' @param digits.effect The number of digits to display for effect estimates.
+#' @param ref.value The reference value for categorical variables.
+#' @param select An optional character vector specifying the variables to select
+#' from the data frame.
+#' @param filter An optional expression indicating rows to filter from the data
+#' frame.
+#' @param fold A logical value indicating whether to fold long lines.
+#' @param exp A logical value indicating whether to exponentiate the coefficients.
+#' @param term A logical value indicating whether to display interaction terms.
+#' @param ... Additional arguments passed to specific methods.
 #'
 #' @return a data frame with class 'typeset'.
+#'
 #' @export
 typeset <- function(x,
                     data = NULL,

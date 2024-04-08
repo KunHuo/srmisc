@@ -2,18 +2,28 @@
 % Please edit documentation in R/utilities-labels.R
 \name{codes}
 \alias{codes}
-\title{Codes in a data frame}
+\title{Data coding information}
 \usage{
-codes(data, ...)
+codes(data, language = "en", ...)
 }
 \arguments{
-\item{data}{a data frame.}
+\item{data}{A data frame containing the variables.}
+
+\item{language}{Specify language, 'en' is English, 'cn' or 'zh' is Chinese.
+Default is 'en'.}
 
 \item{...}{unused.}
 }
 \value{
-a data frame with class 'codes'.
+A data frame containing the coding information.
 }
 \description{
-Codes in a data frame
+This function generates coding information for each variable in the data frame.
+}
+\examples{
+codes(iris)
+
+}
+\seealso{
+\code{\link[=codes2]{codes2()}}, \code{\link[=codes_t]{codes_t()}}.
 }

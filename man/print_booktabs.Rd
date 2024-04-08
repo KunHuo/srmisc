@@ -2,20 +2,27 @@
 % Please edit documentation in R/utilities-print.R
 \name{print_booktabs}
 \alias{print_booktabs}
-\title{Print booktags}
+\title{Print a table using the booktabs style.}
 \usage{
 print_booktabs(data, sep = "__", adj = NULL, ...)
 }
 \arguments{
-\item{data}{a data frame.}
+\item{data}{A data frame or matrix to be printed.}
 
-\item{sep}{sep.}
+\item{sep}{Separator used to split column names into two parts for table headers.}
 
-\item{adj}{adj.}
+\item{adj}{A vector specifying the alignment of each column. Default is "left"
+for character columns and "center" for numeric columns.}
 
-\item{...}{unused}
+\item{...}{Additional arguments to be passed to the function.}
 }
 \description{
-Print booktags
+This function prints a table in the booktabs style, which is commonly used
+in LaTeX documents.
 }
-\keyword{internal}
+\details{
+This function prints a table in the booktabs style. It handles numeric values
+by formatting them to a maximum number of digits and aligning them to the center.
+Character values are aligned to the left. It also supports multi-level column
+headers separated by the specified separator.
+}

@@ -34,3 +34,8 @@ prints a message and returns NULL. The function returns a data frame with
 columns for variable name, grouping variable (if provided), row number,
 variable value, outlier status, and extreme status.
 }
+\examples{
+check_outlier(iris)
+check_outlier(iris, group = "Species")
+
+}

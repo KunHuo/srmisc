@@ -24,39 +24,42 @@ typeset(
 )
 }
 \arguments{
-\item{x}{a(n) object.}
+\item{x}{The object to be typeset.}
 
-\item{data}{a data frame of fitted models.}
+\item{data}{An optional data frame containing the data.}
 
-\item{outcome}{outcome variable name.}
+\item{outcome}{An optional character vector specifying the outcome variable.}
 
-\item{varnames}{variable names.}
+\item{varnames}{An optional character vector specifying the variable names to
+be used.}
 
-\item{conf.level}{The confidence level to use for the confidence interval if conf.int = TRUE.
-Must be strictly greater than 0 and less than 1. Defaults to 0.95, which
-corresponds to a 95 percent confidence interval.}
+\item{conf.level}{The confidence level for calculating confidence intervals.}
 
-\item{conf.brackets}{brackets of CI format.}
+\item{conf.brackets}{An optional character vector specifying the format of
+confidence interval brackets.}
 
-\item{conf.separator}{separate of CI format.}
+\item{conf.separator}{An optional character vector specifying the separator
+between lower and upper bounds of confidence intervals.}
 
-\item{digits.pvalue}{digits for P value, default 3.}
+\item{digits.pvalue}{The number of digits to display for p-values.}
 
-\item{digits.effect}{digits for effect value (e.g., OR, HR, or RR), default 2.}
+\item{digits.effect}{The number of digits to display for effect estimates.}
 
-\item{ref.value}{reference value.}
+\item{ref.value}{The reference value for categorical variables.}
 
-\item{select}{statistic.}
+\item{select}{An optional character vector specifying the variables to select
+from the data frame.}
 
-\item{filter}{filter.}
+\item{filter}{An optional expression indicating rows to filter from the data
+frame.}
 
-\item{fold}{fold variables, default FALSE.}
+\item{fold}{A logical value indicating whether to fold long lines.}
 
-\item{exp}{exp effect, only used on typeset.default.}
+\item{exp}{A logical value indicating whether to exponentiate the coefficients.}
 
-\item{term}{wether the columns of term, varname, and ref, default FALSE.}
+\item{term}{A logical value indicating whether to display interaction terms.}
 
-\item{...}{Additional arguments.}
+\item{...}{Additional arguments passed to specific methods.}
 }
 \value{
 a data frame with class 'typeset'.
