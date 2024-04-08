@@ -21,6 +21,8 @@
 #' less than \code{n}, missing values are introduced into the generated samples
 #' at random positions.
 #'
+#' @seealso [sim_snorm()]
+#'
 #' @export
 #'
 #' @examples
@@ -32,6 +34,59 @@
 sim_norm <- function(n, mean = 0, sd = 1, digits = 2, seed = 123, miss = 0){
   set.seed(seed = seed)
   x <- round(stats::rnorm(n = n, mean = mean, sd = sd), digits = digits)
+
+  if(miss != 0 & miss < n){
+    x[sample(1:n, size = miss)] <- NA
+  }
+
+  x
+}
+
+
+#' Generate Random Samples from a Skew-Normal Distribution
+#'
+#' @param n Number of observations to generate.
+#' @param mean Mean of the distribution.
+#' @param sd Standard deviation of the distribution.
+#' @param xi Shape parameter controlling skewness.
+#' @param digits Number of digits to round the generated data to.
+#' @param seed Seed for random number generation.
+#' @param miss Number of missing values to introduce.
+#'
+#' @return A numeric vector of simulated data.
+#'
+#' @details This function generates data from a skew-normal distribution.
+#' The skew-normal distribution is a generalization of the normal distribution
+#' that introduces skewness through a shape parameter \code{xi}.
+#'
+#' @examples
+#' # Simulate 100 observations from a skew-normal distribution
+#' sim_snorm(n = 100, mean = 0, sd = 1, xi = 1.5)
+#' sim_snorm(n = 100, mean = 0, sd = 1, xi = -1.5)
+#'
+#' # Simulate 100 observations with 10% missing values
+#' sim_snorm(n = 100, mean = 0, sd = 1, xi = 1.5, miss = 10)
+#'
+#' @seealso [sim_norm()]
+#'
+#' @export
+sim_snorm <- function(n, mean = 0, sd = 1, xi = 1.5, digits = 2, seed = 123, miss = 0){
+
+  set.seed(seed = seed)
+
+  exec <- function (n, xi) {
+    weight = xi / (xi + 1 / xi)
+    z = stats::runif(n, -weight, 1 - weight)
+    Xi = xi ^ sign(z)
+    Random = -abs(stats::rnorm(n)) / Xi * sign(z)
+    m1 = 2 / sqrt(2 * pi)
+    mu = m1 * (xi - 1 / xi)
+    sigma = sqrt((1 - m1 ^ 2) * (xi ^ 2 + 1 / xi ^ 2) + 2 * m1 ^ 2 - 1)
+    Random = (Random - mu) / sigma
+    Random
+  }
+
+  x <- round(exec(n = n, xi = xi) * sd + mean, digits = digits)
 
   if(miss != 0 & miss < n){
     x[sample(1:n, size = miss)] <- NA
@@ -112,67 +167,24 @@ sim_category <- function(..., seed = 123, miss = 0, factor = TRUE) {
 }
 
 
-#' Expand Categorical Data
+#' Simulate Missing Values in a Vector
 #'
-#' Expand categorical data based on category frequencies to generate original data.
+#' @param x A vector containing the data.
+#' @param n Number of missing values to introduce.
+#' @param seed Seed for random number generation.
 #'
-#' @param ... An unnamed argument taking category frequencies as input.
-#'            Each category frequency should be specified as a numeric value.
-#' @param names An optional argument to specify the names of the resulting variables.
-#'If provided, it should be a character vector with two elements, where the first
-#'element represents the name of the first variable and the second element
-#'represents the name of the second variable.
-#' @param factor Logical indicating whether to return the generated variables as
-#' factors. Default is TRUE.
+#' @return A vector with missing values introduced.
 #'
-#' @return A data frame representing the expanded categorical data.
-#'
-#' @details This function expands categorical data based on category frequencies
-#' to generate original data. The category frequencies are specified as unnamed
-#' arguments to the function, where each argument corresponds to the frequency
-#' of a category.
-#'
-#' If \code{factor} is TRUE (default), the generated variables are returned as
-#' factors; otherwise, they are returned as numeric values.
-#'
-#' @export
+#' @details This function introduces missing values into a vector by randomly
+#' selecting \code{n} indices and replacing the corresponding values with NA.
 #'
 #' @examples
-#' expand_category(High = c(Male = 94,  Female = 13),
-#'                 Low  = c(Male = 141, Female = 25),
-#'                 names = c("HLA", "Sex"))
-expand_category <- function(..., names = NULL, factor = TRUE) {
-
-  # Create a list of category frequencies
-  d <- list(...)
-
-  # Extract category levels
-  levels1 <- names(d)
-  levels2 <- names(d[[1]])
-
-  # Generate expanded variables
-  d <- lapply(d, \(x) {
-    rep(names(x), x)
-  })
-
-  # Create variables for data frame
-  var1 <- rep(names(d), sapply(d, length))
-  var2 <- unlist(d)
-  names(var2) <- NULL
-
-  # Convert variables to factors if specified
-  if (factor) {
-    var1 <- factor(var1, levels = levels1)
-    var2 <- factor(var2, levels = levels2)
-  }
-
-  # Create data frame
-  out <- data.frame(var1, var2)
-
-  # Set variable names if specified
-  if (!is.null(names)) {
-    names(out) <- names
-  }
-
-  out
+#' # Simulate missing values in a numeric vector
+#' sim_missing(x = c(1, 2, 3, 4, 5), n = 2)
+#'
+#' @export
+sim_missing <- function(x, n = 0, seed = 123){
+  set.seed(seed)
+  x[sample(1:length(x), n)] <- NA
+  x
 }
