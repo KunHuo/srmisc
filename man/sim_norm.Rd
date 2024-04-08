@@ -4,7 +4,16 @@
 \alias{sim_norm}
 \title{Generate Random Samples from Normal Distribution}
 \usage{
-sim_norm(n, mean = 0, sd = 1, digits = 2, seed = 123, miss = 0)
+sim_norm(
+  n,
+  mean = 0,
+  sd = 1,
+  digits = 2,
+  seed = 123,
+  miss = 0,
+  min = NULL,
+  max = NULL
+)
 }
 \arguments{
 \item{n}{The number of samples to generate.}
@@ -19,6 +28,10 @@ sim_norm(n, mean = 0, sd = 1, digits = 2, seed = 123, miss = 0)
 
 \item{miss}{The number of missing values to introduce into the generated samples.
 Default is 0.}
+
+\item{min}{Minimum value to constrain the generated values.}
+
+\item{max}{Maximum value to constrain the generated values.}
 }
 \value{
 A vector of random samples from the normal distribution.
@@ -34,7 +47,8 @@ generate is given by the parameter \code{n}.
 The generated samples are rounded to the specified number of digits using the
 \code{round} function. If the parameter \code{miss} is greater than 0 and
 less than \code{n}, missing values are introduced into the generated samples
-at random positions.
+at random positions, and constrain the generated values within a specified
+range using the \code{min} and \code{max} arguments.
 }
 \examples{
 # Generate random samples from a normal distribution with default parameters

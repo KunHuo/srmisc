@@ -9,6 +9,8 @@
 #' @param seed The seed for random number generation. Default is 123.
 #' @param miss The number of missing values to introduce into the generated samples.
 #' Default is 0.
+#' @param min Minimum value to constrain the generated values.
+#' @param max Maximum value to constrain the generated values.
 #'
 #' @return A vector of random samples from the normal distribution.
 #'
@@ -19,7 +21,8 @@
 #' The generated samples are rounded to the specified number of digits using the
 #' \code{round} function. If the parameter \code{miss} is greater than 0 and
 #' less than \code{n}, missing values are introduced into the generated samples
-#' at random positions.
+#' at random positions, and constrain the generated values within a specified
+#' range using the \code{min} and \code{max} arguments.
 #'
 #' @seealso [sim_snorm()]
 #'
@@ -31,15 +34,123 @@
 #'
 #' # Generate random samples with missing values
 #' sim_norm(n = 10, miss = 2)
-sim_norm <- function(n, mean = 0, sd = 1, digits = 2, seed = 123, miss = 0){
+sim_norm <- function(n, mean = 0, sd = 1, digits = 2, seed = 123, miss = 0, min = NULL, max = NULL){
   set.seed(seed = seed)
+
+  # Generate data from normal distribution
   x <- round(stats::rnorm(n = n, mean = mean, sd = sd), digits = digits)
 
+  # Constrain values to specified minimum and maximum
+  if(!is.null(min)){
+    x[x < min] <- min
+  }
+  if(!is.null(max)){
+    x[x > max] <- max
+  }
+
+  # Introduce missing values
   if(miss != 0 & miss < n){
     x[sample(1:n, size = miss)] <- NA
   }
 
   x
+}
+
+
+#' Simulate Data with Grouped Normal Distribution
+#'
+#' @param ... List of named arguments specifying the groups and their parameters
+#' from [sim_norm()].
+#' @param signif Logical indicating whether to simulate until the group difference
+#' is significant (TRUE) or not (FALSE).
+#' @param names Vector of names.
+#'
+#' @return A data frame containing simulated data with grouped normal distribution.
+#'
+#' @details This function generates simulated data with grouped normal distribution.
+#' It takes multiple arguments where each argument represents a group with its
+#' parameters (e.g., mean, standard deviation, sample size). The function simulates
+#' data for each group until the group difference becomes statistically significant
+#' or not based on the \code{signif} argument.
+#'
+#' @seealso [sim_norm()]
+#'
+#' @examples
+#' # Simulate data with grouped normal distribution
+#' sim_gourp_norm(A = list(n = 10, mean = 30, sd = 1, digits = 2),
+#'                B = list(n = 8, mean = 35, sd = 2, digits = 2),
+#'                C = list(n = 8, mean = 32, sd = 3, digits = 2))
+#'
+#' @export
+sim_gourp_norm <- function(..., signif = TRUE, names = NULL) {
+  # Store the arguments in a list
+  d <- list(...)
+
+  # Initialize output
+  out <- NULL
+
+  seed <- 0
+
+  while (TRUE) {
+    seed <- seed + 1
+
+    # Simulate data for each group
+    res <- lapply(d, \(x) {
+      x$seed <- seed
+      do.call(sim_norm, x)
+    })
+
+    # Combine results into a data frame
+    group <- rep(names(res), sapply(res, length))
+    value <- unlist(res)
+    res <- data.frame(group, value)
+    row.names(res) <- NULL
+
+    # Check variance equality
+    var.equal <- tryCatch(exec_levene(value, group)[[2]], error = function(e) 1.0)
+    var.equal <- ifelse(var.equal>=0.05, TRUE, FALSE)
+
+    # Perform group difference test
+    if (length(d) == 2L) {
+      fit <- stats::t.test(value ~ group, var.equal = var.equal)
+    } else{
+      fit <- stats::oneway.test(value ~ group, var.equal = var.equal)
+    }
+
+    if(seed == 5000){
+      stop("Can not find.", call. = FALSE)
+    }
+
+    # Check significance and break loop if condition is met
+    if (signif) {
+      if (fit$p.value < 0.05) {
+        out <- res
+        break
+      }
+    } else{
+      if (fit$p.value > 0.05) {
+        out <- res
+        break
+      }
+    }
+  }
+
+  if(!is.null(names)){
+    names(out) <- names
+  }
+  out
+}
+
+exec_levene <- function(x, g){
+  if (!is.factor(g)) {
+    g <- as.factor(g)
+  }
+  valid <- stats::complete.cases(x, g)
+  meds <- tapply(x[valid], g[valid], mean)
+  resp <- abs(x - meds[g])
+  res <-  stats::anova(stats::lm(resp ~ g))[, c(1, 4, 5)]
+  rownames(res)[2] <- " "
+  data.frame(statistic = res[1, 2], p.value = res[1, 3], stringsAsFactors = FALSE)
 }
 
 
@@ -52,12 +163,16 @@ sim_norm <- function(n, mean = 0, sd = 1, digits = 2, seed = 123, miss = 0){
 #' @param digits Number of digits to round the generated data to.
 #' @param seed Seed for random number generation.
 #' @param miss Number of missing values to introduce.
+#' @param min Minimum value to constrain the generated values.
+#' @param max Maximum value to constrain the generated values.
 #'
 #' @return A numeric vector of simulated data.
 #'
 #' @details This function generates data from a skew-normal distribution.
 #' The skew-normal distribution is a generalization of the normal distribution
-#' that introduces skewness through a shape parameter \code{xi}.
+#' that introduces skewness through a shape parameter \code{xi}. And constrain
+#' the generated values within a specified range using the \code{min} and
+#' \code{max} arguments.
 #'
 #' @examples
 #' # Simulate 100 observations from a skew-normal distribution
@@ -70,7 +185,7 @@ sim_norm <- function(n, mean = 0, sd = 1, digits = 2, seed = 123, miss = 0){
 #' @seealso [sim_norm()]
 #'
 #' @export
-sim_snorm <- function(n, mean = 0, sd = 1, xi = 1.5, digits = 2, seed = 123, miss = 0){
+sim_snorm <- function(n, mean = 0, sd = 1, xi = 1.5, digits = 2, seed = 123, miss = 0, min = NULL, max = NULL){
 
   set.seed(seed = seed)
 
@@ -88,11 +203,102 @@ sim_snorm <- function(n, mean = 0, sd = 1, xi = 1.5, digits = 2, seed = 123, mis
 
   x <- round(exec(n = n, xi = xi) * sd + mean, digits = digits)
 
+  # Constrain values to specified minimum and maximum
+  if(!is.null(min)){
+    x[x < min] <- min
+  }
+  if(!is.null(max)){
+    x[x > max] <- max
+  }
+
+  # Introduce missing values
   if(miss != 0 & miss < n){
     x[sample(1:n, size = miss)] <- NA
   }
 
   x
+}
+
+
+#' Simulate Grouped Data from Skewed Normal Distribution
+#'
+#' @param ... List of arguments, each specifying parameters for a group from
+#' [sim_snorm()].
+#' @param signif Logical indicating whether to generate data until a significant
+#' difference among groups is found.
+#' @param names Optional names for the groups.
+#'
+#' @return A data frame containing simulated grouped data from a skewed normal
+#' distribution.
+#'
+#' @details This function generates simulated grouped data from a skewed normal
+#' distribution. You can specify parameters for each group using the ellipsis
+#' (...) argument. If the \code{signif} parameter is set to \code{TRUE}, the
+#' function continues generating data until a significant difference among groups
+#' is found. The names of the groups can be provided using the \code{names} argument.
+#'
+#' @seealso [sim_snorm()]
+#'
+#' @examples
+#' # Simulate grouped data with three groups
+#' sim_gourp_snorm(A = list(n = 10, mean = 30, sd = 1, digits = 2),
+#'                B = list(n = 8, mean = 35, sd = 2, digits = 2),
+#'                C = list(n = 8, mean = 32, sd = 3, digits = 2))
+#'
+#' @export
+sim_gourp_snorm <- function(..., signif = TRUE, names = NULL) {
+  # Store the arguments in a list
+  d <- list(...)
+
+  # Initialize output
+  out <- NULL
+
+  seed <- 0
+
+  while (TRUE) {
+    seed <- seed + 1
+
+    # Simulate data for each group
+    res <- lapply(d, \(x) {
+      x$seed <- seed
+      do.call(sim_snorm, x)
+    })
+
+    # Combine results into a data frame
+    group <- rep(names(res), sapply(res, length))
+    value <- unlist(res)
+    res <- data.frame(group, value)
+    row.names(res) <- NULL
+
+    # Perform group difference test
+    if (length(d) == 2L) {
+      fit <- stats::wilcox.test(value ~ group, exact = FALSE, correct = FALSE)
+    } else{
+      fit <- stats::kruskal.test(value ~ group)
+    }
+
+    if(seed == 5000){
+      stop("Can not find.", call. = FALSE)
+    }
+
+    # Check significance and break loop if condition is met
+    if (signif) {
+      if (fit$p.value < 0.05) {
+        out <- res
+        break
+      }
+    } else{
+      if (fit$p.value > 0.05) {
+        out <- res
+        break
+      }
+    }
+  }
+
+  if(!is.null(names)){
+    names(out) <- names
+  }
+  out
 }
 
 

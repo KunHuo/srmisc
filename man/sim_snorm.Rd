@@ -4,7 +4,17 @@
 \alias{sim_snorm}
 \title{Generate Random Samples from a Skew-Normal Distribution}
 \usage{
-sim_snorm(n, mean = 0, sd = 1, xi = 1.5, digits = 2, seed = 123, miss = 0)
+sim_snorm(
+  n,
+  mean = 0,
+  sd = 1,
+  xi = 1.5,
+  digits = 2,
+  seed = 123,
+  miss = 0,
+  min = NULL,
+  max = NULL
+)
 }
 \arguments{
 \item{n}{Number of observations to generate.}
@@ -20,6 +30,10 @@ sim_snorm(n, mean = 0, sd = 1, xi = 1.5, digits = 2, seed = 123, miss = 0)
 \item{seed}{Seed for random number generation.}
 
 \item{miss}{Number of missing values to introduce.}
+
+\item{min}{Minimum value to constrain the generated values.}
+
+\item{max}{Maximum value to constrain the generated values.}
 }
 \value{
 A numeric vector of simulated data.
@@ -30,7 +44,9 @@ Generate Random Samples from a Skew-Normal Distribution
 \details{
 This function generates data from a skew-normal distribution.
 The skew-normal distribution is a generalization of the normal distribution
-that introduces skewness through a shape parameter \code{xi}.
+that introduces skewness through a shape parameter \code{xi}. And constrain
+the generated values within a specified range using the \code{min} and
+\code{max} arguments.
 }
 \examples{
 # Simulate 100 observations from a skew-normal distribution
