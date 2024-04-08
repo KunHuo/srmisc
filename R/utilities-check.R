@@ -75,6 +75,8 @@ check_installed <- function (pkg, message = FALSE) {
 #' @param digits The number of digits to display for percentages. Default is 1.
 #' @param label Logical indicating whether to include variable labels. Default
 #' is FALSE.
+#' @param language Specify language, 'en' is English, 'cn' or 'zh' is Chinese.
+#' Default is 'en'.
 #'
 #' @return A data frame summarizing missing values in each variable.
 #'
@@ -86,7 +88,7 @@ check_installed <- function (pkg, message = FALSE) {
 #' missing values, percentage of missing values, and number of valid values.
 #'
 #' @export
-check_missing <- function(data, digits = 1, label = FALSE){
+check_missing <- function(data, digits = 1, label = FALSE, language = "en"){
 
   out <- lapply(data, \(x){
     data.frame(Missing = sum(is.na(x)),
@@ -104,9 +106,18 @@ check_missing <- function(data, digits = 1, label = FALSE){
   out$NO <- 1:nrow(out)
   out <- relocate(out, "NO")
 
-  names(out) <- c("No.", "Variable", "Missing (n)", "Missing (%)", "Valid (n)")
-  attr(out, "title") <- "Data missingness"
-  attr(out, "note") <- sprintf("Note: %d of the %d variables had missing values.", sum(out[[3]] != 0), ncol(data))
+  if(language == "en"){
+    names(out) <- c("No.", "Variable", "Missing (n)", "Missing (%)", "Valid (n)")
+    attr(out, "title") <- "Data missingness"
+    attr(out, "note") <- sprintf("Note: %d variables and %d cases have missing values.",
+                                 sum(out[[3]] != 0),
+                                 nrow(data) - nrow(stats::na.omit(data)))
+  }else{
+    names(out) <- c("\u5e8f\u53f7", "\u53d8\u91cf", "\u7f3a\u5931\u4f8b\u6570", "\u7f3a\u5931\u6bd4\u4f8b", "\u6709\u6548\u4f8b\u6570")
+    attr(out, "title") <- "\u6570\u636e\u7f3a\u5931\u60c5\u51b5"
+    attr(out, "note") <- sprintf("\u6ce8\uff1a%d\u4e2a\u53d8\u91cf\u4e2d\u6709%d\u4e2a\u5b58\u5728\u7f3a\u5931\u503c\u3002", ncol(data), sum(out[[3]] != 0))
+  }
+
   class(out) <- c("check", "data.frame")
   out
 }

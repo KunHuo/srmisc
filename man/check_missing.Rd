@@ -4,7 +4,7 @@
 \alias{check_missing}
 \title{Check Missing Values}
 \usage{
-check_missing(data, digits = 1, label = FALSE)
+check_missing(data, digits = 1, label = FALSE, language = "en")
 }
 \arguments{
 \item{data}{The input data frame.}
@@ -13,6 +13,9 @@ check_missing(data, digits = 1, label = FALSE)
 
 \item{label}{Logical indicating whether to include variable labels. Default
 is FALSE.}
+
+\item{language}{Specify language, 'en' is English, 'cn' or 'zh' is Chinese.
+Default is 'en'.}
 }
 \value{
 A data frame summarizing missing values in each variable.
