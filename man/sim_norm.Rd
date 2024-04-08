@@ -43,3 +43,6 @@ sim_norm(n = 10)
 # Generate random samples with missing values
 sim_norm(n = 10, miss = 2)
 }
+\seealso{
+\code{\link[=sim_snorm]{sim_snorm()}}
+}
