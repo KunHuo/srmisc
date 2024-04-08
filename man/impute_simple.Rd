@@ -2,7 +2,7 @@
 % Please edit documentation in R/utilities-impute.R
 \name{impute_simple}
 \alias{impute_simple}
-\title{Simple impute missing values}
+\title{Impute missing values}
 \usage{
 impute_simple(
   data,
@@ -12,26 +12,42 @@ impute_simple(
 )
 }
 \arguments{
-\item{data}{a data frame.}
+\item{data}{A data frame containing the dataset with missing values.}
 
-\item{method.numeric}{Impute method for continuous variables, default "median".}
+\item{method.numeric}{The imputation method for numeric variables. Options
+include "median" or "mean" (default: "median").}
 
-\item{method.category}{Impute method for categorical variables, default "mode".}
+\item{method.category}{The imputation method for categorical variables. Options
+include "mode" (default: "mode").}
 
-\item{digits}{digits for continuous impute method,If it is NULL (default),
-it will be automatically obtained from the original data.}
+\item{digits}{The number of digits to use for imputing numeric variables.}
 }
 \value{
-a data frame after imputation.
+A data frame with missing values imputed based on the specified methods.
 }
 \description{
-Simple impute missing values
+This function allows you to impute missing values in a data frame using simple
+imputation methods. It provides flexibility to specify different imputation
+methods for numeric and categorical variables.
+}
+\details{
+The \code{impute_simple} function provides simple imputation methods for missing values
+in both numeric and categorical variables. For numeric variables, it allows you to
+choose between imputing the missing values with the median or mean of the non-missing
+values. For categorical variables, the function imputes missing values with the mode
+(most frequent value) of the variable.
 }
 \examples{
-md <- data.frame(
-  x = c(3, 4, 5, 3, NA, 5, NA, 4, 5, 3, 5),
-  y = c("a", "b", "c", "a", "b", "c", "c", NA, "c", "a", NA),
-  z = factor(c("a", "b", "c", NA, "b", "c", "c", "a", "c", NA, "a")))
-md
-impute_simple(md)
+# Create a dataset with missing values
+data <- data.frame(
+  numeric_var = c(1, 2, NA, 4, 5),
+  categorical_var = c("A", "B", NA, "A", "C")
+)
+
+# Impute missing values using median for numeric and mode for categorical variables
+impute_simple(data,
+              method.numeric = "median",
+              method.category = "mode",
+              digits = NULL)
+
 }

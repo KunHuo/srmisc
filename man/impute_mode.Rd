@@ -7,13 +7,14 @@
 impute_mode(x)
 }
 \arguments{
-\item{x}{a vector.}
+\item{x}{A vector containing numeric or categorical data with missing values.}
 }
 \value{
-a numeric vector after impute.
+A vector with missing values replaced by the mode of the variable.
 }
 \description{
-Impute with mode value
+This function replaces missing values in a vector with the mode (most frequent
+value) of that vector.
 }
 \examples{
 # for numeric
@@ -30,6 +31,7 @@ impute_mode(md2)
 md3 <- as.factor(md2)
 md3
 impute_mode(md3)
+
 }
 \seealso{
 \code{\link[=impute_median]{impute_median()}}, \code{\link[=impute_mean]{impute_mean()}}, \code{\link[=impute_simple]{impute_simple()}}

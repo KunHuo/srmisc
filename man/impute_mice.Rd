@@ -42,7 +42,17 @@ generator alone.}
 a data frame.
 }
 \description{
-Multivariate Imputation by Chained Equations
+This function allows you to impute missing values in a dataframe using the
+multiple imputation by chained equations (MICE) method. It provides
+flexibility to specify the variables to be imputed, the number of imputations,
+and the imputation method for each variable.
+}
+\details{
+The \code{impute_mice} function uses the multiple imputation by chained equations
+(MICE) method to impute missing values in a dataset. It allows you to specify
+the variables to be imputed (\code{varnames}), the number of imputations (\code{m}),
+and the imputation method for each variable (\code{method}). If \code{method} is NULL,
+the \code{\link[mice:mice]{mice::mice()}} function will choose appropriate imputation methods automatically.
 }
 \seealso{
 \code{\link[mice:mice]{mice::mice()}}

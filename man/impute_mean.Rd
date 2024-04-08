@@ -23,6 +23,7 @@ md <- c(4.0, 5.9, 3.2, 6.1, 7.6, NA, 9.1, 7.2, NA, 8.3)
 md
 
 impute_mean(md)
+
 }
 \seealso{
 \code{\link[=impute_median]{impute_median()}}, \code{\link[=impute_mode]{impute_mode()}}, \code{\link[=impute_simple]{impute_simple()}}

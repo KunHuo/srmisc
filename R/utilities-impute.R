@@ -1,33 +1,55 @@
-#' Simple impute missing values
+#' Impute missing values
 #'
-#' @param data a data frame.
-#' @param method.numeric Impute method for continuous variables, default "median".
-#' @param method.category Impute method for categorical variables, default "mode".
-#' @param digits digits for continuous impute method,If it is NULL (default),
-#' it will be automatically obtained from the original data.
+#' This function allows you to impute missing values in a data frame using simple
+#' imputation methods. It provides flexibility to specify different imputation
+#' methods for numeric and categorical variables.
 #'
-#' @return a data frame after imputation.
-#' @export
+#' @param data A data frame containing the dataset with missing values.
+#' @param method.numeric The imputation method for numeric variables. Options
+#' include "median" or "mean" (default: "median").
+#' @param method.category The imputation method for categorical variables. Options
+#' include "mode" (default: "mode").
+#' @param digits The number of digits to use for imputing numeric variables.
+#'
+#' @return A data frame with missing values imputed based on the specified methods.
+#'
+#' @details
+#' The `impute_simple` function provides simple imputation methods for missing values
+#' in both numeric and categorical variables. For numeric variables, it allows you to
+#' choose between imputing the missing values with the median or mean of the non-missing
+#' values. For categorical variables, the function imputes missing values with the mode
+#' (most frequent value) of the variable.
 #'
 #' @examples
-#' md <- data.frame(
-#'   x = c(3, 4, 5, 3, NA, 5, NA, 4, 5, 3, 5),
-#'   y = c("a", "b", "c", "a", "b", "c", "c", NA, "c", "a", NA),
-#'   z = factor(c("a", "b", "c", NA, "b", "c", "c", "a", "c", NA, "a")))
-#' md
-#' impute_simple(md)
+#' # Create a dataset with missing values
+#' data <- data.frame(
+#'   numeric_var = c(1, 2, NA, 4, 5),
+#'   categorical_var = c("A", "B", NA, "A", "C")
+#' )
+#'
+#' # Impute missing values using median for numeric and mode for categorical variables
+#' impute_simple(data,
+#'               method.numeric = "median",
+#'               method.category = "mode",
+#'               digits = NULL)
+#'
+#' @export
 impute_simple <- function(data, method.numeric = c("median", "mean"), method.category = "mode", digits = NULL){
   method.numeric <- match.arg(method.numeric)
   method.category <- match.arg(method.category)
+
+  # Apply imputation method to each column of the data frame
   data[, ] <- lapply(data[, ], function(x){
     if(any(is.na(x))){
       if(is.numeric(x)){
+        # Impute missing values for numeric variables
         if(method.numeric == "median"){
           x <- impute_median(x, digits = digits)
         }else if(method.numeric == "mean"){
           x <- impute_mean(x, digits = digits)
         }
       }else if(is.factor(x) | is.character(x)){
+        # Impute missing values for categorical variables
         if(method.category == "mode"){
           x <- impute_mode(x)
         }
@@ -75,7 +97,7 @@ impute_median <- function(x, digits = NULL){
 #' automatically obtained from the original data.
 #'
 #' @return a numeric vector after impute with mean value.
-#' @export
+#'
 #'
 #' @seealso [impute_median()], [impute_mode()], [impute_simple()]
 #'
@@ -84,6 +106,8 @@ impute_median <- function(x, digits = NULL){
 #' md
 #'
 #' impute_mean(md)
+#'
+#' @export
 impute_mean <- function(x, digits = NULL){
   m <- mean(x, na.rm = TRUE)
   if(!is.null(digits)){
@@ -99,10 +123,12 @@ impute_mean <- function(x, digits = NULL){
 
 #' Impute with mode value
 #'
-#' @param x a vector.
+#' This function replaces missing values in a vector with the mode (most frequent
+#'  value) of that vector.
 #'
-#' @return a numeric vector after impute.
-#' @export
+#' @param x A vector containing numeric or categorical data with missing values.
+#'
+#' @return A vector with missing values replaced by the mode of the variable.
 #'
 #' @seealso [impute_median()], [impute_mean()], [impute_simple()]
 #'
@@ -121,6 +147,8 @@ impute_mean <- function(x, digits = NULL){
 #' md3 <- as.factor(md2)
 #' md3
 #' impute_mode(md3)
+#'
+#' @export
 impute_mode <- function(x){
   u <- unique(x)
   u <- u[which.max(tabulate(match(x, u)))]
@@ -130,6 +158,12 @@ impute_mode <- function(x){
 
 
 #' Multivariate Imputation by Chained Equations
+#'
+#'
+#' This function allows you to impute missing values in a dataframe using the
+#' multiple imputation by chained equations (MICE) method. It provides
+#' flexibility to specify the variables to be imputed, the number of imputations,
+#' and the imputation method for each variable.
 #'
 #' @param data A data frame or a matrix containing the incomplete data. Missing
 #' values are coded as NA.
@@ -148,9 +182,17 @@ impute_mode <- function(x){
 #' @param printFlag If TRUE, mice will print history on console.
 #' @param ... Named arguments that are passed down to the univariate imputation functions.
 #'
+#' @return a data frame.
+#'
+#' @details
+#' The `impute_mice` function uses the multiple imputation by chained equations
+#' (MICE) method to impute missing values in a dataset. It allows you to specify
+#' the variables to be imputed (`varnames`), the number of imputations (`m`),
+#' and the imputation method for each variable (`method`). If `method` is NULL,
+#' the [mice::mice()] function will choose appropriate imputation methods automatically.
+#'
 #' @seealso [mice::mice()]
 #'
-#' @return a data frame.
 #' @export
 impute_mice <- function(data, m = 1, varnames = NULL, method = NULL, seed = 123, printFlag = FALSE, ...){
   varnames <- srmisc::select_variable(data, varnames)
