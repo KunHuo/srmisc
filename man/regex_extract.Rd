@@ -66,3 +66,4 @@ regex_extract_all(shopping_list, "\\\\b[a-z]+\\\\b")
 regex_extract_all(shopping_list, "\\\\d")
 
 }
+\keyword{internal}

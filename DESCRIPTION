@@ -21,7 +21,8 @@ Imports:
     officer,
     openxlsx,
     patchwork,
-    sandwich
+    sandwich,
+    stringr
 Suggests: 
     knitr,
     rmarkdown

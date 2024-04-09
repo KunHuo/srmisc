@@ -78,3 +78,4 @@ regex_replace(fruits, "[aeiou]", c("1", "2", "3"))
 regex_replace(fruits, c("a", "e", "i"), "-")
 
 }
+\keyword{internal}

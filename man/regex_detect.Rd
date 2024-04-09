@@ -47,3 +47,4 @@ regex_detect(fruit, "b")
 regex_detect(fruit, "[aeiou]")
 
 }
+\keyword{internal}

@@ -24,7 +24,7 @@ select_variable(data, ..., type = c("name", "data", "index"))
 \arguments{
 \item{data}{a data frame.}
 
-\item{varnames}{variable names，Indicates to select the corresponding data
+\item{varnames}{variable names, Indicates to select the corresponding data
 type in the specified variable, if it is NULL, it means to select from all
 variables.}
 

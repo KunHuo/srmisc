@@ -19,6 +19,8 @@
 #'   \item regex_extract_all: Extract all matches, return a list.
 #' }
 #'
+#' @keywords internal
+#'
 #' @examples
 #' shopping_list <- c("apples x4", "bag of flour", "bag of sugar", "milk x2")
 #' regex_extract(shopping_list, "\\d")
@@ -86,6 +88,8 @@ regex_extract_all <- function(string,
 #'
 #' @return a vector of string.
 #'
+#' @keywords internal
+#'
 #' @examples
 #' fruits <- c("one apple", "two pears", "three bananas")
 #'
@@ -148,6 +152,8 @@ regex_replace_all <- function(string,
 #'   \item regex_locate: Locate first match, return an integer matrix. First column gives start postion of match, and second column gives end position.
 #'   \item regex_locate_all: Locate all matches, return a list of integer matrices.
 #' }
+#'
+#' @keywords internal
 #'
 #' @examples
 #' fruit <- c("apple", "banana", "pear", "pineapple")
@@ -217,6 +223,8 @@ locate_start_end <- function(data){
 #'
 #' @return a logical vector.
 #'
+#' @keywords internal
+#'
 #' @examples
 #' fruit <- c("apple", "banana", "pear", "pinapple")
 #' regex_detect(fruit, "a")
@@ -255,6 +263,8 @@ regex_detect <- function(string,
 #' @param perl logical. Should Perl-compatible regexps be used?
 #' @param fixed logical. If TRUE, pattern is a string to be matched as is. Overrides all conflicting arguments.
 #' @param useBytes logical. If TRUE, pattern is a string to be matched as is. Overrides all conflicting arguments.
+#'
+#' @keywords internal
 #'
 #' @examples
 #'

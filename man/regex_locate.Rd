@@ -68,3 +68,4 @@ regex_locate_all(fruit, c("a", "b", "p", "p"))
 
 
 }
+\keyword{internal}

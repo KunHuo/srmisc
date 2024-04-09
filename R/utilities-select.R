@@ -10,7 +10,7 @@
 #' * select_variable: select variables.
 #'
 #' @param data a data frame.
-#' @param varnames variable names，Indicates to select the corresponding data
+#' @param varnames variable names, Indicates to select the corresponding data
 #' type in the specified variable, if it is NULL, it means to select from all
 #' variables.
 #' @param type return type, 'name' for a vector of character, 'index' for a

@@ -35,3 +35,4 @@ fruits <- c(
 regex_split(fruits, " and ")
 
 }
+\keyword{internal}

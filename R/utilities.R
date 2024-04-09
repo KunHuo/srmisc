@@ -434,7 +434,7 @@ add_table_num <- function(data, num = 1, chinese = FALSE, sep = ":"){
     }
   }else{
     if(chinese){
-      title <- sprintf("\u8868%s %s", as.character(num), title)
+      title <- sprintf("\u8868%s  %s", as.character(num), title)
     }else{
       title <- sprintf("Table %s%s  %s", as.character(num), sep, title)
     }
@@ -447,12 +447,14 @@ add_table_num <- function(data, num = 1, chinese = FALSE, sep = ":"){
 
 #' Find Text in Files
 #'
-#' This function searches for a specific text pattern within files in a given directory.
+#' This function searches for a specific text pattern within files in the 'R' directory.
 #'
 #' @param text A character string specifying the text pattern to search for.
 #' @param ... Additional arguments to be passed to the [regex_detect] function.
 #'
 #' @return A character vector containing the filenames where the text pattern was found.
+#'
+#' @keywords internal
 #'
 #' @export
 find_text <- function(text, ...){
@@ -463,10 +465,59 @@ find_text <- function(text, ...){
     index <- regex_detect(filetext, pattern = text, ...)
 
     if(any(index)){
-      data.frame(line = which(index) , file = file)
+      data.frame(files = basename(file), lines = which(index) )
     }
 
+  })
+  res <- do.call(rbind, res)
+
+  if(!is.null(res)){
+    print_booktabs(res)
+  }else{
+    cat("\nNot find.\n\n")
+  }
+  invisible(res)
+}
+
+
+#' Find non-ASCII characters
+#'
+#' This function searches for non-ASCII characters in the text files located in
+#' the "R" directory.
+#'
+#' @return A data frame containing information about the files, lines,
+#' and non-ASCII characters found.
+#'
+#' @keywords internal
+#'
+#' @export
+find_non_ascii <- function(){
+  files <- list.files(path = "R", full.names = TRUE)
+
+  res <- lapply(files, \(file){
+
+    filetext <- readLines(file)
+
+    index <- stringr::str_detect(filetext, pattern = '[^\\x00-\\x7F]')
+
+    if(any(index)){
+      lines <- which(index)
+
+      values <- sapply(lines, \(i){
+        v <- stringr::str_extract_all(filetext[i], pattern = '[^\\x00-\\x7F]')[[1]]
+        v <- paste(v, collapse = "  ")
+      })
+
+      data.frame(files = basename(file), lines = lines, values = values)
+    }
 
   })
-  do.call(rbind, res)
+  res <- do.call(rbind, res)
+
+  if(!is.null(res)){
+    print_booktabs(res)
+  }else{
+    cat("\nNot find.\n\n")
+  }
+  invisible(res)
 }
