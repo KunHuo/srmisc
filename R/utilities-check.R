@@ -235,7 +235,7 @@ check_outlier <-  function(data, group = NULL, varnames = NULL, ...){
 
   out[[1]] <- sapply(out[[1]], \(x) get_var_label(data, x, default = ".name"))
   out[[1]] <- delete_duplicate_values(out[[1]])
-  out <- tibble::as_tibble(out)
+  out <- as.data.frame(out)
 
   if(is_empty(group)){
     names(out) <- c("Variable", "Row", "Value", "Outlier", "Extreme")

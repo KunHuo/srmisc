@@ -83,7 +83,6 @@ add_terms_columns <- function(data,
   if(is.null(after)){
     after <- 0
   }
-  # tibble::add_column(data, terms, .after = .after, .before = .before)
 
   append2(data, terms, after = after)
 }

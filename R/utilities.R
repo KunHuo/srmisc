@@ -443,3 +443,30 @@ add_table_num <- function(data, num = 1, chinese = FALSE, sep = ":"){
   data <- add_title(data, title)
   data
 }
+
+
+#' Find Text in Files
+#'
+#' This function searches for a specific text pattern within files in a given directory.
+#'
+#' @param text A character string specifying the text pattern to search for.
+#' @param ... Additional arguments to be passed to the [regex_detect] function.
+#'
+#' @return A character vector containing the filenames where the text pattern was found.
+#'
+#' @export
+find_text <- function(text, ...){
+  files <- list.files(path = "R", full.names = TRUE)
+  res <- lapply(files, \(file){
+    filetext <- readLines(file)
+
+    index <- regex_detect(filetext, pattern = text, ...)
+
+    if(any(index)){
+      data.frame(line = which(index) , file = file)
+    }
+
+
+  })
+  do.call(rbind, res)
+}

@@ -100,7 +100,7 @@ get_template <- function(template) {
   if (regression < 1) {
     stop("invalid template name, it must have extension.docx", call. = FALSE)
   }
-  template <- R.utils::getAbsolutePath(template, expandTilde = TRUE)
+  # template <- R.utils::getAbsolutePath(template, expandTilde = TRUE)
 
   if (!file.exists(template)) {
     stop(template , " can not be found.")

@@ -21,10 +21,7 @@ Imports:
     officer,
     openxlsx,
     patchwork,
-    R.utils,
-    sandwich,
-    stats,
-    tibble
+    sandwich
 Suggests: 
     knitr,
     rmarkdown
