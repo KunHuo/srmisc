@@ -364,10 +364,17 @@ write_docx.default <- function(x, path = "", landscape = FALSE, ...){
 #' @rdname write_docx
 #' @export
 write_docx.data.frame <- function(x, path = "", landscape = FALSE, ...){
+
   doc <- get_docx(landscape = landscape)
   title <- attr(x, "title")
   note <- attr(x, "note")
+
   if(length(title) != 0L){
+
+    if(stringr::str_detect(basename(path), pattern = "^[Table|\\u8868].*\\d$")){
+      title <- sprintf("%s  %s", basename(path),  title)
+    }
+
     doc <- body_add_par2(doc, value = title, style = "table title")
   }
   doc <- body_add_dataframe(doc, value = x, ...)
