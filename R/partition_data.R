@@ -109,3 +109,94 @@ partition_data <- function (y, times = 1, p = 0.5, list = TRUE, groups = min(5, 
 prettySeq <- function (x) {
   paste("Resample", gsub(" ", "0", format(seq(along = x))), sep = "")
 }
+
+
+#' Randomly Partition Data into Groups
+#'
+#' This function partitions the input data into two groups randomly,
+#' typically for the purpose of creating training and testing datasets.
+#'
+#' @param data The input data frame or matrix to be partitioned.
+#' @param outcome The variable indicating the outcome of interest. If NULL, the
+#' function will randomly partition the data without considering any outcome variable.
+#' @param p The proportion of data to be allocated to the train group. Default is 0.7.
+#' @param group.name The name of the variable/column indicating the groups.
+#' Default is ".group".
+#' @param group.levels A character vector specifying the names of the groups.
+#' Default is c("Train", "Test").
+#' @param seed An optional seed for reproducibility. Default is 123.
+#'
+#' @return The input data frame or matrix with an additional column indicating
+#' the group assignment.
+#'
+#' @seealso [get_train_data()], [get_test_data()].
+#'
+#' @examples
+#' rdata <- random_group(sleep, outcome = "group")
+#' rdata
+#'
+#' get_train_data(rdata)
+#'
+#' get_test_data(rdata)
+#'
+#' @export
+random_group <- function(data,
+                         outcome = NULL,
+                         p = 0.7,
+                         group.name = ".group",
+                         group.levels = c("Train", "Test"),
+                         seed = 123){
+  outcome <- select_variable(data, outcome)
+  index <- partition_data(data[[outcome]], p = p, list = FALSE, seed = seed)
+  data$.group <- group.levels[2]
+  data$.group[index] <- group.levels[1]
+  data$.group <- factor(data$.group, levels = group.levels)
+  names(data)[names(data) == ".group"] <- group.name
+  attr(data, "group.name") <- group.name
+  attr(data, "group.levels") <- group.levels
+  attr(data, "index") <- index
+  data
+}
+
+#' Get Training Data
+#'
+#' This function extracts the training data from a dataset that has been
+#' partitioned using the [random_group()] function.
+#'
+#' @param data The partitioned dataset containing training and testing data.
+#'
+#' @return The training data subset from the input dataset.
+#'
+#' @seealso [get_test_data()], [random_group()].
+#'
+#' @export
+get_train_data <- function(data){
+  index <- attr(data, "index")
+  group.name <- attr(data, "group.name")
+  data <- data[index, ]
+  data <- data[-which(names(data) == group.name)]
+  row.names(data) <- NULL
+  data
+}
+
+#' Get Testing Data
+#'
+#' This function extracts the testing data from a dataset that has been
+#' partitioned using the [random_group()] function.
+#'
+#' @param data The partitioned dataset containing training and testing data.
+#'
+#' @return The testing data subset from the input dataset.
+#'
+#' @seealso [get_train_data()], [random_group()].
+#'
+#' @export
+get_test_data <- function(data){
+  index <- attr(data, "index")
+  group.name <- attr(data, "group.name")
+  data <- data[-index, ]
+  data <- data[-which(names(data) == group.name)]
+  row.names(data) <- NULL
+  data
+}
+
