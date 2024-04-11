@@ -521,3 +521,70 @@ find_non_ascii <- function(){
   }
   invisible(res)
 }
+
+
+#' Split a Text into Lines
+#'
+#' This function splits a given text into lines based on a separator.
+#'
+#' @param ... One or more character vectors containing the text to be combined
+#' into lines.
+#' @param sep The separator used to combine the texts into lines.
+#'
+#' @return A character vector representing the lines of the input text.
+#'
+#' @examples
+#'
+#' l('This function splits a given text
+#'    into lines based on a separator.')
+#'
+#' l('With 25–30 variables potentially associated with mortality in critically ill
+#'   patients with COVID-19 the minimum sample size required approximately 250–300
+#'   deaths.',
+#'
+#'   'Comparisons of continuous variables between groups were done using t-tests,
+#'   one-way ANOVA, or equivalent non-parametric tests.'
+#' )
+#'
+#' l('With 25–30 variables potentially associated with mortality in critically ill
+#'   patients with COVID-19 the minimum sample size required approximately 250–300
+#'   deaths.',
+#'
+#'   'Comparisons of continuous variables between groups were done using t-tests,
+#'   one-way ANOVA, or equivalent non-parametric tests.',
+#'   sep = "\n\n")
+#'
+#' @export
+l <- function(..., sep = "\n"){
+
+  lt <- list(...)
+
+  text <- sapply(lt, \(x){
+    # Replace any occurrences of newline characters surrounded by optional spaces
+    # with the specified separator
+    gsub("\\s*\n\\s*", " ", x)
+  })
+
+  text <- paste(text, collapse = sep)
+  class(text) <- c("lines", "character")
+  text
+}
+
+
+#' Print Method for Lines
+#'
+#' This function defines a print method for objects of class "lines".
+#'
+#' @param x An object of class "lines" to be printed.
+#' @param ... Additional arguments to be passed to the [cat] function.
+#'
+#' @examples
+#' x <- l("This is a\nmultiline\nstring.")
+#' print(x)
+#'
+#' @keywords internal
+#'
+#' @export
+print.lines <- function(x, ...){
+  cat(x, ...)
+}
