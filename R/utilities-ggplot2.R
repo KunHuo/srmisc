@@ -823,3 +823,172 @@ wrap_plots2 <- function(...,
 
   plots
 }
+
+
+
+#' Customize ggplot2 Text Elements
+#'
+#' This function customizes text elements (such as titles, labels, captions,
+#' and axis text) in ggplot2 plots.
+#'
+#' @param which A character string specifying which text element to customize.
+#' Possible values include "title", "subtitle", "caption", "x", "xlab",
+#' "x.title", "y", "ylab", "y.title", "xy", "xylab", "xy.title", "axis.title",
+#' "legendtitle", "legend.title", "legendtext", "legend.text", "x.text", "y.text",
+#' "xy.text", "yxtext", and "axis.text".
+#' @param size The size of the text. Default is 12.
+#' @param color The color of the text. Default is "black".
+#' @param face The font face of the text (e.g., "bold", "italic"). Default is NULL.
+#' @param family The font family of the text. Default is NULL.
+#' @param ... Additional arguments to be passed to ggplot2's 'element_text' function.
+#'
+#' @return A ggplot2 theme with customized text element(s).
+#'
+#' @export
+gg_font <- function(which = "all", size = 12, color = "black", face = NULL, family = NULL, ...){
+
+  elmt <- ggplot2::element_text(size = size, color = color, face = face, family = family, ...)
+
+    switch(which,
+           title = ggplot2::theme(plot.title = elmt),
+           subtitle = ggplot2::theme(plot.subtitle = elmt),
+           caption = ggplot2::theme(plot.caption = elmt),
+           x = ggplot2::theme(axis.title.x = elmt),
+           xlab = ggplot2::theme(axis.title.x = elmt),
+           x.title = ggplot2::theme(axis.title.x = elmt),
+           y = ggplot2::theme(axis.title.y = elmt),
+           ylab = ggplot2::theme(axis.title.y = elmt),
+           y.title = ggplot2::theme(axis.title.y = elmt),
+           xy = ggplot2::theme(axis.title.x = elmt, axis.title.y = elmt),
+           xylab = ggplot2::theme(axis.title.x = elmt, axis.title.y = elmt),
+           xy.title = ggplot2::theme(axis.title.x = elmt, axis.title.y = elmt),
+           axis.title = ggplot2::theme(axis.title.x = elmt, axis.title.y = elmt),
+           legendtitle = ggplot2::theme(legend.title = elmt),
+           legend.title = ggplot2::theme(legend.title = elmt),
+           legendtext = ggplot2::theme(legend.text = elmt),
+           legend.text = ggplot2::theme(legend.text = elmt),
+           x.text = ggplot2::theme(axis.text.x = elmt),
+           y.text = ggplot2::theme(axis.text.y = elmt),
+           xy.text = ggplot2::theme(axis.text.x = elmt, axis.text.y = elmt),
+           yxtext = ggplot2::theme(axis.text.x = elmt, axis.text.y = elmt),
+           axis.text = ggplot2::theme(axis.text.x = elmt, axis.text.y = elmt),
+           all = ggplot2::theme(
+             plot.title = elmt,
+             plot.subtitle = elmt,
+             plot.caption = elmt,
+             axis.title.x = elmt,
+             axis.title.y = elmt,
+             legend.title = elmt,
+             legend.text = elmt,
+             axis.text.x = elmt,
+             axis.text.y = elmt),
+           stop("Don't support ", which))
+ }
+
+
+#' Set Line Properties
+#'
+#' This function sets properties (such as width, type, and color) for lines in
+#' a ggplot2 plot.
+#'
+#' @param plot The ggplot object to which line properties will be applied.
+#' @param width The width of the lines.
+#' @param type The type of the lines.
+#' @param colour The color of the lines.
+#'
+#' @return The ggplot object with updated line properties.
+#'
+#' @export
+set_line <- function(plot, width = NULL, type = NULL, colour = NULL){
+
+  p <- ggplot2::ggplot_build(plot)
+
+  for(i in 1:length(p$data)){
+    if("linewidth" %in% names(p$data[[i]]) & "linetype" %in% names(p$data[[i]])){
+      if(!is.null(width)){
+        p$data[[i]]$linewidth <- width
+      }
+
+      if(!is.null(type)){
+        p$data[[i]]$linetype <- type
+      }
+
+      if(!is.null(colour)){
+        p$data[[i]]$colour <- colour
+
+        # if("fill" %in% names(p$data[[i]])){
+        #   p$data[[i]]$fill <- colour
+        # }
+      }
+    }
+  }
+
+  p <- ggplot2::ggplot_gtable(p)
+  class(p) <- c("gtable2", class(p))
+  p
+}
+
+
+#' Set Point Properties
+#'
+#' This function sets properties (such as size, shape, fill, alpha, and stroke)
+#' for points in a ggplot2 plot.
+#'
+#' @param plot The ggplot object to which point properties will be applied.
+#' @param size The size of the points.
+#' @param shape The shape of the points.
+#' @param colour The color of the points.
+#' @param alpha The transparency level of the points.
+#' @param stroke The stroke color of the points.
+#'
+#' @return The ggplot object with updated point properties.
+#'
+#' @export
+set_point <- function(plot, size = NULL, shape = NULL, colour = NULL, alpha = NULL, stroke = NULL){
+
+  p <- ggplot2::ggplot_build(plot)
+
+  for(i in 1:length(p$data)){
+    if("shape" %in% names(p$data[[i]]) & "stroke" %in% names(p$data[[i]])){
+      if(!is.null(size)){
+        p$data[[i]]$size <- size
+      }
+
+      if(!is.null(shape)){
+        p$data[[i]]$shape <- shape
+      }
+
+      if(!is.null(colour)){
+        p$data[[i]]$colour <- colour
+      }
+
+      if(!is.null(alpha)){
+        p$data[[i]]$alpha <- alpha
+      }
+
+      if(!is.null(stroke)){
+        p$data[[i]]$stroke <- stroke
+      }
+    }
+  }
+
+  p <- ggplot2::ggplot_gtable(p)
+  class(p) <- c("gtable2", class(p))
+  p
+}
+
+
+#' Print Method for gtable2 Objects
+#'
+#' This function defines the print method for gtable2 objects, allowing them to
+#' be printed as plots.
+#'
+#' @param x The gtable object to be printed.
+#' @param ... Additional arguments passed to the plot function.
+#'
+#' @keywords internal
+#'
+#' @export
+print.gtable2 <- function(x, ...){
+  plot(x, ...)
+}
