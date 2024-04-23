@@ -35,10 +35,14 @@ helpers_fmt_coefs <- function(x,
   x[sapply(x, is.numeric)] <- lapply(x[sapply(x, is.numeric)], function(i){
     fmt_digits(i, digits = digits.effect)
   })
+
+  x$ese <- sprintf("%s (%s)", x$effect, x$std.error)
+
   if(ci){
     ci.format <- helpers_fmt_conf(conf.brackets, conf.separator)
     x$effect <- sprintf(ci.format, x$effect, x$conf.low, x$conf.high)
   }
+
   x
 }
 
@@ -84,7 +88,7 @@ helper_default_describe <- function(data, event, select = NULL){
       select <- c("n", "effect", "p.value")
     }
   }
-  select
+  cc(select)
 }
 
 
@@ -155,11 +159,13 @@ freq <- function(x, g = NULL, type = 1, digits = NULL){
 
 helpers_subset_stat <- function(data, values){
 
+  values <- cc(values)
+
   values <- tolower(values)
   values <- sapply(values, function(x){
     if(x %in% c("b", "estimate")){
       "estimate"
-    }else if(x %in% c("se", "std.error")){
+    }else if(x %in% c("se", "std.error", "error")){
       "std.error"
     }else if(x %in% c("effect", "e", "hr", "or", "rr", "pr")){
       "effect"
@@ -175,7 +181,9 @@ helpers_subset_stat <- function(data, values){
       "n.non.event"
     }else if(x %in% c("n.event.total", "neventtotal", "net")) {
       "n.event.total"
-    }else{
+    } else if(x %in% c("ese")){
+      "ese"
+    } else{
       NA
     }
   })
@@ -197,6 +205,14 @@ helpers_set_reference <- function(data, value, digits.effect = 2){
   if(!is.null(data$effect)){
     data$effect[data$ref] <- value
   }
+
+  if(!is.null(data$ese)){
+    data$ese[data$ref] <- fmt_digits(0, digits.effect)
+  }
+  if(!is.null(data$ese)){
+    data$ese[data$ref] <- value
+  }
+
   data
 }
 
@@ -213,6 +229,7 @@ helpers_rename_output <- function(out,
   names(out)[which(names(out) == "variable")] <- variable
   names(out)[which(names(out) == "estimate")] <- estimate
   names(out)[which(names(out) == "effect")] <- sprintf("%s (%d%% CI)", effect, conf.level * 100)
+  names(out)[which(names(out) == "ese")] <- sprintf("%s (SE)", effect)
   names(out)[which(names(out) == "std.error")] <- std.error
   names(out)[which(names(out) == "statistic")] <- statistic
   names(out)[which(names(out) == "p.value")] <- p.value

@@ -93,14 +93,19 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
     return(NULL)
   }
 
-  switch(type,
-         data  = data[index],
-         name  = {
-           varname <- names(data)[index]
-           names(varname) <- varname
-           varname
-         },
-         index = index)
+  if(type == "name"){
+    .col_index2(data, ...)
+  }else{
+
+    switch(type,
+           data  = data[index],
+           name  = {
+             varname <- names(data)[index]
+             names(varname) <- varname
+             varname
+           },
+           index = index)
+  }
 }
 
 
@@ -122,7 +127,12 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
           start <- which(names(data) == st[1])
           end   <- which(names(data) == st[2])
           start:end
-        }else{
+        }else if(regex_detect(i, pattern = "*", fixed = TRUE)){
+          st <- regex_split(i, pattern = "*", fixed = TRUE)[[1]]
+          check_name(data, st[1])
+          check_name(data, st[2])
+          c(which(names(data) == st[1]), which(names(data) == st[2]))
+        } else{
           check_name(data, i)
           which(names(data) == i)
         }
@@ -131,6 +141,42 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
   })
   res <- unique(unlist(res))
   names(res) <- names(data)[res]
+  res
+}
+
+
+.col_index2 <- function(data, ...){
+  varnames <- list(...)
+  res <- lapply(varnames, function(x){
+    if(is.numeric(x)){
+      if(max(x) > ncol(data) | min(x) <= 0){
+        stop("Out of range for column index.", call. = FALSE)
+      }
+      names(data)[x]
+    }else{
+      x <- cc(x)
+      sapply(x, function(i){
+        if(regex_detect(i, pattern = ":", fixed = TRUE)){
+          st <- regex_split(i, pattern = ":", fixed = TRUE)[[1]]
+          check_name(data, st[1])
+          check_name(data, st[2])
+          start <- which(names(data) == st[1])
+          end   <- which(names(data) == st[2])
+          names(data)[start:end]
+        }else if(regex_detect(i, pattern = "*", fixed = TRUE)){
+          st <- regex_split(i, pattern = "*", fixed = TRUE)[[1]]
+          check_name(data, st[1])
+          check_name(data, st[2])
+          c(st[1], st[2], paste(st[1], st[2], sep = ":"))
+        } else{
+          check_name(data, i)
+          i
+        }
+      })
+    }
+  })
+  res <- unique(unlist(res))
+  # names(res) <- names(data)[res]
   res
 }
 
