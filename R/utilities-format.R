@@ -38,21 +38,25 @@ fmt_digits <- function(x, digits){
 #' fmt_stat(0.99999, digits = 3)
 #' fmt_stat(0.00001, digits = 3)
 fmt_stat <- function(x, digits) {
-  fmt <- paste0("%.", digits, "f")
-  pVec <- sapply(x, function(i) {
-    if (is.na(i)) {
-      NA
-    } else {
-      ifelse(i == -1, "NA", sprintf(fmt = fmt, i))
-    }
-  })
+  if(digits <= 0){
+    x
+  }else{
+    fmt <- paste0("%.", digits, "f")
+    pVec <- sapply(x, function(i) {
+      if (is.na(i)) {
+        NA
+      } else {
+        ifelse(i == -1, "NA", sprintf(fmt = fmt, i))
+      }
+    })
 
-  smallPString <- paste0("<0.", paste0(rep("0", digits - 1), collapse = ""), "1")
-  posAllZeros <- grepl("^0\\.0*$", pVec)
+    smallPString <- paste0("<0.", paste0(rep("0", digits - 1), collapse = ""), "1")
+    posAllZeros <- grepl("^0\\.0*$", pVec)
 
-  pVec[posAllZeros]  <- smallPString
+    pVec[posAllZeros]  <- smallPString
 
-  return(pVec)
+    return(pVec)
+  }
 }
 
 
@@ -69,26 +73,30 @@ fmt_stat <- function(x, digits) {
 #' fmt_pvalue(0.00001, digits = 3)
 #' fmt_pvalue(c(0.23, 0.2511, 0.0001, 0.01), digits = 3)
 fmt_pvalue <- function(x, digits) {
-  fmt  <- paste0("%.", digits, "f")
+  if(digits <=0 ){
+    x
+  }else{
+    fmt  <- paste0("%.", digits, "f")
 
-  pVec <- sapply(x, function(i){
-    if(is.na(i)){
-      NA
-    }else{
-      ifelse(i == -1, "NA", sprintf(fmt = fmt, i))
-    }
-  })
-  smallPString <- paste0("<0.", paste0(rep("0", digits - 1), collapse = ""), "1")
-  posAllZeros <- grepl("^0\\.0*$", pVec)
+    pVec <- sapply(x, function(i){
+      if(is.na(i)){
+        NA
+      }else{
+        ifelse(i == -1, "NA", sprintf(fmt = fmt, i))
+      }
+    })
+    smallPString <- paste0("<0.", paste0(rep("0", digits - 1), collapse = ""), "1")
+    posAllZeros <- grepl("^0\\.0*$", pVec)
 
-  pVec[posAllZeros]  <- smallPString
+    pVec[posAllZeros]  <- smallPString
 
-  small <- paste0(">0.", paste0(rep("9", digits - 1), collapse = ""), "9")
-  pos.small <- grepl("^1\\.0*$", pVec)
-  pVec[pos.small] <- small
+    small <- paste0(">0.", paste0(rep("9", digits - 1), collapse = ""), "9")
+    pos.small <- grepl("^1\\.0*$", pVec)
+    pVec[pos.small] <- small
 
 
-  return(pVec)
+    return(pVec)
+  }
 }
 
 
