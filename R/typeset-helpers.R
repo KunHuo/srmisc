@@ -116,14 +116,14 @@ helpers_describe_event <- function(data, event = NULL, varnames = NULL, method =
         res[[2]] <- as.numeric(res[[2]])
         res[[3]] <- as.numeric(res[[3]])
         res$total <- res[[2]] + res[[3]]
-        res$event <- sprintf("%d/%d", res[[3]], res$total)
+        res$event <- sprintf("%d / %d", res[[3]], res$total)
         res$term <- paste0(x, res$term)
       }else if (is.numeric(data[[x]])){
         res <- freq(rep(x, nrow(data)), g = data[[event]])
         res[[2]] <- as.numeric(res[[2]])
         res[[3]] <- as.numeric(res[[3]])
         res$total <- res[[2]] + res[[3]]
-        res$event <- sprintf("%d/%d", res[[3]], res$total)
+        res$event <- sprintf("%d / %d", res[[3]], res$total)
       }
       res
     })
@@ -237,7 +237,7 @@ helpers_rename_output <- function(out,
   names(out)[which(names(out) == "n.total")] <- "No. of total"
   names(out)[which(names(out) == "n.event")] <- "No. of event"
   names(out)[which(names(out) == "n.non.event")] <- "No. of nonevent"
-  names(out)[which(names(out) == "n.event.total")] <- "No. of event/total"
+  names(out)[which(names(out) == "n.event.total")] <- "No. of event / total"
 
   out
 }

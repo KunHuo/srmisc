@@ -4,7 +4,7 @@
 \alias{overview}
 \title{Overview of Data Structure}
 \usage{
-overview(data, digits = 1, label = FALSE, language = "en")
+overview(data, digits = 1, label = FALSE, value = TRUE, language = "en")
 }
 \arguments{
 \item{data}{The input data frame.}
@@ -12,6 +12,8 @@ overview(data, digits = 1, label = FALSE, language = "en")
 \item{digits}{The number of digits to display for percentages. Default is 1.}
 
 \item{label}{Logical indicating whether to include variable labels. Default is FALSE.}
+
+\item{value}{Logical indicating whether to show values Default is FALSE.}
 
 \item{language}{Specify language, 'en' is English, 'cn' or 'zh' is Chinese.
 Default is 'en'.}

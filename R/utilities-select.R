@@ -122,10 +122,30 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
       sapply(x, function(i){
         if(regex_detect(i, pattern = ":", fixed = TRUE)){
           st <- regex_split(i, pattern = ":", fixed = TRUE)[[1]]
-          check_name(data, st[1])
-          check_name(data, st[2])
-          start <- which(names(data) == st[1])
-          end   <- which(names(data) == st[2])
+
+          start <- st[1]
+          end   <- st[2]
+
+          if(start == ".first"){
+            start <- names(data)[1]
+          }
+
+          if(end == ".first"){
+            end <- names(data)[1]
+          }
+
+          if(start == ".last"){
+            start <- names(data)[ncol(data)]
+          }
+          if(end == ".last"){
+            end <- names(data)[ncol(data)]
+          }
+
+          check_name(data, start)
+          check_name(data, end)
+
+          start <- which(names(data) == start)
+          end   <- which(names(data) == end)
           start:end
         }else if(regex_detect(i, pattern = "*", fixed = TRUE)){
           st <- regex_split(i, pattern = "*", fixed = TRUE)[[1]]
@@ -133,6 +153,14 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
           check_name(data, st[2])
           c(which(names(data) == st[1]), which(names(data) == st[2]))
         } else{
+
+          if(i == ".first"){
+            i <- names(data)[1]
+          }
+
+          if(i == ".last"){
+            i <- names(data)[ncol(data)]
+          }
           check_name(data, i)
           which(names(data) == i)
         }
@@ -158,10 +186,30 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
       sapply(x, function(i){
         if(regex_detect(i, pattern = ":", fixed = TRUE)){
           st <- regex_split(i, pattern = ":", fixed = TRUE)[[1]]
-          check_name(data, st[1])
-          check_name(data, st[2])
-          start <- which(names(data) == st[1])
-          end   <- which(names(data) == st[2])
+
+          start <- st[1]
+          end   <- st[2]
+
+          if(start == ".last"){
+            start <- names(data)[ncol(data)]
+          }
+
+          if(end == ".last"){
+            end <- names(data)[ncol(data)]
+          }
+
+          if(start == ".first"){
+            start <- names(data)[1]
+          }
+
+          if(end == ".first"){
+            end <- names(data)[1]
+          }
+
+          check_name(data, start)
+          check_name(data, end)
+          start <- which(names(data) == start)
+          end   <- which(names(data) == end)
           names(data)[start:end]
         }else if(regex_detect(i, pattern = "*", fixed = TRUE)){
           st <- regex_split(i, pattern = "*", fixed = TRUE)[[1]]
@@ -169,6 +217,14 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
           check_name(data, st[2])
           c(st[1], st[2], paste(st[1], st[2], sep = ":"))
         } else{
+
+          if(i == ".first"){
+            i <- names(data)[1]
+          }
+
+          if(i == ".last"){
+            i <- names(data)[ncol(data)]
+          }
           check_name(data, i)
           i
         }

@@ -359,6 +359,9 @@ codes2 <- function(data, language = "en", ...){
 
 
 data_type <- function(type, language = "en"){
+
+  type <- type[length(type)]
+
   if(language == "en"){
     switch(type,
            integer = "numeric",

@@ -279,6 +279,7 @@ as_frm <- function(x = NULL, y = NULL){
 #' @param data The input data frame.
 #' @param digits The number of digits to display for percentages. Default is 1.
 #' @param label Logical indicating whether to include variable labels. Default is FALSE.
+#' @param value Logical indicating whether to show values Default is FALSE.
 #' @param language Specify language, 'en' is English, 'cn' or 'zh' is Chinese.
 #' Default is 'en'.
 #'
@@ -295,7 +296,7 @@ as_frm <- function(x = NULL, y = NULL){
 #'
 #' @examples
 #' overview(iris)
-overview <- function(data, digits = 1, label = FALSE, language = "en"){
+overview <- function(data, digits = 1, label = FALSE, value = TRUE, language = "en"){
 
   out <- lapply(names(data), \(x){
     if(label){
@@ -345,6 +346,11 @@ overview <- function(data, digits = 1, label = FALSE, language = "en"){
     attr(out, "note") <- sprintf(fmt, 0, ncol(data))
   }else{
     attr(out, "note") <- sprintf(fmt, sum(out[[5]] != 0), ncol(data))
+  }
+
+
+  if(!value){
+    out <- out[-ncol(out)]
   }
 
   attr(out, "title") <- ifelse(language == "en", "Data structure", "\u6570\u636e\u7ed3\u6784")

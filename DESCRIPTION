@@ -22,6 +22,7 @@ Imports:
     openxlsx,
     patchwork,
     sandwich,
+    scales,
     stringr
 Suggests: 
     knitr,

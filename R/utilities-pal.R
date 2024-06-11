@@ -107,7 +107,27 @@ pals <- function(cols, n, alpha = 1){
     stop("Transparency level, a real number in (0, 1].")
   }
   cols <- cols[n]
-  set_alpha(cols = cols, alpha = alpha)
+  res <- set_alpha(cols = cols, alpha = alpha)
+  class(res) <- c("palcolor", class(res))
+  res
+}
+
+
+#' Print a palette of colors
+#'
+#' This function prints a palette of colors.
+#'
+#' @param x An object containing colors to be printed.
+#' @param ... Additional arguments to be passed to \code{show_colors}.
+#'
+#' @seealso \code{\link{show_colors}}
+#'
+#' @keywords internal
+#'
+#' @export
+print.palcolor <- function(x, ...){
+  cat(x)
+  plot(show_colors(x))
 }
 
 
@@ -139,4 +159,98 @@ show_colors <- function(colors){
                    axis.ticks = ggplot2::element_blank(),
                    axis.title = ggplot2::element_blank(),
                    axis.text.x = ggplot2::element_blank())
+}
+
+
+#' Retrieve a Specific Color Palette
+#'
+#' This function returns a color palette based on the specified name. If the palette name is recognized,
+#' it returns the corresponding palette from the `srmisc` package. If the name is not recognized, it returns
+#' the input palette.
+#'
+#' @param palette A character vector specifying the name of the palette. Supported names include "jama", "nejm",
+#' "lancet", "jco", and "aaas".
+#'
+#' @return A vector of colors corresponding to the specified palette. If the palette name is not recognized, the
+#' input palette is returned.
+#' @export
+#'
+#' @examples
+#' get_palete("jama")
+#' get_palete("nejm")
+#' get_palete(c("#FFFFFF", "#000000"))
+get_palete <- function(palette){
+  if(tolower(palette[1]) == "jama"){
+    srmisc::pal_jama_7()
+  }else if(tolower(palette[1]) == "nejm"){
+    srmisc::pal_nejm_8()
+  }else if(tolower(palette[1]) == "lancet"){
+    srmisc::pal_lancet_9()
+  }else if(tolower(palette[1]) == "jco"){
+    srmisc::pal_jco_10()
+  }else if(tolower(palette[1]) == "aaas"){
+    srmisc::pal_aaas_10()
+  }else{
+    palette
+  }
+}
+
+
+#' Generate a Gradient of NEJM Colors
+#'
+#' This function returns a subset of a gradient of colors inspired by the New England Journal of Medicine (NEJM).
+#'
+#' @param n A numeric vector indicating which colors to return. The default is to return all colors in the gradient.
+#'
+#' @return A vector of colors from the NEJM gradient.
+#' @export
+#'
+#' @examples
+#' pal_nejm_gradient_7()
+#' pal_nejm_gradient_7(1:3)
+pal_nejm_gradient_7 <- function(n = 1:7){
+  colors <- c("#e4ecef", "#cddce3", "#b5ccd2", "#a1b7c4", "#6d92a2", "#37617a", "#253a4d")
+  colors[n]
+}
+
+
+#' Gradient Colors
+#'
+#' This function generates a vector of gradient colors based on the input colors provided.
+#' It uses the `scales::gradient_n_pal` function to create the gradient.
+#'
+#' @param color A character vector of colors to be used in the gradient.
+#' The default is a single color `"#0072B5FF"`. If a single color is provided,
+#' the gradient will be created from this color to white.
+#' @param n An integer specifying the number of colors to generate in the
+#' gradient. The default is 5.
+#' @param rev A logical value indicating whether to reverse the order of the
+#' generated colors. The default is `FALSE`.
+#'
+#' @return A character vector of `n` gradient colors.
+#'
+#' @examples
+#' # Default gradient with 5 colors from blue to white
+#' pal_gradient()
+#'
+#' # Gradient with 10 colors from red to white
+#' pal_gradient(color = "#FF0000", n = 10)
+#'
+#' # Gradient with 5 colors between specified colors
+#' pal_gradient(color = c("#FF0000", "#00FF00", "#0000FF"), n = 5)
+#'
+#' @export
+pal_gradient <- function(color = c("#0072B5FF"), n = 5, rev = FALSE){
+  if(length(color) == 1L){
+    color_func <- scales::gradient_n_pal(c(color, "white"))
+    colors <- color_func(seq(0, 0.75, length.out = n))
+  }else{
+    color_func <- scales::gradient_n_pal(color)
+    colors <- color_func(seq(0, 1, length.out = n))
+  }
+
+  if(rev){
+    colors <- rev(colors)
+  }
+  colors
 }
