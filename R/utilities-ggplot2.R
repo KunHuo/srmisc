@@ -802,6 +802,15 @@ wrap_plots2 <- function(...,
   plots <- list(...)
   plots <- list_flatten(plots)
   plots <- add_tags(plots, tags)
+
+  plots <- lapply(plots, \(x){
+    if(x$coordinates$clip == "on"){
+      x <- x + ggplot2::coord_cartesian(clip = "off")
+    }
+    x
+  })
+
+
   plots <- patchwork::wrap_plots(plots,
                         ncol = ncol,
                         nrow = nrow,
@@ -811,7 +820,7 @@ wrap_plots2 <- function(...,
                         guides = guides,
                         design = design)
 
-  plots <- plots & ggplot2::coord_cartesian(clip = "off")
+  # plots <- plots & ggplot2::coord_cartesian(clip = "off")
 
   if(bold.tags){
     plots <- plots & gg_bold_tags()
@@ -824,6 +833,107 @@ wrap_plots2 <- function(...,
   plots
 }
 
+
+#' Align multiple plots vertically and/or horizontally
+#'
+#' @param ... List of plots to be aligned.
+#' @param align (optional) Specifies whether graphs in the grid should be
+#' horizontally ("h") or vertically ("v") aligned. Options are align="none",
+#' "hv" (align in both directions)(default), "h", and "v".
+#' @param axis (optional) Specifies whether graphs should be aligned by the
+#' left ("l"), right ("r"), top ("t"), or bottom ("b") margins. Options are
+#' axis="none" (default), or a string of any combination of "l", "r", "t",
+#' and/or "b" in any order (e.g. axis="tblr" or axis="rlbt" for aligning all margins)
+#' @param nrow (optional) Number of rows in the plot grid.
+#' @param ncol (optional) Number of columns in the plot grid.
+#' @param rel_widths (optional) Numerical vector of relative columns widths. For
+#'  example, in a two-column grid, rel_widths = c(2, 1) would make the first
+#'  column twice as wide as the second column.
+#' @param rel_heights (optional) Numerical vector of relative rows heights.
+#' Works just as rel_widths does, but for rows rather than columns.
+#' @param labels (optional) List of labels to be added to the plots. You can
+#' also set labels="AUTO" to auto-generate upper-case labels or labels="auto"
+#' to auto-generate lower-case labels.
+#' @param label_size (optional) Numerical value indicating the label size.
+#' Default is 14.
+#' @param label_fontfamily (optional) Font family of the plot labels. If not
+#' provided, is taken from the current theme.
+#' @param label_fontface (optional) Font face of the plot labels. Default is
+#' "plain".
+#' @param label_colour (optional) Color of the plot labels. If not provided, is
+#' taken from the current theme.
+#' @param label_x (optional) Single value or vector of x positions for plot
+#' labels, relative to each subplot. Defaults to 0 for all labels. (Each label
+#' is placed all the way to the left of each plot.)
+#' @param label_y (optional) Single value or vector of y positions for plot
+#' labels, relative to each subplot. Defaults to 1 for all labels. (Each label
+#' is placed all the way to the top of each plot.)
+#' @param hjust Adjusts the horizontal position of each label. More negative
+#' values move the label further to the right on the plot canvas. Can be a single
+#' value (applied to all labels) or a vector of values (one for each label).
+#' @param vjust Adjusts the vertical position of each label. More positive values
+#' move the label further down on the plot canvas. Can be a single value
+#' (applied to all labels) or a vector of values (one for each label).
+#' @param scale Individual number or vector of numbers greater than 0. Enables
+#' you to scale the size of all or select plots. Usually it's preferable to set
+#' margins instead of using scale, but scale can sometimes be more powerful.
+#' @param greedy (optional) Defines the alignment policy when alignment axes are
+#' specified via the axis option. greedy = TRUE tries to always align by
+#' adjusting the outmost margin. greedy = FALSE aligns all columns/rows in the
+#' gtable if possible.
+#' @param byrow Logical value indicating if the plots should be arrange by row
+#' (default) or by column.
+#'
+#' @return list plots.
+#' @export
+wrap_plots3 <- function(...,
+                        align = c("hv", "h", "v", "none"),
+                        axis = c("l", "r", "t", "b", "lr", "tb", "tblr", "none"),
+                        nrow = NULL,
+                        ncol = NULL,
+                        rel_widths = 1,
+                        rel_heights = 1,
+                        labels = "AUTO",
+                        label_size = 14,
+                        label_fontfamily = "serif",
+                        label_fontface = "plain",
+                        label_colour = NULL,
+                        label_x = 0,
+                        label_y = 1,
+                        hjust = -1,
+                        vjust = 1.2,
+                        scale = 1,
+                        greedy = TRUE,
+                        byrow = TRUE){
+
+  plots <- list(...)
+  plots <- list_flatten(plots)
+
+  align <- match.arg(align)
+  axis <- match.arg(axis)
+
+  cowplot::plot_grid(
+    plotlist = plots,
+    align = align,
+    axis = axis,
+    nrow = nrow,
+    ncol = ncol,
+    rel_widths = rel_widths,
+    rel_heights = rel_heights,
+    labels = labels,
+    label_size = label_size,
+    label_fontfamily = label_fontfamily,
+    label_fontface = label_fontface,
+    label_colour = label_colour,
+    label_x = label_x,
+    label_y = label_y,
+    hjust = hjust,
+    vjust = vjust,
+    scale = scale,
+    greedy = greedy,
+    byrow = byrow
+  )
+}
 
 
 #' Customize ggplot2 Text Elements
