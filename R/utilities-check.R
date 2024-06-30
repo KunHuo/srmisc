@@ -322,6 +322,36 @@ is_extreme <- function (x) {
 }
 
 
+#' Delete Extreme Values from Data
+#'
+#' This function removes extreme values from a specified variable in a dataset.
+#'
+#' @param data A data frame containing the dataset.
+#' @param varname The name of the variable from which extreme values should be
+#' removed.
+#'
+#' @return A data frame with extreme values removed from the specified variable.
+#'
+#' @examples
+#' data <- data.frame(x = c(1, 2, 3, 100, 5))
+#' clean_data <- delete_extreme(data, "x")
+#'
+#' @export
+delete_extreme <- function(data, varname = NULL){
+
+  varname <- select_variable(data, varname)
+
+  index <- is_extreme(data[[varname]])
+
+  if(!any(index, na.rm = TRUE)){
+    data
+  }else{
+    index[is.na(index)] <- FALSE
+    data[!index, , drop = FALSE]
+  }
+}
+
+
 #' Print check object
 #'
 #' @param x a object of check.

@@ -11,7 +11,7 @@
 #' @return A list with class "htest"
 #' @export
 wilcox_test2 <- function(x, ...) {
-  UseMethod("wilcox.test2")
+  UseMethod("wilcox_test2")
 }
 
 
