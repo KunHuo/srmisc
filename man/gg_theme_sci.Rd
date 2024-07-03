@@ -5,8 +5,8 @@
 \title{ggplo2 theme for SCI}
 \usage{
 gg_theme_sci(
-  font.size = 12,
-  font.family = "serif",
+  font.size = global_fontszie(),
+  font.family = global_fontfamily(),
   axis.line.size = 0.25,
   axis.ticks.length = 0.12,
   legend.key.size = 1,
