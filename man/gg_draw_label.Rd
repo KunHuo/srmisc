@@ -13,7 +13,7 @@ gg_draw_label(
   fontfamily = "serif",
   fontface = "plain",
   color = "black",
-  size = 12,
+  size = 9,
   angle = 0,
   lineheight = 0.9,
   alpha = 1

@@ -6,7 +6,7 @@
 \usage{
 gg_font(
   which = "all",
-  size = 12,
+  size = 9,
   color = "black",
   face = NULL,
   family = NULL,
@@ -20,7 +20,7 @@ Possible values include "title", "subtitle", "caption", "x", "xlab",
 "legendtitle", "legend.title", "legendtext", "legend.text", "x.text", "y.text",
 "xy.text", "yxtext", and "axis.text".}
 
-\item{size}{The size of the text. Default is 12.}
+\item{size}{The size of the text. Default is 9.}
 
 \item{color}{The color of the text. Default is "black".}
 

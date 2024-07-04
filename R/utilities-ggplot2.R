@@ -614,7 +614,7 @@ gg_draw_label <- function (label,
                            fontfamily = "serif",
                            fontface = "plain",
                            color = "black",
-                           size = 12,
+                           size = 9,
                            angle = 0,
                            lineheight = 0.9,
                            alpha = 1) {
@@ -894,7 +894,7 @@ wrap_plots3 <- function(...,
                         rel_widths = 1,
                         rel_heights = 1,
                         labels = "AUTO",
-                        label_size = 14,
+                        label_size = 11,
                         label_fontfamily = "serif",
                         label_fontface = "plain",
                         label_colour = NULL,
@@ -946,7 +946,7 @@ wrap_plots3 <- function(...,
 #' "x.title", "y", "ylab", "y.title", "xy", "xylab", "xy.title", "axis.title",
 #' "legendtitle", "legend.title", "legendtext", "legend.text", "x.text", "y.text",
 #' "xy.text", "yxtext", and "axis.text".
-#' @param size The size of the text. Default is 12.
+#' @param size The size of the text. Default is 9.
 #' @param color The color of the text. Default is "black".
 #' @param face The font face of the text (e.g., "bold", "italic"). Default is NULL.
 #' @param family The font family of the text. Default is NULL.
@@ -955,7 +955,7 @@ wrap_plots3 <- function(...,
 #' @return A ggplot2 theme with customized text element(s).
 #'
 #' @export
-gg_font <- function(which = "all", size = 12, color = "black", face = NULL, family = NULL, ...){
+gg_font <- function(which = "all", size = 9, color = "black", face = NULL, family = NULL, ...){
 
   elmt <- ggplot2::element_text(size = size, color = color, face = face, family = family, ...)
 

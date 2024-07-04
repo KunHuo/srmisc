@@ -13,7 +13,7 @@ wrap_plots3(
   rel_widths = 1,
   rel_heights = 1,
   labels = "AUTO",
-  label_size = 14,
+  label_size = 11,
   label_fontfamily = "serif",
   label_fontface = "plain",
   label_colour = NULL,
