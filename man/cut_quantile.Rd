@@ -9,6 +9,7 @@ cut_quantile(
   varname,
   n = 4,
   median = TRUE,
+  SD = TRUE,
   right = TRUE,
   labels = NULL,
   ...
@@ -22,6 +23,8 @@ cut_quantile(
 \item{n}{indicates how many quantiles to convert.}
 
 \item{median}{Whether to calculate the median of each group.}
+
+\item{SD}{Whether to calculate the per 1-SD.}
 
 \item{right}{logical, indicating if the intervals should be closed on the
 right (and open on the left) or vice versa.}

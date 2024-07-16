@@ -157,6 +157,7 @@ chinese <- function(data){
 #' @param varname variable name.
 #' @param n indicates how many quantiles to convert.
 #' @param median Whether to calculate the median of each group.
+#' @param SD Whether to calculate the per 1-SD.
 #' @param right logical, indicating if the intervals should be closed on the
 #' right (and open on the left) or vice versa.
 #' @param labels labels for the levels of the resulting category. By default,
@@ -166,7 +167,7 @@ chinese <- function(data){
 #'
 #' @return a data frame.
 #' @export
-cut_quantile <- function(data, varname, n = 4, median = TRUE, right = TRUE, labels = NULL, ...){
+cut_quantile <- function(data, varname, n = 4, median = TRUE, SD = TRUE, right = TRUE, labels = NULL, ...){
   varname <- select_variable(data, varname)
   g <- cut(data[[varname]],
            breaks = stats::quantile(data[[varname]], probs = (0:n) / n),
@@ -181,11 +182,21 @@ cut_quantile <- function(data, varname, n = 4, median = TRUE, right = TRUE, labe
     data <- data[, -which(names(data) == paste0("gq_", varname)),drop = FALSE]
   }
   data <- append2(data, g, after = varname, names = paste0("gq_", varname))
+
   if(median){
     if(paste0("mq_", varname) %in% names(data)){
       data <- data[, -which(names(data) == paste0("mq_", varname)),drop = FALSE]
     }
     data <- append2(data, m, after = paste0("gq_", varname), names = paste0("mq_", varname))
+  }
+
+
+  if(SD){
+    if(paste0("sd_", varname) %in% names(data)){
+      data <- data[, -which(names(data) == paste0("sd_", varname)),drop = FALSE]
+    }
+    s <- data[[varname]] / stats::sd(data[[varname]], na.rm = TRUE)
+    data <- append2(data, s, after = paste0("gq_", varname), names = paste0("sd_", varname))
   }
 
   if(n == 3){
