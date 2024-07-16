@@ -371,9 +371,9 @@ write_docx.data.frame <- function(x, path = "", landscape = FALSE, ...){
 
   if(length(title) != 0L){
 
-    if(stringr::str_detect(basename(path), pattern = "^[Table|\\u8868].*\\d$")){
-      title <- sprintf("%s  %s", basename(path),  title)
-    }
+    # if(stringr::str_detect(basename(path), pattern = "^[Table|\\u8868].*\\d$")){
+    #   title <- sprintf("%s  %s", basename(path),  title)
+    # }
 
     doc <- body_add_par2(doc, value = title, style = "table title")
   }

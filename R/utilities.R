@@ -187,6 +187,21 @@ cut_quantile <- function(data, varname, n = 4, median = TRUE, right = TRUE, labe
     }
     data <- append2(data, m, after = paste0("gq_", varname), names = paste0("mq_", varname))
   }
+
+  if(n == 3){
+    data[[paste0("gq_", varname)]] <- factor(data[[paste0("gq_", varname)]],
+                                             levels = levels(data[[paste0("gq_", varname)]]),
+                                             labels = sprintf("%s %d %s", "Tertile", 1:3, levels(data[[paste0("gq_", varname)]])))
+  }else if(n == 4){
+    data[[paste0("gq_", varname)]] <- factor(data[[paste0("gq_", varname)]],
+                                             levels = levels(data[[paste0("gq_", varname)]]),
+                                             labels = sprintf("%s %d %s", "Quartile", 1:4, levels(data[[paste0("gq_", varname)]])))
+  }else if(n == 5){
+    data[[paste0("gq_", varname)]] <- factor(data[[paste0("gq_", varname)]],
+                                             levels = levels(data[[paste0("gq_", varname)]]),
+                                             labels = sprintf("%s %d %s", "Quintile", 1:5, levels(data[[paste0("gq_", varname)]])))
+  }
+
   data
 }
 
