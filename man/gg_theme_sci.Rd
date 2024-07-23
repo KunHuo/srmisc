@@ -5,8 +5,8 @@
 \title{ggplo2 theme for SCI}
 \usage{
 gg_theme_sci(
-  font.size = 9,
-  font.family = "serif",
+  font.size = NULL,
+  font.family = NULL,
   axis.line.size = 0.25,
   axis.ticks.length = 0.12,
   legend.key.size = 1,
@@ -22,7 +22,7 @@ gg_theme_sci(
 )
 }
 \arguments{
-\item{font.size}{font size, default 12,}
+\item{font.size}{font size, default 9.}
 
 \item{font.family}{font family, detault 'serif' (Times New Roman).}
 

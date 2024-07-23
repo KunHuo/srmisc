@@ -1,6 +1,6 @@
 #' ggplo2 theme for SCI
 #'
-#' @param font.size font size, default 12,
+#' @param font.size font size, default 9.
 #' @param font.family font family, detault 'serif' (Times New Roman).
 #' @param axis.line.size axis line size, default 0.25.
 #' @param axis.ticks.length axis ticks length, default 0.12.
@@ -28,8 +28,8 @@
 #' ggplot(diamonds) +
 #'  geom_density(aes(x = price, fill = color)) +
 #'  gg_theme_sci()
-gg_theme_sci <- function(font.size = 9,
-                         font.family = "serif",
+gg_theme_sci <- function(font.size = NULL,
+                         font.family = NULL,
                          axis.line.size = 0.25,
                          axis.ticks.length = 0.12,
                          legend.key.size = 1.0,
@@ -62,6 +62,9 @@ gg_theme_sci <- function(font.size = 9,
   }else{
     pborder = ggplot2::element_rect(color = "NA")
   }
+
+  font.size <- ifelse(is.null(font.size), global_fontsize(), font.size)
+  font.family <- ifelse(is.null(font.family), global_fontfamily(), font.family)
 
   ggplot2::theme_bw(
     base_size   = font.size,
@@ -611,13 +614,17 @@ gg_draw_label <- function (label,
                            y = 0.5,
                            hjust = 0,
                            vjust = 1,
-                           fontfamily = "serif",
+                           fontfamily = NULL,
                            fontface = "plain",
                            color = "black",
-                           size = 9,
+                           size = NULL,
                            angle = 0,
                            lineheight = 0.9,
                            alpha = 1) {
+
+  size <- ifelse(is.null(size), global_fontsize(), size)
+  fontfamily <- ifelse(is.null(fontfamily), global_fontfamily(), fontfamily)
+
   text_par <- grid::gpar(col = color,
                          fontsize   = size,
                          fontfamily = fontfamily,
