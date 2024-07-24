@@ -323,6 +323,13 @@ heading3 <- function(x){
 
 
 write_rdocx <- function(x, path, ...){
+
+  folder <- global_folder()
+
+  if(!is.null(folder)){
+    path <- paste(folder, path, sep = "/")
+  }
+
   if(is.null(path)){
     stop("Path can not be empty.", call. = FALSE)
   }else{
@@ -331,7 +338,7 @@ write_rdocx <- function(x, path, ...){
   if(length(path) == 0L | path == ""){
     stop("Path can not be empty.", call. = FALSE)
   }
-  path <- file_path(path)
+  # path <- file_path(path)
   dir_create(path = path)
   print(x, path)
 }
@@ -355,6 +362,7 @@ write_docx <- function(x, path = "", landscape = FALSE, ...){
 #' @rdname write_docx
 #' @export
 write_docx.default <- function(x, path = "", landscape = FALSE, ...){
+
   get_docx(landscape = landscape) |>
     body_add_par2(value = as.character(x)) |>
     write_rdocx(path)

@@ -673,6 +673,23 @@ gg_save <- function(plot = ggplot2::last_plot(),
     plot <- ggplot2::theme(aspect.ratio = aspect.ratio)
   }
 
+  folder <- global_folder()
+
+  if(!is.null(folder)){
+    path <- paste(folder, path, sep = "/")
+  }
+
+  if(is.null(path)){
+    stop("Path can not be empty.", call. = FALSE)
+  }else{
+    path <- trimws(path)
+  }
+  if(length(path) == 0L | path == ""){
+    stop("Path can not be empty.", call. = FALSE)
+  }
+  # path <- file_path(path)
+  dir_create(path = path)
+
    ggplot2::ggsave(
      filename = path,
      plot = plot,

@@ -10,10 +10,10 @@ gg_draw_label(
   y = 0.5,
   hjust = 0,
   vjust = 1,
-  fontfamily = "serif",
+  fontfamily = NULL,
   fontface = "plain",
   color = "black",
-  size = 9,
+  size = NULL,
   angle = 0,
   lineheight = 0.9,
   alpha = 1

@@ -137,3 +137,37 @@ global_palette <- function(palette){
   }
 }
 
+#' Set or Get the Global Folder Option
+#'
+#' This function sets a global folder path option or retrieves the current
+#' global folder path option.
+#'
+#' If a folder path is provided, it sets the global option `global.folder` to
+#' the specified folder path.
+#' If no folder path is provided, it retrieves and returns the current value of
+#' the `global.folder` option.
+#'
+#' @param folder A character string specifying the folder path to be set as the
+#' global folder. If missing, the current global folder option is returned.
+#'
+#' @return If the `folder` argument is provided, the function does not return
+#' anything. If `folder` is missing, the function returns the current value of
+#' the global folder option.
+#'
+#' @examples
+#' # Set the global folder path
+#' global_folder("/path/to/folder")
+#'
+#' # Get the current global folder path
+#' current_folder <- global_folder()
+#' print(current_folder)
+#'
+#' @export
+global_folder <- function(folder){
+  if(!missing(folder)){
+    options(global.folder = folder)
+  }else{
+    options("global.folder")[[1]]
+  }
+}
+
