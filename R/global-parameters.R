@@ -51,7 +51,7 @@ global_parameters <- function(data, outcome, time, exposure, covariates, strata)
 #'
 #' @return If `size` is provided, the function sets the global font size and
 #' returns `NULL`. If `size` is not provided, the current global font size is
-#' returned. The default value is 9 if no global font size has been set.
+#' returned. The default value is 8 if no global font size has been set.
 #'
 #' @examples
 #' global_fontsize(12)  # Set global font size to 12
@@ -63,7 +63,7 @@ global_fontsize <- function(size){
     options(global.fontsize = size)
   }else{
     res <- options("global.fontsize")[[1]]
-    ifelse(is.null(res), 9, res)
+    ifelse(is.null(res), 8, res)
   }
 }
 
@@ -133,7 +133,15 @@ global_palette <- function(palette){
     }
     options(global.palette = palette)
   }else{
-    options("global.palette")[[1]]
+    res <- options("global.palette")[[1]]
+    if(is.null(res)){
+      c("#0072B5FF", "#BC3C29FF", "#20854EFF", "#E18727FF", "#7876B1FF", "#6F99ADFF", "#FFDC91FF", "#EE4C97FF",
+        "#0072B5B2", "#BC3C29B2", "#20854EB2", "#E18727B2", "#7876B1B2", "#6F99ADB2", "#FFDC91B2", "#EE4C97B2",
+        "#0072B57F", "#BC3C297F", "#20854E7F", "#E187277F", "#7876B17F", "#6F99AD7F", "#FFDC917F", "#EE4C977F",
+         pal_lancet_9(), pal_lancet_9(alpha = 0.7), pal_jama_7(), pal_jama_7(alpha = 0.7))
+    }else{
+      res
+    }
   }
 }
 
