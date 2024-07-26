@@ -30,7 +30,7 @@ geom_exec <- function (geomfunc = NULL,
     # general
     "x", "y", "color", "colour", "linetype", "fill", "size", "shape", "width",
     "alpha", "na.rm", "lwd", "pch", "cex", "position", "stat", "geom",
-    "show.legend", "inherit.aes", "fun.args", "fontface",
+    "show.legend", "inherit.aes", "fun.args", "fontface", "linewidth",
     # point
     "stroke",
     # boxplot
