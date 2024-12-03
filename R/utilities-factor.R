@@ -121,8 +121,10 @@ fct_recode.character <- function (x, ..., elselevel = NULL, use.empty = FALSE, n
 #' @export
 fct_recode.data.frame <- function (x, ..., elselevel = NULL, use.empty = FALSE, num = FALSE, varname = NULL) {
   varname <- select_variable(x, varname)
-  x <- x[[varname]]
-  fct_recode(x = x, ..., elselevel = elselevel, use.empty = use.empty, num = num)
+
+  x[[varname]] <- fct_recode(x = x[[varname]], ..., elselevel = elselevel, use.empty = use.empty, num = num)
+
+  x
 }
 
 
