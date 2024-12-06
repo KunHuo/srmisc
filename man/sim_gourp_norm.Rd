@@ -4,7 +4,7 @@
 \alias{sim_gourp_norm}
 \title{Simulate Data with Grouped Normal Distribution}
 \usage{
-sim_gourp_norm(..., signif = TRUE, names = NULL)
+sim_gourp_norm(..., signif = TRUE, paired = FALSE, names = NULL)
 }
 \arguments{
 \item{...}{List of named arguments specifying the groups and their parameters
@@ -12,6 +12,8 @@ from \code{\link[=sim_norm]{sim_norm()}}.}
 
 \item{signif}{Logical indicating whether to simulate until the group difference
 is significant (TRUE) or not (FALSE).}
+
+\item{paired}{a logical indicating whether you want a paired t-test.}
 
 \item{names}{Vector of names.}
 }

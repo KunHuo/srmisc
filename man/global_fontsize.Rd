@@ -13,7 +13,7 @@ not provided, the current global font size is returned.}
 \value{
 If \code{size} is provided, the function sets the global font size and
 returns \code{NULL}. If \code{size} is not provided, the current global font size is
-returned. The default value is 9 if no global font size has been set.
+returned. The default value is 8 if no global font size has been set.
 }
 \description{
 This function sets or gets the global font size option.

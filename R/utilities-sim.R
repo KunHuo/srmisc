@@ -63,6 +63,7 @@ sim_norm <- function(n, mean = 0, sd = 1, digits = 2, seed = 123, miss = 0, min 
 #' from [sim_norm()].
 #' @param signif Logical indicating whether to simulate until the group difference
 #' is significant (TRUE) or not (FALSE).
+#' @param paired a logical indicating whether you want a paired t-test.
 #' @param names Vector of names.
 #'
 #' @return A data frame containing simulated data with grouped normal distribution.
@@ -82,7 +83,7 @@ sim_norm <- function(n, mean = 0, sd = 1, digits = 2, seed = 123, miss = 0, min 
 #'                C = list(n = 8, mean = 32, sd = 3, digits = 2))
 #'
 #' @export
-sim_gourp_norm <- function(..., signif = TRUE, names = NULL) {
+sim_gourp_norm <- function(..., signif = TRUE, paired = FALSE, names = NULL) {
   # Store the arguments in a list
   d <- list(...)
 
@@ -112,7 +113,7 @@ sim_gourp_norm <- function(..., signif = TRUE, names = NULL) {
 
     # Perform group difference test
     if (length(d) == 2L) {
-      fit <- stats::t.test(value ~ group, var.equal = var.equal)
+      fit <- t_test2(value ~ group, var.equal = var.equal, paired = paired)
     } else{
       fit <- stats::oneway.test(value ~ group, var.equal = var.equal)
     }
