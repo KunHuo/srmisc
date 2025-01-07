@@ -336,7 +336,7 @@ as_frm <- function(x = NULL, y = NULL){
 #'
 #' @examples
 #' overview(iris)
-overview <- function(data, digits = 1, label = FALSE, value = TRUE, language = "en"){
+overview <- function(data, digits = 1, label = FALSE, value = FALSE, language = "en"){
 
   out <- lapply(names(data), \(x){
     if(label){
