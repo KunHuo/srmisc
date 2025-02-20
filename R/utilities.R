@@ -634,3 +634,79 @@ l <- function(..., sep = "\n"){
 print.lines <- function(x, ...){
   cat(x, ...)
 }
+
+#' Calculate counts and proportions for a vector, including missing values
+#'
+#' This function computes the counts and proportions for each unique category in a vector.
+#' If there are missing values (NA), it includes them as a category labeled "<NA>".
+#' The function also adds a row showing the total count and proportion (always 1).
+#'
+#' @param x A vector (numeric, character, or factor) for which the counts and proportions are to be computed.
+#'
+#' @return A data frame containing the categories, their counts, and proportions,
+#'         as well as a "Total" row that sums all counts and assigns a proportion of 1.
+#'
+#' @examples
+#' x <- c("Male", "Female", "Female", NA, "Male", "Male", "Female")
+#' counts_prop(x)
+#'
+#' y <- c(1, 2, 2, NA, 1, 1, 3)
+#' counts_prop(y)
+#'
+#' @export
+counts_prop <- function(x) {
+  count_table <- table(x, useNA = "ifany")
+  proportions <- count_table / sum(count_table)
+
+  result <- data.frame(
+    Category = names(count_table),
+    Count = as.integer(count_table),
+    Proportion = round(as.numeric(proportions), 4),
+    stringsAsFactors = FALSE
+  )
+
+  result$Category[which(is.na(result$Category))] <- "<NA>"
+
+  total_count <- sum(count_table)
+  total_proportion <- 1
+  total_row <- data.frame(
+    Category = "Total",
+    Count = total_count,
+    Proportion = total_proportion,
+    stringsAsFactors = FALSE
+  )
+
+  result <- rbind(result, total_row)
+
+  return(result)
+}
+
+#' Sum values across specified columns for each row in a data frame
+#'
+#' This function calculates the sum of specified columns for each row in a data frame.
+#' If all values in the specified columns are missing (NA), it returns NA for that row.
+#' The function also allows for excluding NA values when calculating the sum.
+#'
+#' @param data A data frame containing the data.
+#' @param cols A vector of column names or indices that specify the columns to be summed.
+#' @param na.rm A logical value indicating whether to remove NA values before summing. Default is TRUE.
+#'
+#' @return A vector of sums for each row, with NA returned for rows where all values in the specified columns are NA.
+#'
+#' @examples
+#' df <- data.frame(a = c(1, 2, NA, 4), b = c(5, NA, 7, 8))
+#' sum_rows(df, c("a", "b"))
+#' sum_rows(df, c("a", "b"), na.rm = FALSE)
+#'
+#' @export
+sum_rows <- function(data, cols, na.rm = TRUE) {
+  cols <- select_variable(data, cols)
+  apply(data[cols], 1, function(x) {
+    if (all(is.na(x))) {
+      return(NA)
+    } else {
+      return(sum(x, na.rm = na.rm))
+    }
+  })
+}
+

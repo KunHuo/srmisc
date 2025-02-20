@@ -4,7 +4,7 @@
 \alias{overview}
 \title{Overview of Data Structure}
 \usage{
-overview(data, digits = 1, label = FALSE, value = TRUE, language = "en")
+overview(data, digits = 1, label = FALSE, value = FALSE, language = "en")
 }
 \arguments{
 \item{data}{The input data frame.}
