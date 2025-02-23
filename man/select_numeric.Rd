@@ -51,9 +51,4 @@ Functions select variables in a data frame.
 \examples{
 select_numeric(iris)
 select_factor(iris)
-
-select_variable(iris, 1:4)
-select_variable(iris, "Species")
-select_variable(iris, "Species", type = "index")
-select_variable(iris, "Species", type = "data")
 }

@@ -168,6 +168,8 @@ chinese <- function(data){
 #' @return a data frame.
 #' @export
 cut_quantile <- function(data, varname, n = 4, median = TRUE, SD = TRUE, right = TRUE, labels = NULL, ...){
+
+
   varname <- select_variable(data, varname)
 
   if(!is.null(labels)){
@@ -710,3 +712,44 @@ sum_rows <- function(data, cols, na.rm = TRUE) {
   })
 }
 
+
+#' Set Decimal Places for Specified Columns in a Data Frame
+#'
+#' This function rounds specified columns in a data frame to the desired number
+#' of decimal places.
+#'
+#' If `digits` is a single number, it is applied to all specified columns.
+#' If `digits` is a vector, each value is applied to the corresponding column.
+#'
+#' @param data A data frame.
+#' @param columns A character or numeric vector specifying the columns to round.
+#' @param digits A single number or a numeric vector specifying the decimal places.
+#'
+#' @return A data frame with the specified columns rounded.
+#'
+#' @examples
+#' data <- data.frame(A = c(1.234, 2.345), B = c(3.456, 4.567))
+#' set_digits(data, c("A", "B"), 2) # Round all to 2 decimal places
+#' set_digits(data, c("A", "B"), c(2, 3)) # Round A to 2, B to 3
+#'
+#' @export
+set_digits <- function(data, columns, digits) {
+
+  # Convert columns to valid column names or indices
+  columns <- select_variable(data, columns)
+
+  # If digits is a single number, repeat it for all columns
+  if (length(digits) == 1L) {
+    digits <- rep(digits, length(columns))
+  } else {
+    # Check if lengths of columns and digits match
+    if (length(columns) != length(digits)) {
+      stop("The length of 'columns' and 'digits' must be the same.")
+    }
+  }
+
+  # Round specified columns using Map
+  data[columns] <- Map(function(col, dp) round(data[[col]], dp), columns, digits)
+
+  return(data)
+}

@@ -473,5 +473,12 @@ refactor <- function(f, new_levels, ordered = NA) {
 #' @return a data frame.
 #' @export
 fct_count <- function(data, varname){
-  table(data[[varname]])
+
+  if(is.data.frame(data)){
+    varname <- select_vars(data, substitute(varname))
+    counts_prop(data[[varname]])
+  }else{
+    counts_prop(data)
+  }
+
 }
