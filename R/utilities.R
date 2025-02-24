@@ -755,6 +755,41 @@ set_digits <- function(data, columns, digits) {
 }
 
 
+#' Join Elements with Commas and "and"
+#'
+#' This function takes a vector of elements and joins them into a single string.
+#' If there is only one element, it is returned as is. If there are two elements,
+#' they are joined with "and". If there are more than two elements, they are
+#' joined with commas, and the last element is prefixed with "and".
+#'
+#' @param vec A character vector of elements to be joined.
+#'
+#' @return A single string with the elements joined according to the rules above.
+#'         If the input vector is `NULL`, the function returns `NULL`.
+#'
+#' @examples
+#' join_elements(c("Apple"))           # Returns "Apple"
+#' join_elements(c("Apple", "Banana")) # Returns "Apple and Banana"
+#' join_elements(c("Apple", "Banana", "Cherry")) # Returns "Apple, Banana, and Cherry"
+#' join_elements(NULL) # Returns NULL
+#'
+#' @export
+join_elements <- function(vec) {
+  if (is.null(vec)) {
+    return(NULL)
+  }
+
+  n <- length(vec)
+
+  if (n == 1) {
+    return(vec)
+  } else if (n == 2) {
+    return(paste(vec, collapse = " and "))
+  } else {
+    return(paste0(paste(vec[-n], collapse = ", "), ", and ", vec[n]))
+  }
+}
+
 #' Extract and Concatenate Abbreviations from Variables
 #'
 #' This function extracts abbreviation attributes (`abbr`) from specified variables in a dataset
