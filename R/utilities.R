@@ -753,3 +753,42 @@ set_digits <- function(data, columns, digits) {
 
   return(data)
 }
+
+
+#' Extract and Concatenate Abbreviations from Variables
+#'
+#' This function extracts abbreviation attributes (`abbr`) from specified variables in a dataset
+#' and concatenates them into a single string, separated by semicolons.
+#'
+#' @param data A data frame containing the variables.
+#' @param varnames A character vector of variable names to check for abbreviations.
+#'
+#' @return A string containing the concatenated abbreviations, separated by semicolons.
+#'         If no valid abbreviations are found, an empty string is returned.
+#'
+#' @examples
+#' data <- data.frame(var1 = c(1, 2, 3), var2 = c(4, 5, 6))
+#' attr(data$var1, "abbr") <- "V1"
+#' attr(data$var2, "abbr") <- "V2"
+#' get_abbrs(data, c("var1", "var2", "var3"))  # Returns "V1; V2"
+#'
+#' @export
+get_abbrs <- function(data, varnames = NULL) {
+
+  # Filter and validate the variable names to ensure they exist in the dataset
+  varnames <- select_variable(data, varnames)
+
+  if(is_empty(varnames)){
+    varnames <- names(data)
+  }
+  # Extract the 'abbr' attribute for each variable in `varnames`
+  abrr_values <- lapply(varnames, function(var) {
+    attr(data[[var]], "abbr")
+  })
+
+  # Remove NULL and empty string values from the list of abbreviations
+  abrr_values <- Filter(function(x) !is.null(x) && x != "", abrr_values)
+
+  abrr_values <- unlist(abrr_values)
+  abrr_values
+}
