@@ -119,7 +119,12 @@ tidy_codes <- function(data = NULL){
   }
   data[1] <- term1
 
-  names(data) <- c(".varname", ".code", ".label", ".abbr")
+  if(ncol(data == 3L)){
+    names(data) <- c(".varname", ".code", ".label")
+  }else{
+    names(data) <- c(".varname", ".code", ".label", ".abbr")
+  }
+
   data <- append2(data, data[, 1, drop = TRUE], names = ".term", after = 0)
 
   for(i in 1:nrow(data)){
@@ -250,10 +255,12 @@ codes2labels <- function(data, codes, as.factor = TRUE, exclude = "") {
         attr(data[[varnames[i]]], "label") <- code[1, 4, drop = TRUE]
       }
 
-      if (!is.na(code[1, 5, drop = TRUE])) {
-        attr(data[[varnames[i]]], "abbr") <- code[1, 5, drop = TRUE]
-      }
+      if(ncol(code) == 5L){
+        if (!is.na(code[1, 5, drop = TRUE])) {
+          attr(data[[varnames[i]]], "abbr") <- code[1, 5, drop = TRUE]
+        }
 
+      }
 
     } # End for 'nrow(code) != 0L'
 
