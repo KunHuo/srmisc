@@ -1127,3 +1127,187 @@ print.gtable2 <- function(x, ...){
   plot(x, ...)
 }
 
+
+#' Add Horizontal Line with Text Annotation to ggplot2
+#'
+#' Draws a horizontal line with text annotation, supporting custom font families.
+#'
+#' @param y_intercept y-axis position for the horizontal line (required)
+#' @param label text annotation content (required)
+#' @param xmin starting x-coordinate of the line (default: -Inf)
+#' @param xmax ending x-coordinate of the line (default: Inf)
+#' @param line_color line color (default: "black")
+#' @param line_size line thickness in mm (default: 0.25)
+#' @param line_type line type (1=solid, 2=dashed, etc.) or name (default: 1)
+#' @param label_x x-coordinate for text annotation (default: middle of x range)
+#' @param label_y_offset vertical offset from line for text (default: 1)
+#' @param label_color text color (default: "black")
+#' @param label_size text size in points (default: 2.5)
+#' @param fontfamily font family name (e.g., "serif", "Arial", default: NULL)
+#' @param fontface text font style ("plain", "bold", "italic", etc.) (default: "plain")
+#' @param hjust horizontal text justification (0=left, 1=right, 0.5=center) (default: 0.5)
+#'
+#' @return A list of ggplot2 layer objects
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' # With custom font family
+#' ggplot(mtcars, aes(wt, mpg)) +
+#'   geom_point() +
+#'   add_hline(
+#'     y_intercept = 20,
+#'     label = "Reference Line",
+#'     fontfamily = "serif",  # 使用衬线字体
+#'     fontface = "italic"
+#'   )
+add_hline <- function(
+    y_intercept,
+    label,
+    xmin = -Inf,
+    xmax = Inf,
+    line_color = "black",
+    line_size = 0.25,
+    line_type = 1,
+    label_x = NULL,
+    label_y_offset = 1,
+    label_color = "black",
+    label_size = NULL,
+    fontfamily = NULL,
+    fontface = "plain",
+    hjust = 0.5
+) {
+  # Calculate default label position
+  if (is.null(label_x)) {
+    label_x <- (xmin + xmax) / 2
+    # Reset infinite values to NA for midpoint calculation
+    if (is.infinite(label_x)) label_x <- NA
+  }
+
+
+  label_size <- ifelse(is.null(label_size), global_fontsize(), label_size)
+  fontfamily <- ifelse(is.null(fontfamily), global_fontfamily(), fontfamily)
+
+  list(
+    # Horizontal line layer
+    ggplot2::geom_segment(
+      ggplot2::aes(x = xmin, xend = xmax, y = y_intercept, yend = y_intercept),
+      color = line_color,
+      linewidth = line_size,
+      linetype = line_type
+    ),
+    # Text annotation layer
+    ggplot2::annotate(
+      "text",
+      x = label_x,
+      y = y_intercept + label_y_offset,
+      label = label,
+      color = label_color,
+      size = label_size,
+      family = fontfamily,
+      fontface = fontface,
+      hjust = hjust,
+      vjust = 0
+    )
+  )
+}
+
+
+#' Add Rectangular Annotation with Text Label to ggplot2
+#'
+#' This function adds a customizable rectangular annotation and optional text label to a ggplot2 plot.
+#'
+#' @param xmin Left boundary x-coordinate of the rectangle (required)
+#' @param xmax Right boundary x-coordinate of the rectangle (required)
+#' @param ymin Lower boundary y-coordinate of the rectangle (required)
+#' @param ymax Upper boundary y-coordinate of the rectangle (required)
+#' @param label Text label to display (optional, NULL for no label)
+#' @param fill Fill color of the rectangle (default: "lightblue")
+#' @param color Border color of the rectangle (default: "gray30")
+#' @param alpha Transparency of the rectangle (0-1, default: 0.2)
+#' @param line_size Border line thickness (default: 0.5)
+#' @param line_type Border line type (default: "solid")
+#' @param label_x x-coordinate for text label (default: rectangle center)
+#' @param label_y y-coordinate for text label (default: rectangle center)
+#' @param label_color Text color (default: "black")
+#' @param label_size Text size in pt units (default: 2.5)
+#' @param label_hjust Horizontal text justification (0-1, default: 0.5)
+#' @param label_vjust Vertical text justification (0-1, default: 0.5)
+#' @param fontfamily font family name (e.g., "serif", "Arial", default: NULL)
+#'
+#' @return A list of ggplot2 annotation layers
+#' @export
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' ggplot(mtcars, aes(wt, mpg)) +
+#'   geom_point() +
+#'   add_rect_annotation(
+#'     xmin = 3, xmax = 4.5,
+#'     ymin = 15, ymax = 25,
+#'     label = "Focus Area",
+#'     fill = "lightyellow",
+#'     label_size = 3.5
+#'   )
+add_rect_annotation <- function(
+    xmin,
+    xmax,
+    ymin,
+    ymax,
+    label = NULL,
+    fill = "lightblue",
+    color = "gray30",
+    alpha = 0.2,
+    line_size = 0.25,
+    line_type = "solid",
+    label_x = NULL,
+    label_y = NULL,
+    label_color = "black",
+    label_size = NULL,
+    label_hjust = 0.5,
+    label_vjust = 0.5,
+    fontfamily = NULL
+) {
+  # Calculate default label position (rectangle center)
+  if (is.null(label_x)) label_x <- (xmin + xmax) / 2
+  if (is.null(label_y)) label_y <- (ymin + ymax) / 2
+
+  # Create annotation layers
+  layers <- list(
+    # Rectangle annotation
+    ggplot2::annotate(
+      "rect",
+      xmin = xmin, xmax = xmax,
+      ymin = ymin, ymax = ymax,
+      fill = fill,
+      color = color,
+      alpha = alpha,
+      linewidth = line_size,
+      linetype = line_type
+    )
+  )
+
+  label_size <- ifelse(is.null(label_size), global_fontsize(), label_size)
+  fontfamily <- ifelse(is.null(fontfamily), global_fontfamily(), fontfamily)
+
+  # Add text annotation if label provided
+  if (!is.null(label)) {
+    layers <- append(layers, list(
+      ggplot2::annotate(
+        "text",
+        x = label_x,
+        y = label_y,
+        label = label,
+        color = label_color,
+        family = fontfamily,
+        size = label_size,
+        hjust = label_hjust,
+        vjust = label_vjust
+      )
+    ))
+  }
+
+  return(layers)
+}
