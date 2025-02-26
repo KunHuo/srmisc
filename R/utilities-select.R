@@ -284,12 +284,6 @@ select_variable <- function(data, ..., type = c("name", "data", "index")){
 #' into a character string or extracts the elements if the expression is a call
 #' to `c()`.
 #'
-#' @examples
-#' capture_vars(42)  # Returns "42"
-#' capture_vars("abc")  # Returns "abc"
-#' capture_vars(x)  # Returns "x" (if x is a symbol)
-#' capture_vars(c(1, 2, 3))  # Returns "1" "2" "3"
-#'
 #' @export
 capture_vars <- function(x) {
   x_expr <- x

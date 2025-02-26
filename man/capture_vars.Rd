@@ -23,10 +23,3 @@ characters. It handles different types of inputs including numeric,
 character, symbol, and language (R expressions), and converts them into
 a character representation.
 }
-\examples{
-capture_vars(42)  # Returns "42"
-capture_vars("abc")  # Returns "abc"
-capture_vars(x)  # Returns "x" (if x is a symbol)
-capture_vars(c(1, 2, 3))  # Returns "1" "2" "3"
-
-}

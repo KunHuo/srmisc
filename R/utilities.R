@@ -801,12 +801,6 @@ join_elements <- function(vec) {
 #' @return A string containing the concatenated abbreviations, separated by semicolons.
 #'         If no valid abbreviations are found, an empty string is returned.
 #'
-#' @examples
-#' data <- data.frame(var1 = c(1, 2, 3), var2 = c(4, 5, 6))
-#' attr(data$var1, "abbr") <- "V1"
-#' attr(data$var2, "abbr") <- "V2"
-#' get_abbrs(data, c("var1", "var2", "var3"))  # Returns "V1; V2"
-#'
 #' @export
 get_abbrs <- function(data, varnames = NULL) {
 
