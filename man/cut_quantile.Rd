@@ -12,6 +12,7 @@ cut_quantile(
   SD = TRUE,
   right = TRUE,
   labels = NULL,
+  addvalue = FALSE,
   ...
 )
 }
@@ -32,6 +33,8 @@ right (and open on the left) or vice versa.}
 \item{labels}{labels for the levels of the resulting category. By default,
 labels are constructed using "(a,b]" interval notation. If labels = FALSE,
 simple integer codes are returned instead of a factor.}
+
+\item{addvalue}{Logical; if TRUE, appends the cut value to the labels (default: FALSE).}
 
 \item{...}{further arguments passed to or from other methods}
 }
