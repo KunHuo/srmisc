@@ -163,24 +163,54 @@ chinese <- function(data){
 #' @param labels labels for the levels of the resulting category. By default,
 #' labels are constructed using "(a,b]" interval notation. If labels = FALSE,
 #' simple integer codes are returned instead of a factor.
+#' @param addvalue Logical; if TRUE, appends the cut value to the labels (default: FALSE).
 #' @param ... further arguments passed to or from other methods
 #'
 #' @return a data frame.
 #' @export
-cut_quantile <- function(data, varname, n = 4, median = TRUE, SD = TRUE, right = TRUE, labels = NULL, ...){
+cut_quantile <- function(data, varname, n = 4, median = TRUE, SD = TRUE, right = TRUE, labels = NULL, addvalue = FALSE, ...){
 
 
   varname <- select_variable(data, varname)
 
-  if(!is.null(labels)){
-    if(labels == 3){
-      labels <- sprintf("Tertile %d", 1:3)
-    }else if(labels == 4){
-      labels <- sprintf("Quartile %d", 1:4)
-    }else if(labels == 5){
-      labels <- sprintf("Quintile %d", 1:5)
-    }
+  labels <- cc(labels)
+
+
+  if(is.null(labels)){
+    labels <- switch(as.character(n),
+                     "2" = c("Low", "High"),
+                     "3" = sprintf("Tertile %d", 1:3),
+                     "4" = sprintf("Quartile %d", 1:4),
+                     "5" = sprintf("Quintile %d", 1:5))
   }
+
+  if(addvalue){
+
+    if(n == 2){
+      median_val <- median(data[[varname]], na.rm = TRUE)
+
+      digits <- max(n_digits(data[[varname]]), na.rm = TRUE)
+
+      if(!right){
+        labels <- c(sprintf("%s (≤%s)", labels[1], fmt_digits(median_val, digits)),
+                    sprintf("%s (>%s)", labels[2], fmt_digits(median_val, digits)))
+      }else{
+        labels <- c(sprintf("%s (<%s)", labels[1], fmt_digits(median_val, digits)),
+                    sprintf("%s (≥%s)", labels[2], fmt_digits(median_val, digits)))
+      }
+
+    }else{
+      levels <- levels(cut(data[[varname]],
+                           breaks = stats::quantile(data[[varname]], probs = (0:n) / n),
+                           include.lowest = TRUE,
+                           right = right,
+                           ...))
+
+      labels <- paste(labels, levels)
+    }
+
+  }
+
 
   g <- cut(data[[varname]],
            breaks = stats::quantile(data[[varname]], probs = (0:n) / n),
@@ -203,7 +233,6 @@ cut_quantile <- function(data, varname, n = 4, median = TRUE, SD = TRUE, right =
     data <- append2(data, m, after = paste0("gq_", varname), names = paste0("mq_", varname))
   }
 
-
   if(SD){
     if(paste0("sd_", varname) %in% names(data)){
       data <- data[, -which(names(data) == paste0("sd_", varname)),drop = FALSE]
@@ -211,23 +240,6 @@ cut_quantile <- function(data, varname, n = 4, median = TRUE, SD = TRUE, right =
     s <- data[[varname]] / stats::sd(data[[varname]], na.rm = TRUE)
     data <- append2(data, s, after = paste0("gq_", varname), names = paste0("sd_", varname))
   }
-
-  if(is.null(labels)){
-    if(n == 3){
-      data[[paste0("gq_", varname)]] <- factor(data[[paste0("gq_", varname)]],
-                                               levels = levels(data[[paste0("gq_", varname)]]),
-                                               labels = sprintf("%s %d %s", "Tertile", 1:3, levels(data[[paste0("gq_", varname)]])))
-    }else if(n == 4){
-      data[[paste0("gq_", varname)]] <- factor(data[[paste0("gq_", varname)]],
-                                               levels = levels(data[[paste0("gq_", varname)]]),
-                                               labels = sprintf("%s %d %s", "Quartile", 1:4, levels(data[[paste0("gq_", varname)]])))
-    }else if(n == 5){
-      data[[paste0("gq_", varname)]] <- factor(data[[paste0("gq_", varname)]],
-                                               levels = levels(data[[paste0("gq_", varname)]]),
-                                               labels = sprintf("%s %d %s", "Quintile", 1:5, levels(data[[paste0("gq_", varname)]])))
-    }
-  }
-
 
   data
 }
