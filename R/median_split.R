@@ -96,6 +96,9 @@ median_split_df <- function(df,
                             addvalue = FALSE,
                             digits = NULL,
                             lower = FALSE) {
+
+  cols <- select_variable(df, cols)
+
   if (!is.data.frame(df)) {
     stop("Input must be a data frame")
   }
@@ -124,7 +127,7 @@ median_split_df <- function(df,
       digits = digits,
       lower = lower
     )
-    df[[paste0(col, "_split")]] <- split_col
+    df[[paste0("m_", col)]] <- split_col
   }
 
   return(df)
