@@ -57,6 +57,8 @@ reverse_scoring <- function(x, vars = NULL, min_score = NULL, max_score = NULL) 
       numeric_cols <- sapply(x, is.numeric)
       vars <- names(x)[numeric_cols]
       if (length(vars) == 0) warning("No numeric columns found")
+    }else{
+      vars <- select_variable(x, vars)
     }
 
     # Convert numeric indexes to names
