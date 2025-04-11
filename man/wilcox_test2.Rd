@@ -79,5 +79,5 @@ A list with class "htest"
 }
 \description{
 Performs one- and two-sample Wilcoxon tests on vectors of data; the latter
-is also known as ‘Mann-Whitney’ test.
+is also known as 'Mann-Whitney' test.
 }

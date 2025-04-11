@@ -1159,7 +1159,7 @@ print.gtable2 <- function(x, ...){
 #'   add_hline(
 #'     y_intercept = 20,
 #'     label = "Reference Line",
-#'     fontfamily = "serif",  # 使用衬线字体
+#'     fontfamily = "serif",
 #'     fontface = "italic"
 #'   )
 add_hline <- function(

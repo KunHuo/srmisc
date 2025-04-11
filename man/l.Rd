@@ -23,16 +23,16 @@ This function splits a given text into lines based on a separator.
 l('This function splits a given text
    into lines based on a separator.')
 
-l('With 25–30 variables potentially associated with mortality in critically ill
-  patients with COVID-19 the minimum sample size required approximately 250–300
+l('With 25-30 variables potentially associated with mortality in critically ill
+  patients with COVID-19 the minimum sample size required approximately 250-300
   deaths.',
 
   'Comparisons of continuous variables between groups were done using t-tests,
   one-way ANOVA, or equivalent non-parametric tests.'
 )
 
-l('With 25–30 variables potentially associated with mortality in critically ill
-  patients with COVID-19 the minimum sample size required approximately 250–300
+l('With 25-30 variables potentially associated with mortality in critically ill
+  patients with COVID-19 the minimum sample size required approximately 250-300
   deaths.',
 
   'Comparisons of continuous variables between groups were done using t-tests,

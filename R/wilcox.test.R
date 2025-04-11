@@ -1,7 +1,7 @@
 #' Wilcoxon Rank Sum and Signed Rank Tests
 #'
 #' Performs one- and two-sample Wilcoxon tests on vectors of data; the latter
-#' is also known as ‘Mann-Whitney’ test.
+#' is also known as 'Mann-Whitney' test.
 #'
 #' @param x numeric vector of data values. Non-finite (e.g., infinite or missing)
 #' values will be omitted.

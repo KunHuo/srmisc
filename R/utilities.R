@@ -192,11 +192,11 @@ cut_quantile <- function(data, varname, n = 4, median = TRUE, SD = TRUE, right =
       digits <- max(n_digits(data[[varname]]), na.rm = TRUE)
 
       if(!right){
-        labels <- c(sprintf("%s (≤%s)", labels[1], fmt_digits(median_val, digits)),
+        labels <- c(sprintf("%s (\u2264%s)", labels[1], fmt_digits(median_val, digits)),
                     sprintf("%s (>%s)", labels[2], fmt_digits(median_val, digits)))
       }else{
         labels <- c(sprintf("%s (<%s)", labels[1], fmt_digits(median_val, digits)),
-                    sprintf("%s (≥%s)", labels[2], fmt_digits(median_val, digits)))
+                    sprintf("%s (\u2265%s)", labels[2], fmt_digits(median_val, digits)))
       }
 
     }else{
@@ -598,16 +598,16 @@ find_non_ascii <- function(){
 #' l('This function splits a given text
 #'    into lines based on a separator.')
 #'
-#' l('With 25–30 variables potentially associated with mortality in critically ill
-#'   patients with COVID-19 the minimum sample size required approximately 250–300
+#' l('With 25-30 variables potentially associated with mortality in critically ill
+#'   patients with COVID-19 the minimum sample size required approximately 250-300
 #'   deaths.',
 #'
 #'   'Comparisons of continuous variables between groups were done using t-tests,
 #'   one-way ANOVA, or equivalent non-parametric tests.'
 #' )
 #'
-#' l('With 25–30 variables potentially associated with mortality in critically ill
-#'   patients with COVID-19 the minimum sample size required approximately 250–300
+#' l('With 25-30 variables potentially associated with mortality in critically ill
+#'   patients with COVID-19 the minimum sample size required approximately 250-300
 #'   deaths.',
 #'
 #'   'Comparisons of continuous variables between groups were done using t-tests,

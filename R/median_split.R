@@ -29,7 +29,7 @@ median_split <- function(x,
     stop("Input variables must be numeric")
   }
 
-  median_val <- median(x, na.rm = TRUE)
+  median_val <- stats::median(x, na.rm = TRUE)
 
   if(lower){
      group <- ifelse(x > median_val, high_label, low_label)
@@ -43,11 +43,11 @@ median_split <- function(x,
     }
 
     if(lower){
-      labels <- c(sprintf("%s (≤%s)", low_label, fmt_digits(median_val, digits)),
+      labels <- c(sprintf("%s (\u2264%s)", low_label, fmt_digits(median_val, digits)),
                   sprintf("%s (>%s)", high_label, fmt_digits(median_val, digits)))
     }else{
       labels <- c(sprintf("%s (<%s)", low_label, fmt_digits(median_val, digits)),
-                  sprintf("%s (≥%s)", high_label, fmt_digits(median_val, digits)))
+                  sprintf("%s (\u2265%s)", high_label, fmt_digits(median_val, digits)))
     }
 
   }else{

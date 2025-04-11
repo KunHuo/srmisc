@@ -65,7 +65,7 @@ ggplot(mtcars, aes(wt, mpg)) +
   add_hline(
     y_intercept = 20,
     label = "Reference Line",
-    fontfamily = "serif",  # 使用衬线字体
+    fontfamily = "serif",
     fontface = "italic"
   )
 }
