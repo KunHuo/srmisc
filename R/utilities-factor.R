@@ -475,7 +475,7 @@ refactor <- function(f, new_levels, ordered = NA) {
 fct_count <- function(data, varname){
 
   if(is.data.frame(data)){
-    varname <- select_vars(data, substitute(varname))
+    varname <- select_variable(data, varname)
     counts_prop(data[[varname]])
   }else{
     counts_prop(data)
