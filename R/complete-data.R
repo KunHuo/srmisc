@@ -31,6 +31,10 @@
 #'
 #' @export
 complete_data <- function(data, varnames = NULL, ...){
+
+
+  var_labels <- srmisc::get_var_label(data)
+
   varnames <- srmisc::select_variable(data, varnames)
 
   if(srmisc::is_empty(varnames)){
@@ -43,5 +47,9 @@ complete_data <- function(data, varnames = NULL, ...){
 
   index <- apply(index, 1, any)
 
-  data[!index, ]
+  data <- data[!index, ]
+
+  data <- srmisc::set_var_label(data, var_labels)
+  return(data)
 }
+

@@ -31,5 +31,4 @@ complete_cases(c(1, NA, 3))  # Returns c(1, 3)
 df <- data.frame(A = c(1, NA, 3), B = c(NA, 5, 6))
 complete_cases(df)             # Keeps only complete rows
 complete_cases(df, vars = "A") # Keeps rows where column A is not NA
-
 }
