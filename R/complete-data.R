@@ -33,7 +33,7 @@
 complete_data <- function(data, varnames = NULL, ...){
 
 
-  var_labels <- srmisc::get_var_label(data)
+  var_labels <- sapply(data, function(x) attr(x, "label"))
 
   varnames <- srmisc::select_variable(data, varnames)
 
@@ -47,9 +47,15 @@ complete_data <- function(data, varnames = NULL, ...){
 
   index <- apply(index, 1, any)
 
-  data <- data[!index, ]
+  result <- data[!index, ]
 
-  data <- srmisc::set_var_label(data, var_labels)
-  return(data)
+  for (i in seq_along(result)) {
+    var_name <- names(result)[i]
+    if (!is.null(var_labels[[var_name]]) && var_labels[[var_name]] != "") {
+      attr(result[[var_name]], "label") <- var_labels[[var_name]]
+    }
+  }
+
+  return(result)
 }
 
