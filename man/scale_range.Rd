@@ -21,22 +21,7 @@ Default is c(0, 1).}
 An object of the same class as x with values scaled to specified range
 }
 \description{
-This function scales numeric data to a specified range (default \link{0, 1}).
+This function scales numeric data to a specified range
 It handles vectors, matrices, and dataframes. For dataframes, you can specify
 which variables to scale.
-}
-\examples{
-# Vector example with default [0,1] range
-scale_range(1:10)
-
-# Vector example with custom [-1,1] range
-scale_range(1:10, range = c(-1, 1))
-
-# Dataframe example - scale specific columns to [0,100] range
-df <- data.frame(a = 1:10, b = 20:11, c = letters[1:10])
-scale_range(df, vars = c("a", "b"), range = c(0, 100))
-
-# Matrix example with [1,10] range
-mat <- matrix(1:20, ncol = 2)
-scale_range(mat, range = c(1, 10))
 }

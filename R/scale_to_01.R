@@ -1,6 +1,6 @@
 #' Scale numeric data to a custom range
 #'
-#' This function scales numeric data to a specified range (default [0, 1]).
+#' This function scales numeric data to a specified range
 #' It handles vectors, matrices, and dataframes. For dataframes, you can specify
 #' which variables to scale.
 #'
@@ -11,20 +11,6 @@
 #'              Default is c(0, 1).
 #' @param na.rm Logical indicating whether to ignore NA values (default TRUE)
 #' @return An object of the same class as x with values scaled to specified range
-#' @examples
-#' # Vector example with default [0,1] range
-#' scale_range(1:10)
-#'
-#' # Vector example with custom [-1,1] range
-#' scale_range(1:10, range = c(-1, 1))
-#'
-#' # Dataframe example - scale specific columns to [0,100] range
-#' df <- data.frame(a = 1:10, b = 20:11, c = letters[1:10])
-#' scale_range(df, vars = c("a", "b"), range = c(0, 100))
-#'
-#' # Matrix example with [1,10] range
-#' mat <- matrix(1:20, ncol = 2)
-#' scale_range(mat, range = c(1, 10))
 #' @export
 scale_range <- function(x, vars = NULL, range = c(0, 1), na.rm = TRUE) {
 
