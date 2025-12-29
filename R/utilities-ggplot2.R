@@ -28,8 +28,8 @@
 #' ggplot(diamonds) +
 #'  geom_density(aes(x = price, fill = color)) +
 #'  gg_theme_sci()
-gg_theme_sci <- function(font.size = NULL,
-                         font.family = NULL,
+gg_theme_sci <- function(font.size = 7,
+                         font.family = "sans",
                          axis.line.size = 0.25,
                          axis.ticks.length = 0.12,
                          legend.key.size = 1.0,
@@ -773,8 +773,13 @@ add_col_label <- function(plot, col, y = NULL, label, vjust = -0.5, family = "se
 #' @return a list of ggplot object
 #' @export
 add_tags <- function(plots, tags = NULL){
+
   if(is.null(tags)){
-    tags <- LETTERS[1:length(plots)]
+    return(plots)
+  }else{
+    if("auto" %in% tolower(tags)){
+      tags <- LETTERS[1:length(plots)]
+    }
   }
   Map(function(p, tag){
     p + gg_tags(tag)
@@ -918,8 +923,8 @@ wrap_plots3 <- function(...,
                         rel_widths = 1,
                         rel_heights = 1,
                         labels = "AUTO",
-                        label_size = 11,
-                        label_fontfamily = "serif",
+                        label_size = 9,
+                        label_fontfamily = "sans",
                         label_fontface = "plain",
                         label_colour = NULL,
                         label_x = 0,
