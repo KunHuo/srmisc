@@ -63,6 +63,12 @@
 #' @export
 discretize <- function(data, varname, level, labels = NULL, new_varname = NULL) {
 
+  level <- cc(level)
+
+  if(!is.null(labels)){
+    labels <- cc(labels)
+  }
+
   # Determine input type
   is_vector_input <- is.vector(data) && !is.list(data)
   is_df_input <- is.data.frame(data)
