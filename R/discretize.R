@@ -63,6 +63,8 @@
 #' @export
 discretize <- function(data, varname, level, labels = NULL, new_varname = NULL) {
 
+
+
   level <- cc(level)
 
   if(!is.null(labels)){
@@ -70,7 +72,7 @@ discretize <- function(data, varname, level, labels = NULL, new_varname = NULL) 
   }
 
   # Determine input type
-  is_vector_input <- is.vector(data) && !is.list(data)
+  is_vector_input <- is.numeric(data)
   is_df_input <- is.data.frame(data)
 
   if (!is_vector_input && !is_df_input) {
@@ -81,6 +83,7 @@ discretize <- function(data, varname, level, labels = NULL, new_varname = NULL) 
   if (is_vector_input) {
     x <- data
   } else {
+    varname <- select_variable(data, varname)
     x <- data[[varname]]
   }
 
