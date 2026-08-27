@@ -1316,3 +1316,128 @@ add_rect_annotation <- function(
 
   return(layers)
 }
+
+
+#' Add a formatted title to a ggplot
+#'
+#' @description
+#' A wrapper around \code{ggplot2::ggtitle()} and \code{ggplot2::theme()} that
+#' provides convenient control over title appearance including font size, color,
+#' alignment, and positioning. Returns a list of ggplot components suitable for
+#' use with the \code{+} operator.
+#'
+#' @param title Character string or expression. The main title text. If \code{NULL},
+#'   no title is added (default).
+#' @param subtitle Character string or expression. The subtitle text displayed
+#'   below the main title. Only used when \code{title} is not \code{NULL}.
+#' @param size Numeric. Font size for the main title in points. Default: \code{7}.
+#' @param color Character. Text color for the main title. Accepts any valid R
+#'   color specification. Default: \code{"black"}.
+#' @param face Character. Font face for the main title. One of \code{"plain"},
+#'   \code{"bold"}, \code{"italic"}, or \code{"bold.italic"}. Default: \code{"plain"}.
+#' @param family Character. Font family name. If \code{NULL} (default), the
+#'   system default font is used.
+#' @param hjust Numeric. Horizontal justification of the title. \code{0} = left,
+#'   \code{0.5} = center, \code{1} = right. Default: \code{0.5}.
+#' @param vjust Numeric. Vertical justification of the title. Default: \code{0}.
+#' @param margin_top Numeric. Top margin for the title in points. Default: \code{5}.
+#' @param margin_bottom Numeric. Bottom margin for the title in points.
+#'   Default: \code{10}.
+#' @param position Character. Title positioning area. Either \code{"panel"}
+#'   (aligned with the plot panel) or \code{"plot"} (aligned with the entire
+#'   plotting area). Default: \code{"panel"}.
+#'
+#' @return A list of ggplot components (a \code{ggtitle} object and a
+#'   \code{ggplot2::theme} object) that can be added to a ggplot using the
+#'   \code{+} operator.
+#'
+#' @details
+#' When \code{subtitle} is provided, its font size is automatically set to 80\%
+#' of the main title size, and its color is derived from the main title color
+#' with 70\% transparency via \code{scales::alpha()}.
+#'
+#' If both \code{title} and \code{subtitle} are \code{NULL}, only the theme
+#' settings for the title position and margins are applied, allowing reuse of
+#' consistent title styling across multiple plots.
+#'
+#' @importFrom ggplot2 ggtitle theme element_text margin
+#' @importFrom scales alpha
+#'
+#' @examples
+#' library(ggplot2)
+#'
+#' # Basic centered title
+#' ggplot(mtcars, aes(x = wt, y = mpg)) +
+#'   geom_point() +
+#'   gg_title("Weight vs MPG")
+#'
+#' # Customized title with subtitle
+#' ggplot(mtcars, aes(x = wt, y = mpg)) +
+#'   geom_point() +
+#'   gg_title(
+#'     title = "Main Title",
+#'     subtitle = "Subtitle here",
+#'     size = 12,
+#'     color = "steelblue",
+#'     face = "bold",
+#'     hjust = 0
+#'   )
+#'
+#' # Apply only theme settings without a title
+#' ggplot(mtcars, aes(x = wt, y = mpg)) +
+#'   geom_point() +
+#'   gg_title() +
+#'   labs(title = "Another Title")
+#'
+#' @export
+gg_title <- function(title = NULL,
+                     subtitle = NULL,
+                     size = 7,
+                     color = "black",
+                     face = "plain",
+                     family = NULL,
+                     hjust = 0.5,
+                     vjust = 0,
+                     margin_top = 5,
+                     margin_bottom = 10,
+                     position = "panel") {
+
+  layers <- list()
+
+  if (!is.null(title)) {
+    layers <- c(layers, list(
+      ggplot2::ggtitle(label = title, subtitle = subtitle)
+    ))
+  }
+
+  title_theme <- ggplot2::theme(
+    plot.title = ggplot2::element_text(
+      size = size,
+      color = color,
+      face = face,
+      family = family,
+      hjust = hjust,
+      vjust = vjust,
+      margin = ggplot2::margin(t = margin_top, b = margin_bottom)
+    ),
+    plot.title.position = position
+  )
+
+  if (!is.null(subtitle)) {
+    title_theme <- title_theme + ggplot2::theme(
+      plot.subtitle = ggplot2::element_text(
+        size = size * 0.8,
+        color = scales::alpha(color, 0.7),
+        face = "plain",
+        family = family,
+        hjust = hjust,
+        vjust = vjust,
+        margin = ggplot2::margin(t = 2, b = margin_bottom)
+      )
+    )
+  }
+
+  layers <- c(layers, list(title_theme))
+
+  return(layers)
+}
